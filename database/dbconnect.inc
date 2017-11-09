@@ -27,7 +27,11 @@ class Dbconnect {
 		return self::$conn;
 	}
 	
-	protected function prepareStatement($spname, &$params) {
+	protected function execStatement($spname, &$outparams, &$params) {
+
+		// make sure array is set as an ordinal array as we are using positional parameters
+		$params = array_values($params);
+		
 		// build question mark parameters for CALL Statement
 		$qmstr = '';
 		foreach($params as $param) {
@@ -35,36 +39,59 @@ class Dbconnect {
 		}
 		// remove last ", " from $qmstr (if $qmstr has a value
 		if (strlen($qmstr) > 0) { $qmstr = substr($qmstr, 0, -2); }
-		// build prepare statement
-		$prepstr = "CALL ".$spname."(".$qmstr.")";
-		return $prepstr;
-	}
-	
-	// Generic function which should be usable for all basic read sp's
-	// pass in procedure name and all parameters in array in format (datatype, name)
-	public function callReadSp($spname, &$params) {
 
-	$prepstr = $this->prepareStatement($spname, $params);
-	
-	try {
+		// build prepare statement based on existence of OUT parameters in SP
+		if (!empty($outparams)) {
+			$prepstr = "CALL ".$spname."(".implode(",", $outparams).", ".$qmstr.")";
+		} else {
+			$prepstr = "CALL ".$spname."(".$qmstr.")";
+		}
+		
+		try {
+		
 			// connect to db
 			$pdo = $this->connect();
 			
 			// prepare call statement
 			$sql = $pdo->prepare($prepstr);
-			
+
 			// execute prepared statement
 			$sql->execute($params);
 			
-			// write results to $row array
-			$row = $sql->fetchAll(PDO::FETCH_ASSOC);
-			
-		} 	catch (PDOException $e) {
-			die ("Error occurred: " . $e->getMessage());
+		} catch (PDOException $e) {
+			echo $e;
 		}
+			
+		return $sql;
+	}
+	
+	// Generic function which should be usable for all basic read sp's
+	// pass in procedure name and all parameters in array
+	// not included option for OUT parameters. If needed can add fairly easily
+	public function callReadSp($spname, &$params) {
+		
+		// call execution method
+		$sql = $this->execStatement($spname, $outparams, $params);
+		
+		// write results to $row array
+		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
 		return $row;
 	}
-
+	
+	// Generic function which should be usable for all basic insert sp's
+	// pass in procedure name and all parameters in array
+	public function callInsertSp($spname, &$outparams, &$params) {
+		
+		// call execution method
+		$sql = $this->execStatement($spname, $outparams, $params);
+		
+		// write results to $row array
+		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
+		return $row;
+	}
+	
+	
+	
 	public function returnFirstRow($row) {
 		$i=0;
 		foreach ($row as $result) {

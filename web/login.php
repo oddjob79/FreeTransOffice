@@ -24,16 +24,17 @@
 
 		// instantiate a new Dbconnect object & call read SP to gather user & domain ids to pass to session
 		$uvsql = new DbConnect();
-		$uvparams = array($postedvalues['username'], $postedvalues['password']);
+		$uvparams = array($postedvalues['username']);
 		$uservars = $uvsql->callReadSp('sp_validateUser', $uvparams);
-		
+
 		// gather only first row from array passed back from SP results (should only ever be one row)
 		$loginvars = $uvsql->returnFirstRow($uservars);
 		$user_id = $loginvars['user_id'];
 		$domain_id = $loginvars['domain_id'];
+		$passwordhash = $loginvars['password_hash'];
 		
 		// if login successful, load the joblist page, if not present the login form again with message asking to log in again or reset password
-		if (!empty($uservars)) {
+		if (password_verify($postedvalues['password'], $passwordhash)) {
 			// set session variables
 			$session = new Session();
 			$session->setSessionVars($user_id, $domain_id);

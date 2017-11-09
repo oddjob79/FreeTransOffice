@@ -52,7 +52,7 @@
 		
 		protected function displayMenu($mainmenuitems) {
 			echo "<div class='mainmenu'><table width='10%' bgcolor='white' cellpadding='4' cellspacing='4'>\n";
-			echo "<tr><td><img src='logo.png' alt='TOLogo' height='70' width='100'></td></tr>";			
+			echo "<tr><td><a href='../web/login.php'><img src='logo.png' alt='TOLogo' height='70' width='100'></a></td></tr>";			
 			
 			foreach ($mainmenuitems as $name=>$url) {
 				//echo "<tr><td height><a href ='".htmlentities($url)."'><span class='mainmenu'>$name</span></a></td></tr>\n";
