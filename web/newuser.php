@@ -2,10 +2,7 @@
 
 	require_once('../obj/htmlform.inc');
 	
-	$basepage = new BasePage();
-	$basepage->display();
 	$newuserform = new HtmlForm();
-	echo "<div class='newuser'>";	
 	
 	if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		
@@ -32,5 +29,5 @@
 		// if no posted information available
 		$newuserform->newUserForm();
 	}
-	echo "</div>";	
+	echo "</div></body></html>";	
 ?>

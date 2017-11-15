@@ -1,6 +1,6 @@
 <?php
 
-require_once('basepage.inc');
+include('basepage.inc');
 
 class HtmlForm extends BasePage {
 	

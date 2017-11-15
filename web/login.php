@@ -3,11 +3,6 @@
 	require_once('../database/dbconnect.inc');
 	require_once('../obj/htmlform.inc');
 	
-	// loads menu items and css	
-	$loginpage = new BasePage();
-	// displays menu	
-	$loginpage->display();
-
 	echo "<div class='login'>";
 	// instantiate a new html form
 	$loginform = new htmlform();
@@ -55,5 +50,6 @@
 		$loginform->loginForm();
 	}	
 	
+	echo "</div></body></html>";
 
 ?>

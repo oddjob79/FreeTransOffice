@@ -1,8 +1,7 @@
 <?php
 
-	require_once('../obj/basepage.inc');
+	include('../obj/basepage.inc');
 	
-	$basepage = new BasePage();
-	$basepage->display();
+	echo "</div></body></html>";
 	
 ?>
