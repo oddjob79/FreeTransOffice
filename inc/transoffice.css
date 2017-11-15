@@ -41,6 +41,11 @@ a {
 	text-decoration: none;
 }
 
+.body {
+	width: 90%;
+	float: right;
+}
+
 .login {
 	margin: auto;
 	padding-top: 10%;

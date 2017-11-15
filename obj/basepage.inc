@@ -110,9 +110,14 @@
 			$this -> displayUser();
 			$this -> displayVersion();
 			echo "</table></div>";
-			echo "</body>\n</html>\n";
+//			echo "</body>\n</html>\n"; 
 		}
 			
 	}
 
+	$basepage = new BasePage();
+	$basepage->display();
+	echo "<div class='body'>";
+	
+	
 ?>
