@@ -3,7 +3,11 @@
 	require_once('../database/dbconnect.inc');
 	require_once('../obj/htmlform.inc');
 	
-	echo "<div class='login'>";
+	
+	// instantiate the base page content and display header and menu items
+	$loginpage = new BasePage();
+	$loginpage -> Display();
+	
 	// instantiate a new html form
 	$loginform = new htmlform();
 	
@@ -37,19 +41,28 @@
 			//redirect to joblist page
 			header( "Location: joblist.php" ); die;
 		} else {
-			echo "<h3 class='invalidlogin'>Invalid Login. Please <a href='resetpassword.php'>click</a> to reset password</h3>";
+			$loginform->loginformat();
+			echo "<h3><b>Invalid Login</b>. Please <a href='resetpassword.php'>click</a> to reset password</h3>";
 			$loginform->loginForm();
 		}
 		
 	// if not, present the login page as new
 	} else {
 		
-		session_destroy();
+		if (isset($sessvars['user_id'])) { 
+			session_destroy();
+		}
 		
+	
+		// page content goes here
+		$loginform->loginformat();
 		echo "<h3>Login to TransOffice</h3>";
 		$loginform->loginForm();
+		
+		// close out page with ending html tags
+		$loginpage->endPage();
+		
 	}	
 	
-	echo "</div></body></html>";
 
 ?>

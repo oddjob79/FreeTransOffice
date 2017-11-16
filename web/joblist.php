@@ -1,6 +1,8 @@
 <?php
 
-	include('../obj/basepage.inc');
+	require_once('../obj/basepage.inc');
 	
-	echo "</div></body></html>";
+	// instantiate the base page content and display header and menu items
+	$joblistpage = new BasePage();
+	$joblistpage -> Display();
 ?>

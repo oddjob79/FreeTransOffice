@@ -2,6 +2,9 @@
 
 	require_once('../obj/htmlform.inc');
 	
+	$newuserpage = new BasePage();
+	$newuserpage -> Display();
+	
 	$newuserform = new HtmlForm();
 	
 	if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -27,7 +30,9 @@
 		
 	} else {
 		// if no posted information available
+		$formheader = 'New User';
+		$newuserform->formFormat($formheader);
 		$newuserform->newUserForm();
 	}
-	echo "</div></body></html>";	
+	
 ?>

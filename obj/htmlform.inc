@@ -1,21 +1,36 @@
 <?php
 
-include('basepage.inc');
+require_once('basepage.inc');
 
 class HtmlForm extends BasePage {
 	
 	public $postedname;
 	public $postedvals; 
+
+	public function loginFormat() {
+		echo "<div class='col-1'></div>";
+		echo "<div class='col-6'>";
+		echo "<div class='p-3 mb-2 bg-light text-dark'>";
+	}
+	
+	public function formFormat($formheader) {
+		echo "<div class='col-8'>";
+		echo "<div class='row'>\n<div class='col'>";
+			echo "<h3 class='p-3 mb-2 bg-light text-dark'>".$formheader."</h3>";
+		echo "</div></div>";
+		echo "<div class='p-3 mb-2 bg-light text-dark'>";
+	}
 	
 	public function loginForm() {
 		echo "<form method='post' action='login.php'>";
-		echo "<p>Username: <input type='text' name='username' size='100' maxlength='30' /></p>";
-		echo "<p>Password: <input type='text' name='password' size='100' maxlength='30' /></p></br>";
-		echo "</br><input type='submit' value='Login' />";
-		echo "</form>";
-		?>
-		<input type="button" value="New User" onclick="window.location.href='newuser.php'">
-		<?php
+		echo "<div class='form-group'>";
+		echo "<p>Username: <input class='form-control' placeholder='Enter Username' type='text' name='username' size='100' maxlength='30' /></p>";
+		echo "<p>Password: <input class='form-control' placeholder='Enter Password' type='text' name='password' size='100' maxlength='30' /></p></br>";
+		echo "<input class='btn btn-outline-primary' type='submit' value='Login' />";
+		?> <button type="button" class="btn btn-outline-primary" onclick="window.location.href='newuser.php'" 
+			data-toggle="tooltip" data-placement="bottom" title="Click here to register for TransOffice">New User</button><?php
+		echo "</div></form>";
+		echo "</div></div>";
 	}
 	
 	public function newUserForm() {
@@ -26,20 +41,30 @@ class HtmlForm extends BasePage {
 		$securityqs = $sqsql->callReadSp('sys_securityquestions_read', $spparams);
 		
 		echo "<form method='post' action='newuser.php'>";
-		echo "<p>First Name: <input type='text' name='firstname' size='80' maxlength='50' /></p>";
-		echo "<p>Last Name: <input type='text' name='lastname' size='80' maxlength='80' /></p>";
-		echo "<p>Username: <input type='text' name='username' size='30' maxlength='30' /></p>";
-		echo "<p>Password: <input type='text' name='password' size='30' maxlength='30' />";
-		echo " Confirm Password: <input type='text' name='confirmpw' size='30' maxlength='30' /></p>";
-		echo "<p>Email Address: <input type='text' name='email' size='120' maxlength='120' /></p>";
-		echo "<p>Security Question: <select name='secquestion'>";
-		foreach ($securityqs as $secquestion) {
-			echo "<option value=".$secquestion['security_question_id'].">".$secquestion['security_question']."</option>";
-		} 
-		echo "</select></p>";
-		echo "<p>Security Answer: <input type='text' name='secanswer' size='120' maxlength='120' /></p>";
-		echo "</br><input type='submit' value='Save' />";
-		echo "</form>";
+		echo "<div class='form-group'>";
+		echo "<div class='row'>\n<div class='col'>";
+			echo "<p>First Name: <input class='form-control' placeholder='Enter your first name' type='text' name='firstname' size='80' maxlength='50' /></p>";
+		echo "</div><div class='col'>";
+			echo "<p>Last Name: <input class='form-control' placeholder='Enter your last name' type='text' name='lastname' size='80' maxlength='80' /></p>";
+		echo "</div></div><div class='row'>\n<div class='col'>";
+			echo "<p>Email Address: <input class='form-control' placeholder='Enter your email address' type='text' name='email' size='120' maxlength='120' /></p>";
+		echo "</div><div class='col'>";
+			echo "<p>Username: <input class='form-control' placeholder='Enter your new username' type='text' name='username' size='30' maxlength='30' /></p>";
+		echo "</div></div><div class='row'>\n<div class='col'>";
+			echo "<p>Password: <input class='form-control' placeholder='Enter a secure password' type='text' name='password' size='30' maxlength='30' />";
+		echo "</div><div class='col'>";
+			echo " Confirm Password: <input class='form-control' placeholder='Confirm your password' type='text' name='confirmpw' size='30' maxlength='30' /></p>";
+		echo "</div></div><div class='row'>\n<div class='col'>";
+			echo "<p>Security Question: <select class='form-control' name='secquestion'>";
+				foreach ($securityqs as $secquestion) {
+					echo "<option value=".$secquestion['security_question_id'].">".$secquestion['security_question']."</option>";
+				} 
+			echo "</select></p>";
+		echo "</div></div><div class='row'>\n<div class='col'>";			
+			echo "<p>Security Answer: <input class='form-control' placeholder='Enter your answer' type='text' name='secanswer' size='120' maxlength='120' /></p>";
+		echo "</div></div><div class='row'>\n<div class='col'>";		
+			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' />";
+		echo "</div></div></div></form>";
 	}	
 	
 	public function getPostedValues(&$inputnames) {
