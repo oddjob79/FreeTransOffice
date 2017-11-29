@@ -59,7 +59,9 @@
 				<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script> 
 				<script src="../inc/bootstrap/js/bootstrap-datepicker.min.js"></script>
-
+				<!-- custom javascript library -->
+				<script src="../inc/transoffice.js"></script>
+				
 				<!-- ensures sclaing to mobile devices -->
 				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 				
@@ -72,7 +74,6 @@
 			echo '<div class="row">';
 				echo '<div class="col-2">';
 					echo '<h2><a style="text-decoration:none;color:white;" href="../web/login.php">TransOffice</a></h2>';
-//					echo '<h2><a class="pl-0 pb-0 mb-0 bg-info text-white" style="text-decoration:none;color:white;" href="../web/login.php"><b>TransOffice</b></a></h2>';
 				echo '</div><div class="col"></div>';
 				echo '<div class="col-1">';
 					echo $this->version;
@@ -186,7 +187,6 @@
 				$this->redirect('../web/login.php');
 			}
 		}
-		
 		
 		public function display()
 		{

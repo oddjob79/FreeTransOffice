@@ -5,7 +5,7 @@
 	
 	// instantiate the base page content and display header and menu items	
 	$newclientpage = new BasePage();
-	$newclientpage -> Display();
+	$newclientpage -> Display($header);
 	$newclientpage -> checkLoggedIn();
 	
 	// instantiate a new html form
@@ -66,6 +66,8 @@
 			echo "There was a problem somewhere";
 		}
 		$sql = ""; $out = ""; $newrecord = ""; $postedvalues = "";
+		
+		$newclientpage -> endPage();
 
 		
 	} else {
@@ -73,6 +75,7 @@
 		$formheader = 'New Client';
 		$newclientform->formFormat($formheader);
 		$newclientform->newClientForm();
+		$newclientpage -> endPage();
 	}
 	
 ?>

@@ -3,8 +3,7 @@
 	require_once('../database/dbconnect.inc');
 	require_once('../obj/htmlform.inc');
 	require_once('../obj/basepage.inc');
-	
-	
+
 	// instantiate the base page content and display header and menu items
 	$loginpage = new BasePage();
 	$loginpage -> Display();
