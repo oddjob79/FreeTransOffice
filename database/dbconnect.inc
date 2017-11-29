@@ -10,7 +10,7 @@ class Dbconnect {
 		// send config file to $config array
 		$config = parse_ini_file('/home/rmturner/config/toconfig.ini');
 		if (is_null($config)) {
-			print 'Unable to connect to the databse - error reading config file</br>';
+			print 'Unable to connect to the database - error reading config file</br>';
 		} else {
 			$host = $config['server'];
 			$dbname = $config['dbname'];
@@ -37,7 +37,7 @@ class Dbconnect {
 		foreach($params as $param) {
 			$qmstr .= "?, ";
 		}
-		// remove last ", " from $qmstr (if $qmstr has a value
+		// remove last ", " from $qmstr (if $qmstr has a value)
 		if (strlen($qmstr) > 0) { $qmstr = substr($qmstr, 0, -2); }
 
 		// build prepare statement based on existence of OUT parameters in SP
@@ -47,6 +47,9 @@ class Dbconnect {
 			$prepstr = "CALL ".$spname."(".$qmstr.")";
 		}
 		
+		// debugging
+		// echo "prepstr ".$prepstr."<br>";
+
 		try {
 		
 			// connect to db
@@ -64,6 +67,9 @@ class Dbconnect {
 			
 		return $sql;
 	}
+
+// currently read & insert sp calls are identical and should be merged!!!!!
+
 	
 	// Generic function which should be usable for all basic read sp's
 	// pass in procedure name and all parameters in array
@@ -75,19 +81,31 @@ class Dbconnect {
 		
 		// write results to $row array
 		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
-		return $row;
+		if (!$row) {
+			print_r($sql->errorInfo());
+		} else {
+			return $row;
+		}
 	}
 	
 	// Generic function which should be usable for all basic insert sp's
 	// pass in procedure name and all parameters in array
 	public function callInsertSp($spname, &$outparams, &$params) {
 		
-		// call execution method
-		$sql = $this->execStatement($spname, $outparams, $params);
+		try {
+			// call execution method
+			$sql = $this->execStatement($spname, $outparams, $params);
+		} catch (PDOException $e) {
+			echo "SQL EXECUTION ERROR: ".$e."<br>";
+		}
 		
 		// write results to $row array
 		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
-		return $row;
+		if (!$row) {
+			print_r($sql->errorInfo());
+		} else {
+			return $row;
+		}
 	}
 	
 	

@@ -1,11 +1,12 @@
 <?php
 
-	require_once('../obj/htmlform.inc');
+	require_once('../obj/userform.inc');
+	require_once('../obj/basepage.inc');
 	
 	$newuserpage = new BasePage();
 	$newuserpage -> Display();
 	
-	$newuserform = new HtmlForm();
+	$newuserform = new UserForm();
 	
 	if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		
@@ -14,7 +15,7 @@
 		// get the values that were posted on the form
 		$postedvalues = $newuserform->getPostedValues($newuser);
 		$postedvalues['password'] = password_hash($postedvalues['password'], PASSWORD_BCRYPT);
-		$postedvalues['secquestion'] = (int)$postedvalues['secquestion'];
+//		$postedvalues['secquestion'] = (int)$postedvalues['secquestion'];
 		$postedvalues['secanswer'] = password_hash($postedvalues['secanswer'], PASSWORD_BCRYPT);
 		
 		$nusql = new Dbconnect();

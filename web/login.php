@@ -2,6 +2,7 @@
 
 	require_once('../database/dbconnect.inc');
 	require_once('../obj/htmlform.inc');
+	require_once('../obj/basepage.inc');
 	
 	
 	// instantiate the base page content and display header and menu items
@@ -38,8 +39,11 @@
 			$session = new Session();
 			$session->setSessionVars($user_id, $domain_id);
 			
-			//redirect to joblist page
-			header( "Location: joblist.php" ); die;
+			//redirect to joblist page - additional js added if headers have already been loaded
+			$loginpage->redirect('../web/joblist.php');
+//			header( "Location: joblist.php" ); die;
+			
+			
 		} else {
 			$loginform->loginformat();
 			echo "<h3><b>Invalid Login</b>. Please <a href='resetpassword.php'>click</a> to reset password</h3>";

@@ -1,8 +1,6 @@
 <?php
 
-require_once('basepage.inc');
-
-class HtmlForm extends BasePage {
+class HtmlForm {
 	
 	public $postedname;
 	public $postedvals; 
@@ -32,52 +30,71 @@ class HtmlForm extends BasePage {
 		echo "</div></form>";
 		echo "</div></div>";
 	}
-	
-	public function newUserForm() {
-		
-		$sqsql = new Dbconnect();
-		$spparams = [];
-		$spparams = array("-1");
-		$securityqs = $sqsql->callReadSp('sys_securityquestions_read', $spparams);
-		
-		echo "<form method='post' action='newuser.php'>";
-		echo "<div class='form-group'>";
-		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>First Name: <input class='form-control' placeholder='Enter your first name' type='text' name='firstname' size='80' maxlength='50' /></p>";
-		echo "</div><div class='col'>";
-			echo "<p>Last Name: <input class='form-control' placeholder='Enter your last name' type='text' name='lastname' size='80' maxlength='80' /></p>";
-		echo "</div></div><div class='row'>\n<div class='col'>";
-			echo "<p>Email Address: <input class='form-control' placeholder='Enter your email address' type='text' name='email' size='120' maxlength='120' /></p>";
-		echo "</div><div class='col'>";
-			echo "<p>Username: <input class='form-control' placeholder='Enter your new username' type='text' name='username' size='30' maxlength='30' /></p>";
-		echo "</div></div><div class='row'>\n<div class='col'>";
-			echo "<p>Password: <input class='form-control' placeholder='Enter a secure password' type='text' name='password' size='30' maxlength='30' />";
-		echo "</div><div class='col'>";
-			echo " Confirm Password: <input class='form-control' placeholder='Confirm your password' type='text' name='confirmpw' size='30' maxlength='30' /></p>";
-		echo "</div></div><div class='row'>\n<div class='col'>";
-			echo "<p>Security Question: <select class='form-control' name='secquestion'>";
-				foreach ($securityqs as $secquestion) {
-					echo "<option value=".$secquestion['security_question_id'].">".$secquestion['security_question']."</option>";
-				} 
-			echo "</select></p>";
-		echo "</div></div><div class='row'>\n<div class='col'>";			
-			echo "<p>Security Answer: <input class='form-control' placeholder='Enter your answer' type='text' name='secanswer' size='120' maxlength='120' /></p>";
-		echo "</div></div><div class='row'>\n<div class='col'>";		
-			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' />";
-		echo "</div></div></div></form>";
-	}	
-	
+
+// pass in array containing all field names from form and passes back variables of the same name set to either integers or strings, depending on data type	
 	public function getPostedValues(&$inputnames) {
 		$postedvals = array();
 		foreach ($inputnames as $postedname) {
-			if (isset($_POST[$postedname])){
+			// check if the field was set in the form, and assign appropriate value to the key-value pair, otherwise set the fieldname key to null
+			if (!empty($_POST[$postedname])){
+				// check if the value of the field is an integer. If true, set data type as int
+				if (!empty(filter_input(INPUT_POST, $postedname, FILTER_VALIDATE_INT))) {
+					$postedvals[$postedname] = (int)$_POST[$postedname];
+				} else {
 				$postedvals[$postedname] = $_POST[$postedname];
+				}
+			} else {
+				$postedvals[$postedname] = NULL;
 			}
+//			debugging for data type
+//			echo $postedname. " - ". $postedvals[$postedname] . ' datatype = ' . gettype($postedvals[$postedname])."<br>";
 		}
 		return($postedvals);
 	}
 	
-	
+	protected function generate_timezone_list()
+	{
+		static $regions = array(
+			DateTimeZone::AFRICA,
+			DateTimeZone::AMERICA,
+			DateTimeZone::ANTARCTICA,
+			DateTimeZone::ASIA,
+			DateTimeZone::ATLANTIC,
+			DateTimeZone::AUSTRALIA,
+			DateTimeZone::EUROPE,
+			DateTimeZone::INDIAN,
+			DateTimeZone::PACIFIC,
+		);
+
+		$timezones = array();
+		foreach( $regions as $region )
+		{
+			$timezones = array_merge( $timezones, DateTimeZone::listIdentifiers( $region ) );
+		}
+
+		$timezone_offsets = array();
+		foreach( $timezones as $timezone )
+		{
+			$tz = new DateTimeZone($timezone);
+			$timezone_offsets[$timezone] = $tz->getOffset(new DateTime);
+		}
+
+		// sort timezone by offset
+		asort($timezone_offsets);
+
+		$timezone_list = array();
+		foreach( $timezone_offsets as $timezone => $offset )
+		{
+			$offset_prefix = $offset < 0 ? '-' : '+';
+			$offset_formatted = gmdate( 'H:i', abs($offset) );
+
+			$pretty_offset = "UTC${offset_prefix}${offset_formatted}";
+
+			$timezone_list[$timezone] = "(${pretty_offset}) $timezone";
+		}
+
+		return $timezone_list;
+	}	
 	
 }
 
