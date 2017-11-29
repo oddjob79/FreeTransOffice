@@ -38,6 +38,7 @@
 		echo "</tr>";
 	}
 	echo "</table>";
+	echo "<a href='../web/newclient.php' class='btn btn-primary' role='button'>New Client</a>";
 	$clientlistpage -> endPage();
 ?>
 	

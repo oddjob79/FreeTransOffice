@@ -5,7 +5,7 @@
 	
 	// instantiate the base page content and display header and menu items	
 	$newclientpage = new BasePage();
-	$newclientpage -> Display($header);
+	$newclientpage -> Display();
 	$newclientpage -> checkLoggedIn();
 	
 	// instantiate a new html form
