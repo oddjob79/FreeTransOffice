@@ -142,26 +142,24 @@
 			// instatiate new Session object & add user_id & domain_id to $sessvars array
 			$session = new Session();
 			$sessvars = $session->getSessionVars();
-			global $userid;
-			$userid = $sessvars['user_id'];
-			global $domainid;
-			$domainid = $sessvars['domain_id'];
-			
-			$svparams = array($sessvars['user_id']);
 
 			//instantiate new Dbconnect object
-			$svsql = new Dbconnect();
-			// if session variables are set, read user info using the user_id from the session 
-			if (isset($sessvars['user_id'])) {
-				$userdetails = $svsql->callReadSp('sys_users_read', $svparams);
-			}
+			$sql = new Dbconnect();
 			
-			if (isset($sessvars['user_id'])) {
-//				while ($userarray = mysqli_fetch_array($userdetails)) {
-				$userarray = $svsql->returnFirstRow($userdetails);
-				echo "<tr><td>User: ".$userarray['user_name']."</td></tr>";
-//				}
+			if (isset($_SESSION['user_id']) and substr($_SERVER['PHP_SELF'], -10) != 'logout.php') {
+				$svparams = array($_SESSION['user_id']);
+				$userdetails = $sql->callReadSp('sys_users_read', $svparams);
+				$userarray = $sql->returnFirstRow($userdetails);
+				
+				echo "<div class='dropdown'>";
+				echo "<button class='btn btn-info dropdown toggle' type='button' id='usermenubutton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
+				echo "User: ".$userarray['user_name']."</button>";
+				echo "<div class='dropdown-menu' aria-labelledby='usermenubutton'>";
+				echo "<a class='dropdown-item' href='../web/usersettings.php'>User Settings</a>";
+				echo "<a class='dropdown-item' href='../web/logout.php'>Logout</a>";
+				echo "</div></div>";
 			}
+			$sql = ''; $svparams=''; $userdetails='';$userarray='';
 		}
 		
 		protected function displayVersion() {
@@ -183,6 +181,12 @@
 				}    
 			}
 
+		public function checkLoggedIn() {
+			if (empty($_SESSION['user_id'])) {
+				$this->redirect('../web/login.php');
+			}
+		}
+		
 		
 		public function display()
 		{

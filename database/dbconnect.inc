@@ -78,14 +78,13 @@ class Dbconnect {
 		
 		// call execution method
 		$sql = $this->execStatement($spname, $outparams, $params);
+
+		// debug
+		// print_r($sql->errorInfo());
 		
 		// write results to $row array
 		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
-		if (!$row) {
-			print_r($sql->errorInfo());
-		} else {
-			return $row;
-		}
+		return $row;
 	}
 	
 	// Generic function which should be usable for all basic insert sp's
@@ -98,14 +97,13 @@ class Dbconnect {
 		} catch (PDOException $e) {
 			echo "SQL EXECUTION ERROR: ".$e."<br>";
 		}
+
+		// debug
+		// print_r($sql->errorInfo());
 		
 		// write results to $row array
 		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
-		if (!$row) {
-			print_r($sql->errorInfo());
-		} else {
-			return $row;
-		}
+		return $row;
 	}
 	
 	

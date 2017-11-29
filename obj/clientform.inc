@@ -1,7 +1,6 @@
 <?php
 
 require_once('htmlform.inc');
-require_once('session.inc');
 
 class ClientForm extends HtmlForm {
 	
@@ -15,12 +14,8 @@ class ClientForm extends HtmlForm {
 		$statuses = $sqsql->callReadSp('sys_statuses_read', $spparams);
 		$currencies = $sqsql->callReadSp('sys_currencies_read', $spparams);
 		
-		// instantiate a new Session Class to retrieve the current domain id
-		$sessionvars = new Session();
-		$sessvars = $sessionvars->getSessionVars();
-		
-		// set array to global -1 and domain_id to retrieve all records for this domain only
-		$domparams = array("-1", $sessvars['domain_id']);
+		// set array to "select all" -1 and domain_id to retrieve all records for this domain only
+		$domparams = array("-1", $_SESSION['domain_id']);
 		$packages = $sqsql->callReadSp('sys_packages_read', $domparams);
 		$reports = $sqsql->callReadSp('sys_report_config_read', $domparams);
 		
