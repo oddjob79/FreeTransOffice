@@ -4,7 +4,27 @@ require_once('htmlform.inc');
 
 class ClientForm extends HtmlForm {
 	
-		public function newClientForm() {
+	private function setFormHeader(&$clientdata) {
+		if (!empty($clientdata['client_name'])) {
+			$formheader = 'Client - '.$clientdata['client_name']; 
+		} else {
+			$formheader = 'New Client';
+		}
+		return $formheader;
+	}
+	
+	public function showClientForm() {
+		
+		// retrieve the client id from the URL and pass to $getvalues
+		$getnames = array('clientid');
+		$getvalues = $this -> getGetValues($getnames);
+
+		// use client id to retrieve all the client details
+		$clientdata = $this -> getClientDetails($getvalues);
+		
+		// form header and format are set
+		$formheader = $this -> setFormHeader($clientdata);
+		$this->formFormat($formheader);
 		
 		$sqsql = new Dbconnect();
 		
@@ -22,13 +42,30 @@ class ClientForm extends HtmlForm {
 		// gather timezone array for use in timezone select list
 		$timezones = $this->generate_timezone_list();
 		
-/*	----------- BUILD FORM ---------- */
-		echo "<form method='post' action='newclient.php'>";
+		// contacts yet to be built
+		$contacts = array();
+		
+		$this -> clientFormBuilder(
+			$clientdata,
+			$countries,
+			$statuses,
+			$currencies,
+			$packages,
+			$contacts,
+			$reports,
+			$timezones
+		);
+		
+	}
+
+	private function clientFormBuilder(&$clientdata, &$countries, &$statuses, &$currencies, &$packages, &$contacts, &$reports, &$timezones) {
+	
+		echo "<form method='post' action='clientdetails.php'>";
 		echo "<div class='form-group'>";
 		
 		// client name
 		echo "<div class='row'>\n<div class='col-6'>";
-			echo "<p>Client Name: <input class='form-control' placeholder='Enter the client name' type='text' name='clientname' size='80' maxlength='100' /></p>";
+			echo "<p>Client Name: <input class='form-control' placeholder='Enter the client name' type='text' name='clientname' value='".$clientdata['client_name']."' size='80' maxlength='100' /></p>";
 		echo "</div></div>";
 		echo "<hr>";
 		
@@ -39,27 +76,32 @@ class ClientForm extends HtmlForm {
 		// Country select
 		echo "<div class='row'>\n<div class='col-4'>";
 			echo "<p>Country: <select class='form-control' name='country'>";
+			echo "<option value=''></option>";
 				foreach ($countries as $country) {
-					echo "<option value=".$country['country_id'].">".$country['country_name']."</option>";
+					if ($country['country_id'] == $clientdata['country_id']) {
+						echo "<option value=".$country['country_id']." selected='selected'>".$country['country_name']."</option>";
+					} else {
+						echo "<option value=".$country['country_id'].">".$country['country_name']."</option>";
+					}
 				} 
 			echo "</select></p>";
 		echo "</div></div>";
 
 		// address
 		echo "<div class='row'>\n<div class='col-6'>";			
-			echo "<p>Address: <input class='form-control' placeholder='Enter client address' type='text' name='address1' size='80' maxlength='80' />";
+			echo "<p>Address: <input class='form-control' placeholder='Enter client address' type='text' name='address1' value='".$clientdata['address_1']."' size='80' maxlength='80' />";
 		echo "</div></div>";
 		echo "<div class='row'>\n<div class='col-6'>";
-			echo "<input class='form-control' placeholder='Enter client address' type='text' name='address2' size='80' maxlength='80' /></p>";
+			echo "<input class='form-control' placeholder='Enter client address' type='text' name='address2' value='".$clientdata['address_2']."' size='80' maxlength='80' /></p>";
 		echo "</div></div>";
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>City: <input class='form-control' placeholder='Enter client city' type='text' name='city' maxlength='30' /></p>";
+			echo "<p>City: <input class='form-control' placeholder='Enter client city' type='text' name='city' value='".$clientdata['city']."' maxlength='30' /></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>State / Region: <input class='form-control' placeholder='Enter state / region' type='text' name='region' maxlength='30' /></p>";
+			echo "<p>State / Region: <input class='form-control' placeholder='Enter state / region' type='text' name='region' value='".$clientdata['region']."' maxlength='30' /></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Zip / Postal Code: <input class='form-control' placeholder='Postcode' type='text' name='postcode' maxlength='10' /></p>";
+			echo "<p>Zip / Postal Code: <input class='form-control' placeholder='Postcode' type='text' name='postcode' value='".$clientdata['postalcode']."' maxlength='10' /></p>";
 		echo "</div></div></div>";
 		echo "<hr>";
 
@@ -71,7 +113,11 @@ class ClientForm extends HtmlForm {
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Package: <select class='form-control' name='package'>";
 				foreach ($packages as $package) {
-					echo "<option value=".$package['package_id'].">".$package['package_name']."</option>";
+					if ($package['package_id'] == $clientdata['package_id']) {
+						echo "<option value=".$package['package_id']." selected='selected'>".$package['package_name']."</option>";
+					} else {
+						echo "<option value=".$package['package_id'].">".$package['package_name']."</option>";
+					}
 				} 
 			echo "</select></p>";
 		echo "</div>";
@@ -79,7 +125,11 @@ class ClientForm extends HtmlForm {
 			echo "<p>Status: <select class='form-control' name='status'>";
 				// limit so we only see Active, Inactive & Dormant
 				foreach ($statuses as $status) {
-					echo "<option value=".$status['status_id'].">".$status['status_name']."</option>";
+					if ($status['status_id'] == $clientdata['status_id']) {
+						echo "<option value=".$status['status_id']." selected='selected'>".$status['status_name']."</option>";						
+					} else {
+						echo "<option value=".$status['status_id'].">".$status['status_name']."</option>";
+					}
 				}
 			echo "</select></p>";
 		echo "</div></div>";
@@ -88,35 +138,43 @@ class ClientForm extends HtmlForm {
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Currency: <select class='form-control' name='currency'>";
 				foreach ($currencies as $currency) {
-					echo "<option value=".$currency['currency_id'].">".$currency['currency_code']." - ".$currency['currency_name']."</option>";
+					if ($currency['currency_id'] == $clientdata['currency_id']) {
+						echo "<option value=".$currency['currency_id']." selected='selected'>".$currency['currency_code']." - ".$currency['currency_name']."</option>";
+					} else {
+						echo "<option value=".$currency['currency_id'].">".$currency['currency_code']." - ".$currency['currency_name']."</option>";
+					}
 				}
 			echo "</select></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>TimeZone: <select class='form-control' name='timezone'>";
-				foreach ($timezones as $timezone) {
-					echo "<option value=".$timezone.">".$timezone."</option>";
+			echo "<p>TimeZone: 2 <select class='form-control' name='timezone'>";
+				foreach ($timezones as $key => $value) {
+					if ($key == $clientdata['timezone']) {
+						echo "<option value=".$key." selected='selected'>".$value."</option>";
+					} else {
+						echo "<option value=".$key.">".$value."</option>";
+					}
 				} 
 			echo "</select></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Last Completed Job: <input class='form-control' placeholder='Last Completed Job' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='lastjob' maxlength='10' /></p>";
+			echo "<p>Last Completed Job: <input class='form-control' placeholder='Last Completed Job' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='lastjob' value='".substr($clientdata['last_completed_job'], 0, 10)."' maxlength='10' /></p>";
 		echo "</div></div>";
 
 		// Notes
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>Notes: <textarea class='form-control' name='clientnotes' rows='5' cols='30'>Enter client notes here... </textarea></p>";
+			echo "<p>Notes: <textarea class='form-control' name='clientnotes' rows='5' cols='30'>".$clientdata['notes']."</textarea></p>";
 		echo "</div></div>";
 		
 		//UDFs - Need to be updated so lables reflect what is set in the settings per domain
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>User-Defined 1: <input class='form-control' placeholder='User-defined 1' type='text' name='clientudf1' maxlength='50' /></p>";
+			echo "<p>User-Defined 1: <input class='form-control' placeholder='User-defined 1' type='text' name='clientudf1' value='".$clientdata['user_defined_1']."' maxlength='50' /></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>User-Defined 2: <input class='form-control' placeholder='User-defined 2' type='text' name='clientudf3' maxlength='50' /></p>";
+			echo "<p>User-Defined 2: <input class='form-control' placeholder='User-defined 2' type='text' name='clientudf2'  value='".$clientdata['user_defined_2']."'maxlength='50' /></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>User-Defined 3: <input class='form-control' placeholder='User-defined 3' type='text' name='clientudf3' maxlength='50' /></p>";
+			echo "<p>User-Defined 3: <input class='form-control' placeholder='User-defined 3' type='text' name='clientudf3'  value='".$clientdata['user_defined_3']."'maxlength='50' /></p>";
 		echo "</div></div></div>";
 		echo "<hr>";
 		
@@ -133,39 +191,66 @@ class ClientForm extends HtmlForm {
 			echo "</select></p>";
 		echo "</div>"; 
 		echo "<div class='col'>";
-			echo "<br><input class='form-control' placeholder='Enter Invoice Email' type='text' name='invtoemail' size='80' maxlength='80' />";
+			echo "<br><input class='form-control' placeholder='Enter Invoice Email' type='text' name='invtoemail' value='".$clientdata['invoice_to_email']."' size='80' maxlength='80' />";
 		echo "</div></div>";
 		
 		// Invoice Notes
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>Invoice Notes: <textarea class='form-control' name='clientinvnotes' rows='5' cols='30'>Enter client invoice notes here... </textarea></p>";
+			echo "<p>Invoice Notes: <textarea class='form-control' name='clientinvnotes' rows='5' cols='30'>".$clientdata['invoice_notes']."</textarea></p>";
 		echo "</div></div>";
 		
 		// Invoice Report & Last Invoice Date
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Invoice Report: <select class='form-control' name='invoicereport'>";
 				foreach ($reports as $report) {
-					echo "<option value=".$report['report_id'].">".$report['report_name']."</option>";
+					if ($report['report_id'] == $clientdata['inv_report_id']) {
+						echo "<option value=".$report['report_id']." selected='selected'>".$report['report_name']."</option>";						
+					} else {
+						echo "<option value=".$report['report_id'].">".$report['report_name']."</option>";
+					}
 				}
 			echo "</select></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Last Completed Invoice: <input class='form-control' placeholder='Last Completed Invoice' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='lastinv' maxlength='10' /></p>";
+			echo "<p>Last Completed Invoice: <input class='form-control' placeholder='Last Completed Invoice' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='lastinv' value='".substr($clientdata['last_invoice'], 0, 10)."' maxlength='10' /></p>";
 		echo "</div></div>";
 
 		// Invoice by & Invoice paid day
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>Invoice by (day of month): <input class='form-control' placeholder='Invoice by date' type='text' name='invoiceby' maxlength='10' /></p>";		
+			echo "<p>Invoice by (day of month): <input class='form-control' placeholder='Invoice by date' type='text' name='invoiceby' value='".$clientdata['invoice_by']."' maxlength='10' /></p>";		
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Invoice Paid by (day of month): <input class='form-control' placeholder='Invoice paid date' type='text' name='invoicepaid' maxlength='10' /></p>";
+			echo "<p>Invoice Paid by (day of month): <input class='form-control' placeholder='Invoice paid date' type='text' name='invoicepaid' value='".$clientdata['invoice_paid']."' maxlength='10' /></p>";
 		echo "</div></div></div>";
 		
+		// hidden clientid - determine if an update or insert is needed
+		echo "<input type='hidden' name='recordid' value='".$clientdata['client_id']."'>";
+		// hidden address_id - used for address updates
+		echo "<input type='hidden' name='addressid' value='".$clientdata['address_id']."'>";
+		
 		// submit
-		echo "<div class='row'>\n<div class='col'>";		
-			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' />";
+		echo "<div class='row'>\n<div class='col-auto mr-auto'>";		
+			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
+		echo "</div><div class='col-auto'>";
+			echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
+			echo " <a class='btn btn-outline-primary' href='../web/clientlist.php' role='button'>Cancel</a> ";
+			if (!empty($_GET['clientid'])) {
+				echo " <a class='btn btn-outline-primary' href='../web/clientdetails.php' role='button'>New</a> ";
+			}
 		echo "</div></div></div></form>";
 	}	
+
+	private function getClientDetails(&$getvalues) {
+		//instantiate sql connection
+		$sql = new Dbconnect();
+		// set parameters for sp (implode value(s) retrieved from _GET)
+		$spparams = array(implode($getvalues), $_SESSION['domain_id']);
+		// call client details sp
+		$clientdets = $sql->callReadSp('sp_client_details', $spparams);
+		// add results to array
+		$clientrow = $sql->returnFirstRow($clientdets);
+		return $clientrow;
+	}
 	
 }
 

@@ -106,7 +106,24 @@ class Dbconnect {
 		return $row;
 	}
 	
-	
+	// Generic function which should be usable for all basic insert sp's
+	// pass in procedure name and all parameters in array
+	public function callSP($spname, &$outparams, &$params) {
+		
+		try {
+			// call execution method
+			$sql = $this->execStatement($spname, $outparams, $params);
+		} catch (PDOException $e) {
+			echo "SQL EXECUTION ERROR: ".$e."<br>";
+		}
+
+		// debug
+		// print_r($sql->errorInfo());
+		
+		// write results to $row array
+		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
+		return $row;
+	}	
 	
 	public function returnFirstRow($row) {
 		$i=0;

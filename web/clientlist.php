@@ -1,7 +1,7 @@
 <?php
 
 	require_once('../obj/basepage.inc');
-	require_once('../database/dbconnect.inc');
+	//require_once('../database/dbconnect.inc');
 	require_once('../obj/tables.inc');
 	
 	// instantiate the base page content and display header and menu items
@@ -38,7 +38,8 @@
 		echo "</tr>";
 	}
 	echo "</table>";
-	echo "<a href='../web/newclient.php' class='btn btn-primary' role='button'>New Client</a>";
+	echo "<a href='../web/clientdetails.php' class='btn btn-primary' role='button'>New Client</a>";
+	
 	$clientlistpage -> endPage();
 ?>
 	

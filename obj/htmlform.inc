@@ -5,13 +5,7 @@ class HtmlForm {
 	public $postedname;
 	public $postedvals; 
 
-	public function loginFormat() {
-		echo "<div class='col-1'></div>";
-		echo "<div class='col-6'>";
-		echo "<div class='p-3 mb-2 bg-light text-dark'>";
-	}
-	
-	public function formFormat($formheader) {
+	protected function formFormat($formheader) {
 		echo "<div class='col-8'>";
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<h3 class='p-3 mb-2 bg-light text-dark'>".$formheader."</h3>";
@@ -19,20 +13,10 @@ class HtmlForm {
 		echo "<div class='p-3 mb-2 bg-light text-dark'>";
 	}
 	
-	public function loginForm() {
-		echo "<form method='post' action='login.php'>";
-		echo "<div class='form-group'>";
-		echo "<p>Username: <input class='form-control' placeholder='Enter Username' type='text' name='username' size='100' maxlength='30' /></p>";
-		echo "<p>Password: <input class='form-control' placeholder='Enter Password' type='text' name='password' size='100' maxlength='30' /></p></br>";
-		echo "<input class='btn btn-outline-primary' type='submit' value='Login' />";
-		?> <button type="button" class="btn btn-outline-primary" onclick="window.location.href='newuser.php'" 
-			data-toggle="tooltip" data-placement="bottom" title="Click here to register for TransOffice">New User</button><?php
-		echo "</div></form>";
-		echo "</div></div>";
-	}
-
-// pass in array containing all field names from form and passes back variables of the same name set to either integers or strings, depending on data type	
-	public function getPostedValues(&$inputnames) {
+	// update so only accessed by subclasses and make protected
+	// pass in array containing all field names from form and passes back variables of the same name set to either integers or strings, depending on data type
+	// $adddomain boolean chooses to add domain_id to beginning of array
+	public function getPostedValues(&$inputnames, $adddomain) {
 		$postedvals = array();
 		foreach ($inputnames as $postedname) {
 			// check if the field was set in the form, and assign appropriate value to the key-value pair, otherwise set the fieldname key to null
@@ -41,7 +25,7 @@ class HtmlForm {
 				if (!empty(filter_input(INPUT_POST, $postedname, FILTER_VALIDATE_INT))) {
 					$postedvals[$postedname] = (int)$_POST[$postedname];
 				} else {
-				$postedvals[$postedname] = $_POST[$postedname];
+				$postedvals[$postedname] = htmlspecialchars($_POST[$postedname]);
 				}
 			} else {
 				$postedvals[$postedname] = NULL;
@@ -49,9 +33,93 @@ class HtmlForm {
 //			debugging for data type
 //			echo $postedname. " - ". $postedvals[$postedname] . ' datatype = ' . gettype($postedvals[$postedname])."<br>";
 		}
+		if ($adddomain == true) {
+			array_unshift($postedvals, $_SESSION['domain_id']);
+		}
 		return($postedvals);
 	}
 	
+	protected function getGetValues(&$inputnames) {
+		$getvals = array();
+		foreach ($inputnames as $getname) {
+			if (!empty($_GET[$getname])) {
+				$getvals[$getname] = $_GET[$getname];
+			} else {
+				$getvals[$getname] = NULL;
+			}
+		}
+		return ($getvals);
+	}
+
+	public function doesRecordExist() {
+		if (!empty($_POST['recordid'])) {
+			$recordexists = true;
+		} else {
+			$recordexists = false;
+		}
+		return $recordexists;
+	}
+	
+// following has been taken out of clientdetails and needs to be worked on - NOT FINISHED
+	
+	
+	// stores all the posted address info in an array, together with the domain_id
+	public function getAddressPostedInfo() {
+		$addressarr = array("address1", "address2", "city", "state", "postcode", "region", "county", "country");
+		$postedvalues = $this->getPostedValues($addressarr, true);
+		//$postedvalues = $this->addDomainIdToArray($postedvalues);
+		return $postedvalues;
+	}
+
+	// if address_1, city & country not entered - return false
+	private function addressValidation($addrposted) {
+		if (!empty($addrposted['address1']) and !empty($addrposted['country']) and !empty($addrposted['city'])) {
+			return true;
+		}
+		echo "Incomplete Address Information - Address not added<br><br>";
+		return false;
+	}
+	
+	// inserts the address info and returns the newly added address_id
+	public function insertAddress($addrposted) {
+		
+		// don't go any further if required data not included
+		if ($this->addressValidation($addrposted) === false) {
+			return;
+		} else {
+		
+			// instantiate the dbconnect class, set the output variable array and call the insert sp
+			$sql = new Dbconnect();
+			$out = array("@u_address_id");
+			$newrecord = $sql->callInsertSp('sys_addresses_create', $out, $addrposted);
+			
+			// check if a new record was created. If so, return the newly created Address ID 
+			if (!empty($newrecord)) {
+				$addressrow = $sql->returnFirstRow($newrecord);
+				return $addressrow['u_address_id'];
+			} else {
+				echo "There was an address add problem.<br><br>";
+			}
+			// cleanup query variables
+			$sql=""; $out=""; $newrecord=""; $addrposted="";
+
+		}
+	}
+	
+	public function updateAddress($addrposted) {
+		// don't go any further if required data not included
+		if ($this->addressValidation($addrposted) === false) {
+			return;
+		} else {
+			$sql = new Dbconnect();
+			$out = array();
+			$updateaddr = $sql->callSP('sys_addresses_update', $out, $addrposted);
+			// cleanup query variables
+			$sql=""; $out=""; $updateaddr=""; $addrposted="";
+		}
+	}
+
+	// Generate list of TimeZones
 	protected function generate_timezone_list()
 	{
 		static $regions = array(

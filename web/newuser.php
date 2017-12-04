@@ -13,7 +13,7 @@
 		$newuser = array("firstname", "lastname", "username", "password", "email", "secquestion", "secanswer");
 		
 		// get the values that were posted on the form
-		$postedvalues = $newuserform->getPostedValues($newuser);
+		$postedvalues = $newuserform->getPostedValues($newuser, false);
 		$postedvalues['password'] = password_hash($postedvalues['password'], PASSWORD_BCRYPT);
 //		$postedvalues['secquestion'] = (int)$postedvalues['secquestion'];
 		$postedvalues['secanswer'] = password_hash($postedvalues['secanswer'], PASSWORD_BCRYPT);
