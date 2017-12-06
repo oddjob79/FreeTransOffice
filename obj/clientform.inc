@@ -4,40 +4,32 @@ require_once('htmlform.inc');
 
 class ClientForm extends HtmlForm {
 	
-	private function setFormHeader(&$clientdata) {
-		if (!empty($clientdata['client_name'])) {
-			$formheader = 'Client - '.$clientdata['client_name']; 
-		} else {
-			$formheader = 'New Client';
-		}
-		return $formheader;
-	}
-	
 	public function showClientForm() {
+
+		$sql = new Dbconnect();	
 		
 		// retrieve the client id from the URL and pass to $getvalues
 		$getnames = array('clientid');
 		$getvalues = $this -> getGetValues($getnames);
 
 		// use client id to retrieve all the client details
-		$clientdata = $this -> getClientDetails($getvalues);
+		$clientdata = $sql->getEntityDetails($getvalues, 'sp_client_details');
 		
 		// form header and format are set
-		$formheader = $this -> setFormHeader($clientdata);
+		$displaydata = $clientdata['client_name'];
+		$formheader = $this -> setFormHeader('Client', $displaydata);
 		$this->formFormat($formheader);
-		
-		$sqsql = new Dbconnect();
 		
 		// set spparam array to pass to the callReadSp procedure
 		$spparams = array("-1");
-		$countries = $sqsql->callReadSp('sys_countries_read', $spparams);
-		$statuses = $sqsql->callReadSp('sys_statuses_read', $spparams);
-		$currencies = $sqsql->callReadSp('sys_currencies_read', $spparams);
+		$countries = $sql->callReadSp('sys_countries_read', $spparams);
+		$statuses = $sql->callReadSp('sys_statuses_read', $spparams);
+		$currencies = $sql->callReadSp('sys_currencies_read', $spparams);
 		
 		// set array to "select all" -1 and domain_id to retrieve all records for this domain only
 		$domparams = array("-1", $_SESSION['domain_id']);
-		$packages = $sqsql->callReadSp('sys_packages_read', $domparams);
-		$reports = $sqsql->callReadSp('sys_report_config_read', $domparams);
+		$packages = $sql->callReadSp('sys_packages_read', $domparams);
+		$reports = $sql->callReadSp('sys_report_config_read', $domparams);
 		
 		// gather timezone array for use in timezone select list
 		$timezones = $this->generate_timezone_list();

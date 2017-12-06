@@ -2,6 +2,7 @@
 
 	require_once('../obj/basepage.inc');
 	require_once('../obj/clientform.inc');
+	require_once('../obj/addressdata.inc');
 	
 	// instantiate the base page content and display header and menu items	
 	$clientpage = new BasePage();
@@ -10,6 +11,7 @@
 
 	// instantiate a new html form
 	$clientform = new ClientForm();
+	$addressdata = new AddressData();
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
@@ -17,7 +19,7 @@
 		$recordexists = $clientform->doesRecordExist();
 		
 		// get posted values relating to the address
-		$addrposted = $clientform->getAddressPostedInfo();
+		$addrposted = $addressdata->getAddressPostedInfo();
 
 		// set array for client create sp & get the values that were posted on the form
 		$newclient = array("clientname", "othername", "address_id", "package", "status", "lastjob", "currency", "timezone", "invoiceto", 
@@ -27,7 +29,7 @@
 		// if new client - run address add logic and insert client info
 		if ($recordexists === false) {
 			// insert address info (if exists)
-			$newaddress_id = $clientform->insertAddress($addrposted);
+			$newaddress_id = $addressdata->insertAddress($addrposted);
 
 			// add the newly added address_id to the clientposted array
 			$clientposted['address_id'] = $newaddress_id;
@@ -39,7 +41,8 @@
 			
 			// check if a new record was created.		
 			if (!empty($newrecord)) {
-				$clientpage->redirect("../web/clientdetails.php?clientid=".$clientposted[0]);
+				$newrecrow = $sql->returnFirstRow($newrecord);
+				$clientpage->redirect("../web/clientdetails.php?clientid=".$newrecrow['u_client_id']);
 				echo "Client ".$clientposted[1]." created successfully";
 				// add redirect to clientdetails with clientid
 			} else {
@@ -56,10 +59,10 @@
 			if (!empty($_POST['addressid'])) {
 
 				array_unshift($addrposted, $_POST['addressid']);
-				$clientform->updateAddress($addrposted);
+				$addressdata->updateAddress($addrposted);
 			} else {
 				// insert address if a new one has been added
-				$newaddress_id = $clientform->insertAddress($addrposted);
+				$newaddress_id = $addressdata->insertAddress($addrposted);
 				
 				// add the newly added address_id to the clientposted array
 				$clientposted['address_id'] = $newaddress_id;				
@@ -75,32 +78,11 @@
 			$clientpage->redirect("../web/clientdetails.php?clientid=".$_POST['recordid']);
 			
 		}
-		
-		
-		
-
-		
-		
-
-
-		
-		// use new (or existing) address_id to add client record
-		
-
-
-// debugging
-//		echo "params - ". implode(',<br>', $clientposted)."<br>";
-
-
-		
-		// add showClientForm method
 		$clientpage -> endPage();
 
 	} else {	
-
-	$clientform -> showClientForm();
-	$clientpage -> endPage();
-	
+		$clientform -> showClientForm();
+		$clientpage -> endPage();
 	}
 
 ?>

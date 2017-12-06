@@ -106,7 +106,7 @@ class Dbconnect {
 		return $row;
 	}
 	
-	// Generic function which should be usable for all basic insert sp's
+	// Generic function which should be usable for all basic insert, update & read sp's
 	// pass in procedure name and all parameters in array
 	public function callSP($spname, &$outparams, &$params) {
 		
@@ -118,7 +118,7 @@ class Dbconnect {
 		}
 
 		// debug
-		// print_r($sql->errorInfo());
+//		 print_r($sql->errorInfo()); echo"<br>";
 		
 		// write results to $row array
 		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -134,6 +134,18 @@ class Dbconnect {
 			$i++;
 		}
 	}
+	
+	// move from here (Dbconnect probably)
+	public function getEntityDetails(&$getvalues, $spname) {
+		// set parameters for sp (implode value(s) retrieved from _GET)
+		$spparams = array(implode($getvalues), $_SESSION['domain_id']);
+		$out = array();
+		// call client details sp
+		$datadets = $this->callSP($spname, $out, $spparams);
+		// add results to array
+		$datarow = $this->returnFirstRow($datadets);
+		return $datarow;
+	}	
 	
 }
 	
