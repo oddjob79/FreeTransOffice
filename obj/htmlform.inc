@@ -31,7 +31,8 @@ class HtmlForm {
 			// had to change !empty to !isset to account for posted zeroes being treated as NULLS. May have to use strlen() > 0
 			// check if the field was set in the form, and assign appropriate value to the key-value pair, otherwise set the fieldname key to null
 //			if (!empty($_POST[$postedname])){
-			if (strlen($_POST[$postedname]) > 0) {
+//			if (strlen($_POST[$postedname]) > 0) {
+			if (strlen(empty($_POST[$postedname]) ? "" : $_POST[$postedname]) > 0) {	
 				// check if the value of the field is an integer. If true, set data type as int
 				if (strlen(filter_input(INPUT_POST, $postedname, FILTER_VALIDATE_INT)) > 0) {
 					$postedvals[$postedname] = (int)$_POST[$postedname];

@@ -6,13 +6,12 @@ class ClientForm extends HtmlForm {
 	
 	public function showClientForm() {
 
-		$sql = new Dbconnect();	
-		
 		// retrieve the client id from the URL and pass to $getvalues
 		$getnames = array('clientid');
 		$getvalues = $this -> getGetValues($getnames);
 
 		// use client id to retrieve all the client details
+		$sql = new Dbconnect();	
 		$clientdata = $sql->getEntityDetails($getvalues, 'sp_client_details');
 		
 		// form header and format are set
@@ -117,7 +116,7 @@ class ClientForm extends HtmlForm {
 			echo "<p>Status: <select class='form-control' name='status'>";
 				// limit so we only see Active, Inactive & Dormant
 				foreach ($statuses as $status) {
-					if ($status['status_id'] == $clientdata['status_id']) {
+					if ($status['status_id'] == $clientdata['client_status']) {
 						echo "<option value=".$status['status_id']." selected='selected'>".$status['status_name']."</option>";						
 					} else {
 						echo "<option value=".$status['status_id'].">".$status['status_name']."</option>";
