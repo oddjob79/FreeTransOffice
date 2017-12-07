@@ -118,7 +118,7 @@ class Dbconnect {
 		}
 
 		// debug
-//		 print_r($sql->errorInfo()); echo"<br>";
+//		print_r($sql->errorInfo()); echo"<br>";
 		
 		// write results to $row array
 		$row = $sql->fetchAll(PDO::FETCH_ASSOC);

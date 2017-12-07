@@ -56,7 +56,7 @@ class ContactForm extends HtmlForm {
 			echo "</select></p>";
 		echo "</div>";
 			echo "<div class='col'><br><label class='form-check-label'>";
-			echo "<input type='hidden' name='primarycontact' value='0' />";
+			echo "<input type='hidden' name='primarycontact' value='0' />";			
 			if ($contactdata['primary_contact'] == 1) {
 				echo "<input class='form-check-input' type='checkbox' name='primarycontact' value='1' checked='checked'>Primary Contact?</label>";
 			} else {
@@ -120,6 +120,8 @@ class ContactForm extends HtmlForm {
 		
 		// hidden contactid - determine if an update or insert is needed
 		echo "<input type='hidden' name='recordid' value='".$contactdata['contact_id']."'>";
+		// hidden clientid - determine if update or insert is needed for client_contacts table
+		echo "<input type='hidden' name='origclientid' value='".$contactdata['client_id']."'>";
 		
 		// submit
 		echo "<div class='row'>\n<div class='col-auto mr-auto'>";		

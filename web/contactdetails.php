@@ -48,15 +48,33 @@
 				echo "There was a problem creating the record.<br><br>";
 			}
 			$sql = ""; $out = ""; $newrecord = ""; $contactposted = ""; $clcnout = "";
+		} else {
+			// update contacts and client_contacts
+			// add hidden posted contact_id to the arrays of posted values
+			array_unshift($contactposted, $_POST['recordid']);
+			array_unshift($clientcontactposted, $_POST['recordid']);
+			
+			$sql = new Dbconnect();
+			$out = array();
+			$sql->callSP('sys_contacts_update', $out, $contactposted);
+						
+			// if clientid was passed into the form (i.e. clientid already existed) then call update, otherwise call insert
+			if (strlen($_POST['origclientid']) > 0) {
+				if (strlen($_POST['clientid']) > 0) {
+					$sql->callSP('sys_client_contacts_update', $out, $clientcontactposted);
+				} else {
+					// if there is no client_id and there used to be one, build new array using the contact_id and the original client_id
+					$clientcontacttodelete = array($_POST['recordid'], $_POST['origclientid']);
+					// delete the record
+					$sql->callSP('sys_client_contacts_delete', $out, $clientcontacttodelete);
+				}
+			} else {
+				$sql->callSP('sys_client_contacts_create', $out, $clientcontactposted);
+			}
+			
+			$contactpage->redirect("../web/contactdetails.php?contactid=".$_POST['recordid']);
 		}
-		
-		
-		// if existing record, update contact details, then either update or delete client_contact record
-		
 	} else {
 		$contactform->showContactForm();
 		$contactpage->endPage();
 	}
-		
-// next - complete insert / update logic and add logic to add client_contact record
-// also... test!!!!

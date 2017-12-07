@@ -11,9 +11,9 @@
 	$contacttable = new Tables();
 	
 	$sql = new Dbconnect();
-	$params = array($_SESSION['domain_id']);
+	$params = array("-1", $_SESSION['domain_id']);
 	$out = array();
-	$contactlist = $sql->callSP('sp_contact_list', $out, $params);
+	$contactlist = $sql->callSP('sp_contact_details', $out, $params);
 	
 	// set arrays to store all table headers and field names from database
 	$theaders = array('First Name', 'Last Name', 'Client', 'Email', 'Phone', 'Status', 'Primary Contact');
