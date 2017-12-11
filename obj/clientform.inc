@@ -11,11 +11,18 @@ class ClientForm extends HtmlForm {
 		$getvalues = $this -> getGetValues($getnames);
 
 		// use client id to retrieve all the client details
-		$sql = new Dbconnect();	
-		$clientdata = $sql->getEntityDetails($getvalues, 'sp_client_details');
+		$sql = new Dbconnect();
+		
+		if (!empty($getvalues['clientid'])) {
+			print_r($getvalues);
+			$clientdata = $sql->getEntityDetails($getvalues, 'sp_client_details');
+			$displaydata = $clientdata['client_name'];			
+		} else {
+			$displaydata = null;
+		}
 		
 		// form header and format are set
-		$displaydata = $clientdata['client_name'];
+//		$displaydata = $clientdata['client_name'];
 		$formheader = $this -> setFormHeader('Client', $displaydata);
 		$this->formFormat($formheader);
 		
@@ -56,7 +63,7 @@ class ClientForm extends HtmlForm {
 		
 		// client name
 		echo "<div class='row'>\n<div class='col-6'>";
-			echo "<p>Client Name: <input class='form-control' placeholder='Enter the client name' type='text' name='clientname' value='".$clientdata['client_name']."' size='80' maxlength='100' /></p>";
+			echo "<p>Client Name: <input class='form-control' placeholder='Enter the client name' type='text' name='clientname' value='".$clientdata['client_name']."' size='80' required = 'true' maxlength='100' /></p>";
 		echo "</div></div>";
 		echo "<hr>";
 		
@@ -127,7 +134,7 @@ class ClientForm extends HtmlForm {
 		
 		//currency, timezone & last completed job
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>Currency: <select class='form-control' name='currency'>";
+			echo "<p>Currency: <select class='form-control' name='currency' required = 'true'>";
 				foreach ($currencies as $currency) {
 					if ($currency['currency_id'] == $clientdata['currency_id']) {
 						echo "<option value=".$currency['currency_id']." selected='selected'>".$currency['currency_code']." - ".$currency['currency_name']."</option>";
@@ -138,7 +145,7 @@ class ClientForm extends HtmlForm {
 			echo "</select></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>TimeZone: 2 <select class='form-control' name='timezone'>";
+			echo "<p>TimeZone: 2 <select class='form-control' name='timezone' required = 'true'>";
 				foreach ($timezones as $key => $value) {
 					if ($key == $clientdata['timezone']) {
 						echo "<option value=".$key." selected='selected'>".$value."</option>";

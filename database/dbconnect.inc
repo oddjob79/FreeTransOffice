@@ -121,15 +121,15 @@ class Dbconnect {
 //		print_r($sql->errorInfo()); echo"<br>";
 		
 		// write results to $row array
-		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
-		return $row;
+		$result = $sql->fetchAll(PDO::FETCH_ASSOC);
+		return $result;
 	}	
 	
-	public function returnFirstRow($row) {
+	public function returnFirstRow($result) {
 		$i=0;
-		foreach ($row as $result) {
+		foreach ($result as $row) {
 			if ($i==0) {
-				return $result;
+				return $row;
 			}
 			$i++;
 		}

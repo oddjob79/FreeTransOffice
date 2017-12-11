@@ -33,21 +33,8 @@
 			$newrecord = $sql->callSP('sys_contacts_create', $out, $contactposted);
 			
 			// check if a new record was created. Redirect to details page with the id included		
-			if (!empty($newrecord)) {
-				// retrieve the newly created contact id
-				$newrecrow = $sql->returnFirstRow($newrecord);
-				// add the newly created contact id to the $clientcontactposted array
-				array_unshift($clientcontactposted, $newrecrow['u_contact_id']);
-				// insert the clientcontact record
-				$clcnout = array();
-				$sql->callSP('sys_client_contacts_create', $clcnout, $clientcontactposted);
-				// redirect to the newly created record
-				$contactpage->redirect("../web/contactdetails.php?contactid=".$newrecrow['u_contact_id']);
-//				echo "Contact ".$contactposted[1]." created successfully"; // need to change this so this displays in an "infobar" at top of newly loaded page
-			} else {
-				echo "There was a problem creating the record.<br><br>";
-			}
-			$sql = ""; $out = ""; $newrecord = ""; $contactposted = ""; $clcnout = "";
+			$contactform->contactRecordCreated($newrecord, 'contact', $clientcontactposted);
+
 		} else {
 			// update contacts and client_contacts
 			// add hidden posted contact_id to the arrays of posted values

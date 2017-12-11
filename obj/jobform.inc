@@ -39,7 +39,8 @@ class JobForm extends HtmlForm {
 		$jobnumsetarray = array(date('Ymd'), $_SESSION['domain_id']);
 		$result = $sql->callSP('sp_find_next_jobnum', $out, $jobnumsetarray);
 		$row = $sql->returnFirstRow($result);
-		$nextjobnum = $row['new_job_number'];
+		$nextjobnum = (empty($row['new_job_number'])) ? date('Ymd')."0001" : $row['new_job_number'];
+//		$nextjobnum = $row['new_job_number'];
 			
 		$this -> jobFormBuilder(
 			$jobdata,
@@ -62,7 +63,7 @@ class JobForm extends HtmlForm {
 		// Client select & Job No
 		$jobnumber = (empty($jobdata['job_number'])) ? $nextjobnum : $jobdata['job_number'];
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>Client: <select class='form-control' name='clientid'>";
+			echo "<p>Client: <select class='form-control' name='clientid' required = 'true'>";
 			echo "<option value=''></option>";
 				foreach ($clients as $client) {
 					if ($client['client_id'] == $jobdata['client_id']) {
@@ -93,10 +94,10 @@ class JobForm extends HtmlForm {
 
 		// Client Job No & Job Type
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>Client Job No: <input class='form-control' placeholder='Enter Client Job Number' type='text' name='clientjobnumber' value='".$jobdata['client_job_number']."' maxlength='20'/></p>";
+			echo "<p>Client Job No: <input class='form-control' placeholder='Enter Client Job Number' type='text' name='clientjobnumber' value='".$jobdata['client_job_number']."' required = 'true' maxlength='20'/></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Job Type: <select class='form-control' name='jobtypeid'>";
+			echo "<p>Job Type: <select class='form-control' name='jobtypeid' required = 'true'>";
 				foreach ($jobtypes as $jobtype) {
 					if ($jobtype['job_type_id'] == $jobdata['job_type_id']) {
 						echo "<option value=".$jobtype['job_type_id']." selected='selected'>".$jobtype['job_type']."</option>";
@@ -141,9 +142,9 @@ class JobForm extends HtmlForm {
 		// Date Received & Date Due
 		$datereceived = (empty($jobdata['date_received'])) ? date('Y-m-d') :substr($jobdata['date_received'], 0, 10);
 		echo "<div class='row'><div class='col'>";
-			echo "<p>Date Received: <input class='form-control' placeholder='Date Job Received' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='datereceived' value='".$datereceived."' maxlength='10' /></p>";
+			echo "<p>Date Received: <input class='form-control' placeholder='Date Job Received' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='datereceived' value='".$datereceived."' required = 'true' maxlength='10' /></p>";
 		echo "</div><div class='col'>";
-			echo "<p>Date Due: <input class='form-control' placeholder='Date Job Due' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='datedue' value='".substr($jobdata['date_due'], 0, 10)."' maxlength='10' /></p>";		
+			echo "<p>Date Due: <input class='form-control' placeholder='Date Job Due' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='datedue' value='".substr($jobdata['date_due'], 0, 10)."' required = 'true' maxlength='10' /></p>";		
 		echo "</div></div>";		
 		
 		// Word Count & Currency / Price

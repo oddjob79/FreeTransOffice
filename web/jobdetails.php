@@ -31,16 +31,7 @@
 			$newrecord = $sql->callSP('sys_jobs_create', $out, $jobposted);	
 			
 			// check if a new record was created. Redirect to details page with the id included		
-			if (!empty($newrecord)) {
-				// retrieve the newly created contact id
-				$newrecrow = $sql->returnFirstRow($newrecord);
-				// redirect to the newly created record
-				$jobpage->redirect("../web/jobdetails.php?jobid=".$newrecrow['u_job_id']);
-//				echo "Contact ".$contactposted[1]." created successfully"; // need to change this so this displays in an "infobar" at top of newly loaded page
-			} else {
-				echo "There was a problem creating the record.<br><br>";
-			}
-			$sql = ""; $out = ""; $newrecord = ""; $jobposted = "";
+			$jobform->recordCreated($newrecord, 'job');
 		} else {
 			// *UPDATE* - add hidden posted job_id to the array of posted values
 			array_unshift($jobposted, $_POST['recordid']);

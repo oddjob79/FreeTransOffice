@@ -66,10 +66,10 @@ class ContactForm extends HtmlForm {
 
 		// First & Last Names
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>First Name: <input class='form-control' placeholder='Enter First Name' type='text' name='first_name' value='".$contactdata['first_name']."' maxlength='50' /></p>";
+			echo "<p>First Name: <input class='form-control' placeholder='Enter First Name' type='text' name='first_name' value='".$contactdata['first_name']."' required = 'true' maxlength='50' /></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Last Name: <input class='form-control' placeholder='Enter Last Name' type='text' name='last_name' value='".$contactdata['last_name']."' maxlength='80' /></p>";
+			echo "<p>Last Name: <input class='form-control' placeholder='Enter Last Name' type='text' name='last_name' value='".$contactdata['last_name']."' required = 'true' maxlength='80' /></p>";
 		echo "</div></div>";
 		echo "<hr>";
 
@@ -135,6 +135,29 @@ class ContactForm extends HtmlForm {
 		echo "</div></div></div></form>";
 	}	
 
+		public function contactRecordCreated(&$newrecord, $entity, &$clientcontactposted) {
+		if (!empty($newrecord)) {
+			$sql = new Dbconnect();
+			$basepage = new BasePage();
+			// retrieve the newly created contact id
+			$newrecrow = $sql->returnFirstRow($newrecord);
+		// set entity string to lower case and set the $outparam for use in redirect and sql results retrieval
+			$entity = strtolower($entity);
+			$outparam = "u_".$entity."_id";
+		// add the newly created contact id to the $clientcontactposted array
+			array_unshift($clientcontactposted, $newrecrow[$outparam]);
+		// insert the clientcontact record
+			$clcnout = array();
+			print_r($clientcontactposted); echo "<br>";
+			$sql->callSP('sys_client_contacts_create', $clcnout, $clientcontactposted);
+		// finally redirect to saved record
+			$basepage->redirect("../web/".$entity."details.php?".$entity."id=".$newrecrow[$outparam]);
+//				echo "Contact ".$contactposted[1]." created successfully"; // need to change this so this displays in an "infobar" at top of newly loaded page
+		} else {
+			echo "There was a problem creating the record.<br><br>";
+		}
+//		$sql = ""; $out = ""; $newrecord = ""; $jobposted = "";		
+	}
 	
 }
 

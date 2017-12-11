@@ -28,23 +28,29 @@ class HtmlForm {
 	public function getPostedValues(&$inputnames, $adddomain) {
 		$postedvals = array();
 		foreach ($inputnames as $postedname) {
-			// had to change !empty to !isset to account for posted zeroes being treated as NULLS. May have to use strlen() > 0
+			echo "postedname = ". $postedname."<br>";
 			// check if the field was set in the form, and assign appropriate value to the key-value pair, otherwise set the fieldname key to null
-//			if (!empty($_POST[$postedname])){
 //			if (strlen($_POST[$postedname]) > 0) {
-			if (strlen(empty($_POST[$postedname]) ? "" : $_POST[$postedname]) > 0) {	
+			if (isset($_POST[$postedname])) {
 				// check if the value of the field is an integer. If true, set data type as int
-				if (strlen(filter_input(INPUT_POST, $postedname, FILTER_VALIDATE_INT)) > 0) {
+				$range = array(
+					'options' => array ( 'min_range' => 0, 'max_range' => 200000000000)
+				);
+				if (strlen(filter_input(INPUT_POST, $postedname, FILTER_VALIDATE_INT, $range)) > 0) {
 					$postedvals[$postedname] = (int)$_POST[$postedname];
+				} elseif ($_POST[$postedname] === ""){
+					$postedvals[$postedname] = NULL;
 				} else {
-				$postedvals[$postedname] = htmlspecialchars($_POST[$postedname]);
+					$postedvals[$postedname] = htmlspecialchars($_POST[$postedname]);
 				}
 			} else {
 				$postedvals[$postedname] = NULL;
 			}
 //			debugging for data type
 //			echo $postedname. " - ". $postedvals[$postedname] . ' datatype = ' . gettype($postedvals[$postedname])."<br>";
+
 		}
+		
 		if ($adddomain == true) {
 			array_unshift($postedvals, $_SESSION['domain_id']);
 		}
@@ -70,6 +76,23 @@ class HtmlForm {
 			$recordexists = false;
 		}
 		return $recordexists;
+	}
+	
+	public function recordCreated(&$newrecord, $entity) {
+		if (!empty($newrecord)) {
+			$sql = new Dbconnect();
+			$basepage = new BasePage();
+			// retrieve the newly created contact id
+			$newrecrow = $sql->returnFirstRow($newrecord);
+			// redirect to the newly created record
+			$entity = strtolower($entity);
+			$outparam = "u_".$entity."_id";
+			$basepage->redirect("../web/".$entity."details.php?".$entity."id=".$newrecrow[$outparam]);
+//				echo "Contact ".$contactposted[1]." created successfully"; // need to change this so this displays in an "infobar" at top of newly loaded page
+		} else {
+			echo "There was a problem creating the record.<br><br>";
+		}
+//		$sql = ""; $out = ""; $newrecord = ""; $jobposted = "";		
 	}
 	
 	// Generate list of TimeZones

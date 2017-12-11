@@ -37,10 +37,11 @@
 			// instantiate the dbconnect class, set the output variable array, and call the insert sp		
 			$sql = new Dbconnect();
 			$out = array("@u_client_id");
-			$newrecord = $sql->callInsertSp('sys_clients_create', $out, $clientposted);
+			$newrecord = $sql->callSP('sys_clients_create', $out, $clientposted);
 			
-			// check if a new record was created.		
-			if (!empty($newrecord)) {
+			// check if a new record was created.	
+			$clientform->recordCreated($newrecord, 'client');
+/*			if (!empty($newrecord)) {
 				$newrecrow = $sql->returnFirstRow($newrecord);
 				$clientpage->redirect("../web/clientdetails.php?clientid=".$newrecrow['u_client_id']);
 				echo "Client ".$clientposted[1]." created successfully";
@@ -50,7 +51,7 @@
 				print_r($sql->errorInfo());
 			}
 			$sql = ""; $out = ""; $newrecord = ""; $clientposted = "";
-			
+*/			
 		} else {
 
 		// update client logic
