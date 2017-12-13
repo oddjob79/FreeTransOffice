@@ -46,7 +46,13 @@ class Tables {
 		if ($filter != 'none' && !empty($_GET[$filtergetvar])) {
 			$url = $url."?".$filtergetvar."=".$_GET[$filtergetvar];
 		}
-		echo "<a href='".$url."' class='btn btn-primary' id='entitylistnewbutton' type='button' role='button'>New ".$entity."</a>";
+		
+		// ensures jquery only run when there is a filter on the page
+		if ($filter == 'none') {
+			echo "<a href='".$url."' class='btn btn-primary' type='button' role='button'>New ".$entity."</a>";
+		} else {
+			echo "<a href='".$url."' class='btn btn-primary' id='entitylistnewbutton' type='button' role='button'>New ".$entity."</a>";
+		}
 	}
 	
 	public function updateDateFormat(&$entitydetails, $datefields) {

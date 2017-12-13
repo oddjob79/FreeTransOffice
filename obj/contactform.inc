@@ -29,6 +29,9 @@ class ContactForm extends HtmlForm {
 		$spparams = array("-1");
 		$out = array();
 		$statuses = $sql->callSP('sys_statuses_read', $out, $spparams);
+		$sortorder = array(1,2,3);
+		$statuses = $this->statusSort($statuses, $sortorder);		
+		
 		$languages = $sql->callSP('sys_languages_read', $out, $spparams);
 		
 		// set array to "select all" -1 and domain_id to retrieve all records for this domain only

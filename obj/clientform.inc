@@ -30,6 +30,9 @@ class ClientForm extends HtmlForm {
 		$out = array();
 		$countries = $sql->callSP('sys_countries_read', $out, $spparams);
 		$statuses = $sql->callSP('sys_statuses_read', $out, $spparams);
+		$sortorder = array(1,2,3);
+		$statuses = $this->statusSort($statuses, $sortorder);		
+		
 		$currencies = $sql->callSP('sys_currencies_read', $out, $spparams);
 		
 		// set array to "select all" -1 and domain_id to retrieve all records for this domain only

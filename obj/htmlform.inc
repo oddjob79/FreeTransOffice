@@ -101,6 +101,26 @@ class HtmlForm {
 		return (empty($param)) ? $ifempty : $iffull;
 	}
 	
+	protected function statusSort(&$statuses, $sortorder) {
+		// loop through all the potential statuses and unset the status name and id if they are not specified in the sort order
+		foreach ($statuses as &$status) {
+			if (!(in_array($status['status_id'], $sortorder))) {
+				unset($status['status_id']);
+				unset($status['status_name']);
+			}
+		}
+		// remove empty arrays
+		$statuses = array_filter($statuses);
+		
+		// sort the statuses according to the order set in the incoming parameter
+		uasort($statuses, function($a, $b) use ($sortorder) {
+			$pos_a = array_search($a['status_id'], $sortorder);
+			$pos_b = array_search($b['status_id'], $sortorder);
+			return $pos_a - $pos_b;
+		});
+		return $statuses;
+	}
+	
 	// Generate list of TimeZones
 	protected function generate_timezone_list()
 	{

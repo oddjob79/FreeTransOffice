@@ -32,6 +32,9 @@ class JobForm extends HtmlForm {
 		$spparams = array("-1");
 		$out = array();
 		$statuses = $sql->callSP('sys_statuses_read', $out, $spparams);
+		$sortorder = array(4, 5, 6, 2);
+		$statuses = $this->statusSort($statuses, $sortorder);
+		
 		$currencies = $sql->callSP('sys_currencies_read', $out, $spparams);		
 		
 		// set array to "select all" -1 and domain_id to retrieve all records for this domain only
@@ -139,7 +142,6 @@ class JobForm extends HtmlForm {
 		echo "</div>";
 		echo "<div class='col'>";
 			echo "<p>Status: <select class='form-control' name='status'>";
-				// limit so we only see Active, Inactive & Dormant
 				foreach ($statuses as $status) {
 					if ($status['status_id'] == $jobdata['job_status']) {
 						echo "<option value=".$status['status_id']." selected='selected'>".$status['status_name']."</option>";						
