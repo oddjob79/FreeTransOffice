@@ -48,7 +48,8 @@ class Dbconnect {
 		}
 		
 		// debugging
-		// echo "prepstr ".$prepstr."<br>";
+//		 echo "prepstr ".$prepstr."<br>";
+//		 print_r($params);
 
 		try {
 		
@@ -68,43 +69,6 @@ class Dbconnect {
 		return $sql;
 	}
 
-// currently read & insert sp calls are identical and should be merged!!!!!
-
-	
-	// Generic function which should be usable for all basic read sp's
-	// pass in procedure name and all parameters in array
-	// not included option for OUT parameters. If needed can add fairly easily
-	public function callReadSp($spname, &$params) {
-		
-		// call execution method
-		$sql = $this->execStatement($spname, $outparams, $params);
-
-		// debug
-		// print_r($sql->errorInfo());
-		
-		// write results to $row array
-		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
-		return $row;
-	}
-	
-	// Generic function which should be usable for all basic insert sp's
-	// pass in procedure name and all parameters in array
-	public function callInsertSp($spname, &$outparams, &$params) {
-		
-		try {
-			// call execution method
-			$sql = $this->execStatement($spname, $outparams, $params);
-		} catch (PDOException $e) {
-			echo "SQL EXECUTION ERROR: ".$e."<br>";
-		}
-
-		// debug
-		// print_r($sql->errorInfo());
-		
-		// write results to $row array
-		$row = $sql->fetchAll(PDO::FETCH_ASSOC);
-		return $row;
-	}
 	
 	// Generic function which should be usable for all basic insert, update & read sp's
 	// pass in procedure name and all parameters in array
@@ -138,10 +102,10 @@ class Dbconnect {
 	// move from here (Dbconnect probably)
 	public function getEntityDetails(&$getvalues, $spname) {
 		// set parameters for sp (implode value(s) retrieved from _GET)
-		$spparams = array(implode($getvalues), $_SESSION['domain_id']);
+		array_push($getvalues, $_SESSION['domain_id']);
 		$out = array();
 		// call client details sp
-		$datadets = $this->callSP($spname, $out, $spparams);
+		$datadets = $this->callSP($spname, $out, $getvalues);
 		// add results to array
 		$datarow = $this->returnFirstRow($datadets);
 		return $datarow;

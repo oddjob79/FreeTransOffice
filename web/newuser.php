@@ -20,7 +20,7 @@
 		
 		$nusql = new Dbconnect();
 		$outuser = array("@u_user_id");
-		$addnewuser = $nusql->callInsertSp('sp_create_user', $outuser, $postedvalues);
+		$addnewuser = $nusql->callSP('sp_create_user', $outuser, $postedvalues);
 		
 		if (!empty($addnewuser)) {
 			$uservar = $nusql->returnFirstRow($addnewuser);

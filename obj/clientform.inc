@@ -14,7 +14,6 @@ class ClientForm extends HtmlForm {
 		$sql = new Dbconnect();
 		
 		if (!empty($getvalues['clientid'])) {
-			print_r($getvalues);
 			$clientdata = $sql->getEntityDetails($getvalues, 'sp_client_details');
 			$displaydata = $clientdata['client_name'];			
 		} else {

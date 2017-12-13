@@ -12,13 +12,22 @@ class JobForm extends HtmlForm {
 
 		// use contact id to retrieve all the contact details
 		$sql = new Dbconnect();
-		$jobdata = $sql->getEntityDetails($getvalues, 'sp_job_details');
+
+		if (!empty($getvalues['jobid'])) {
+			$jobdata = $sql->getEntityDetails($getvalues, 'sp_job_details');
+			$displaydata = $jobdata['client_name'] . ' - ' . $jobdata['client_job_number'];			
+		} else {
+			$displaydata = null;
+		}
 		
 		// form header and format are set
-		$displaydata = (empty($jobdata['job_id'])) ? '' : $jobdata['client_name'] . ' - ' . $jobdata['client_job_number'];
+//		$displaydata = (empty($jobdata['job_id'])) ? '' : $jobdata['client_name'] . ' - ' . $jobdata['client_job_number'];
+//		$displaydata = $this->emptyParam($jobdata['job_id'], '', $jobdata['client_name'] . ' - ' . $jobdata['client_job_number']);
 		$formheader = $this->setFormHeader('Job', $displaydata);
 		$this->formFormat($formheader);
-		
+	
+
+	
 		// set spparam array to pass to the callSP procedure
 		$spparams = array("-1");
 		$out = array();
@@ -39,8 +48,9 @@ class JobForm extends HtmlForm {
 		$jobnumsetarray = array(date('Ymd'), $_SESSION['domain_id']);
 		$result = $sql->callSP('sp_find_next_jobnum', $out, $jobnumsetarray);
 		$row = $sql->returnFirstRow($result);
-		$nextjobnum = (empty($row['new_job_number'])) ? date('Ymd')."0001" : $row['new_job_number'];
-//		$nextjobnum = $row['new_job_number'];
+//		$nextjobnum = (empty($row['new_job_number'])) ? date('Ymd')."0001" : $row['new_job_number'];
+		$nextjobnum = $this->emptyParam($row['new_job_number'], date('Ymd')."0001", $row['new_job_number']);
+
 			
 		$this -> jobFormBuilder(
 			$jobdata,
@@ -61,7 +71,8 @@ class JobForm extends HtmlForm {
 		echo "<div class='form-group'>";
 		
 		// Client select & Job No
-		$jobnumber = (empty($jobdata['job_number'])) ? $nextjobnum : $jobdata['job_number'];
+//		$jobnumber = (empty($jobdata['job_number'])) ? $nextjobnum : $jobdata['job_number'];
+		$jobnumber = $this->emptyParam($jobdata['job_number'], $nextjobnum, $jobdata['job_number']);
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Client: <select class='form-control' name='clientid' required = 'true'>";
 			echo "<option value=''></option>";
@@ -140,7 +151,8 @@ class JobForm extends HtmlForm {
 		echo "</div></div>";
 
 		// Date Received & Date Due
-		$datereceived = (empty($jobdata['date_received'])) ? date('Y-m-d') :substr($jobdata['date_received'], 0, 10);
+//		$datereceived = (empty($jobdata['date_received'])) ? date('Y-m-d') :substr($jobdata['date_received'], 0, 10);
+		$datereceived = $this->emptyParam($jobdata['date_received'], date('Y-m-d'), substr($jobdata['date_received'], 0, 10));
 		echo "<div class='row'><div class='col'>";
 			echo "<p>Date Received: <input class='form-control' placeholder='Date Job Received' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='datereceived' value='".$datereceived."' required = 'true' maxlength='10' /></p>";
 		echo "</div><div class='col'>";

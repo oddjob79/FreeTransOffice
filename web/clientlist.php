@@ -13,7 +13,8 @@
 	
 	$sql = new Dbconnect();
 	$params = array($_SESSION['domain_id']);
-	$clientlist = $sql->callReadSp('sp_client_list', $params);
+	$out = array();
+	$clientlist = $sql->callSP('sp_client_list', $out, $params);
 	
 	// set arrays to store all table headers and field names from database
 	$theaders = array('Client Names', 'City', 'Country', 'Currency', 'Status', 'Last Completed Job', 'Last Invoice');

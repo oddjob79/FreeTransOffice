@@ -28,7 +28,6 @@ class HtmlForm {
 	public function getPostedValues(&$inputnames, $adddomain) {
 		$postedvals = array();
 		foreach ($inputnames as $postedname) {
-			echo "postedname = ". $postedname."<br>";
 			// check if the field was set in the form, and assign appropriate value to the key-value pair, otherwise set the fieldname key to null
 //			if (strlen($_POST[$postedname]) > 0) {
 			if (isset($_POST[$postedname])) {
@@ -66,6 +65,8 @@ class HtmlForm {
 				$getvals[$getname] = NULL;
 			}
 		}
+		// gets rid of empty key / value pairs
+//		$getvals = array_filter($getvals);
 		return ($getvals);
 	}
 
@@ -87,12 +88,17 @@ class HtmlForm {
 			// redirect to the newly created record
 			$entity = strtolower($entity);
 			$outparam = "u_".$entity."_id";
+			$entity = str_replace('_', '', $entity);
 			$basepage->redirect("../web/".$entity."details.php?".$entity."id=".$newrecrow[$outparam]);
 //				echo "Contact ".$contactposted[1]." created successfully"; // need to change this so this displays in an "infobar" at top of newly loaded page
 		} else {
 			echo "There was a problem creating the record.<br><br>";
 		}
 //		$sql = ""; $out = ""; $newrecord = ""; $jobposted = "";		
+	}
+	
+	protected function emptyParam($param, $ifempty, $iffull) {
+		return (empty($param)) ? $ifempty : $iffull;
 	}
 	
 	// Generate list of TimeZones

@@ -60,7 +60,7 @@
 				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script> 
 				<script src="../inc/bootstrap/js/bootstrap-datepicker.min.js"></script>
 				<!-- custom javascript library -->
-				<script src="../inc/transoffice.js"></script>
+				<script src="../inc/transoffice.js?rndstr=14"></script>
 				
 				<!-- ensures sclaing to mobile devices -->
 				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -149,7 +149,8 @@
 			
 			if (isset($_SESSION['user_id']) and substr($_SERVER['PHP_SELF'], -10) != 'logout.php') {
 				$svparams = array($_SESSION['user_id']);
-				$userdetails = $sql->callReadSp('sys_users_read', $svparams);
+				$out = array();
+				$userdetails = $sql->callSP('sys_users_read', $out, $svparams);
 				$userarray = $sql->returnFirstRow($userdetails);
 				
 				echo "<div class='dropdown'>";

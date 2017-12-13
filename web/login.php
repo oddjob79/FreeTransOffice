@@ -24,7 +24,8 @@
 		// instantiate a new Dbconnect object & call read SP to gather user & domain ids to pass to session
 		$uvsql = new DbConnect();
 		$uvparams = array($postedvalues['username']);
-		$uservars = $uvsql->callReadSp('sp_validateUser', $uvparams);
+		$out = array();
+		$uservars = $uvsql->callSP('sp_validateUser', $out, $uvparams);
 
 		// gather only first row from array passed back from SP results (should only ever be one row)
 		$loginvars = $uvsql->returnFirstRow($uservars);

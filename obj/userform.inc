@@ -7,9 +7,9 @@ class UserForm extends HtmlForm {
 	public function newUserForm() {
 		
 		$sqsql = new Dbconnect();
-		$spparams = [];
 		$spparams = array("-1");
-		$securityqs = $sqsql->callReadSp('sys_securityquestions_read', $spparams);
+		$out = array();
+		$securityqs = $sqsql->callSP('sys_securityquestions_read', $out, $spparams);
 		
 		echo "<form method='post' action='newuser.php'>";
 		echo "<div class='form-group'>";

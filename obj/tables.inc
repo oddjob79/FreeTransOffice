@@ -1,5 +1,7 @@
 <?php
 
+//require_once('../obj/basepage.inc');
+
 class Tables {
 
 	private function tableFormat($tableheader) {
@@ -10,8 +12,13 @@ class Tables {
 //		echo "<div class='p-3 mb-2 bg-light text-dark'>";
 	}
 	
-	public function entityList($theaders, $fieldnames, &$listdata, $url, $entity) {
+	public function entityList($theaders, $fieldnames, &$listdata, $url, $entity, $filter = 'none') {
 		$this->tableFormat($entity."s");
+		if ($filter == 'client') {
+			$this->clientList();
+		} else if ($filter == 'invoice') {
+			$this->invoiceList();
+		}
 		echo "<table class='table table-hover'>";
 			echo "<thead class='table-primary'><tr>";
 			// add <th> element for each table header sent through via the array
@@ -24,8 +31,8 @@ class Tables {
 			// run through each field name sent through in array
 			foreach ($fieldnames as $fieldname) {
 				// if the field name matches the entity name plus "id" then treat it as the identifier and use it to send to the details page
-				if ($fieldname == strtolower($entity)."_id") {
-					echo "<tr class='clickable-row' data-url='".$url."?".strtolower($entity)."id=".$datarow[$fieldname]."'>";
+				if ($fieldname == strtolower(str_replace(" ", "_", $entity))."_id") {	
+					echo "<tr class='clickable-row' data-url='".$url."?".strtolower(str_replace(" ", "", $entity))."id=".$datarow[$fieldname]."'>";
 				} else {
 					// otherwise push the data to a <td> element
 					echo "<td>".$datarow[$fieldname]."</td>";
@@ -35,7 +42,11 @@ class Tables {
 		} 
 		echo "</table>";
 		// use the entity name to name the "new record" button
-		echo "<a href='".$url."' class='btn btn-primary' role='button'>New ".$entity."</a>";
+		$filtergetvar = $filter."id";
+		if ($filter != 'none' && !empty($_GET[$filtergetvar])) {
+			$url = $url."?".$filtergetvar."=".$_GET[$filtergetvar];
+		}
+		echo "<a href='".$url."' class='btn btn-primary' id='entitylistnewbutton' type='button' role='button'>New ".$entity."</a>";
 	}
 	
 	public function updateDateFormat(&$entitydetails, $datefields) {
@@ -73,6 +84,26 @@ class Tables {
 				}
 			}
 		}		
+	}
+	
+	private function clientList() {
+		$sql = new Dbconnect();
+		// set array to "select all" -1 and domain_id to retrieve all records for this domain only
+		$domparams = array($_SESSION['domain_id']);
+		$clients = $sql->callSP('sp_client_list', $out, $domparams);	
+
+		echo "<div class='row'>\n<div class='col-6'>";
+			echo "<p>Client: <select class='form-control' id='clientselect' name='clientid'>";
+			echo "<option value=''></option>";
+				foreach ($clients as $client) {
+					if ($client['client_id'] == $_GET['clientid']) {
+						echo "<option value=".$client['client_id']." selected='selected'>".$client['client_name']."</option>";
+					} else {
+						echo "<option value=".$client['client_id'].">".$client['client_name']."</option>";
+					}
+				} 
+			echo "</select></p>";
+		echo "</div></div>";
 	}
 	
 }

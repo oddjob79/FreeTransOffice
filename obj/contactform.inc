@@ -12,10 +12,16 @@ class ContactForm extends HtmlForm {
 
 		// use contact id to retrieve all the contact details
 		$sql = new Dbconnect();
-		$contactdata = $sql->getEntityDetails($getvalues, 'sp_contact_details');
-		
+
+		if (!empty($getvalues['contactid'])) {
+			$contactdata = $sql->getEntityDetails($getvalues, 'sp_contact_details');
+			$displaydata = $contactdata['first_name'] . ' ' . $contactdata['last_name'];			
+		} else {
+			$displaydata = null;
+		}
+
 		// form header and format are set
-		$displaydata = (empty($contactdata['contact_id'])) ? '' : $contactdata['first_name'] . ' ' . $contactdata['last_name'];
+//		$displaydata = (empty($contactdata['contact_id'])) ? '' : $contactdata['first_name'] . ' ' . $contactdata['last_name'];		
 		$formheader = $this -> setFormHeader('Contact', $displaydata);
 		$this->formFormat($formheader);
 		

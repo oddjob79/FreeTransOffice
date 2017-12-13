@@ -31,7 +31,7 @@ class AddressData extends HtmlForm {
 			// instantiate the dbconnect class, set the output variable array and call the insert sp
 			$sql = new Dbconnect();
 			$out = array("@u_address_id");
-			$newrecord = $sql->callInsertSp('sys_addresses_create', $out, $addrposted);
+			$newrecord = $sql->callSP('sys_addresses_create', $out, $addrposted);
 			
 			// check if a new record was created. If so, return the newly created Address ID 
 			if (!empty($newrecord)) {

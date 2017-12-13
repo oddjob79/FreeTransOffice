@@ -41,17 +41,6 @@
 			
 			// check if a new record was created.	
 			$clientform->recordCreated($newrecord, 'client');
-/*			if (!empty($newrecord)) {
-				$newrecrow = $sql->returnFirstRow($newrecord);
-				$clientpage->redirect("../web/clientdetails.php?clientid=".$newrecrow['u_client_id']);
-				echo "Client ".$clientposted[1]." created successfully";
-				// add redirect to clientdetails with clientid
-			} else {
-				echo "There was a problem creating the Client.<br><br>";
-				print_r($sql->errorInfo());
-			}
-			$sql = ""; $out = ""; $newrecord = ""; $clientposted = "";
-*/			
 		} else {
 
 		// update client logic
