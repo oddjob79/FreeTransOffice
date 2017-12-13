@@ -32,14 +32,14 @@ class JobForm extends HtmlForm {
 		$spparams = array("-1");
 		$out = array();
 		$statuses = $sql->callSP('sys_statuses_read', $out, $spparams);
-		$currencies = $sql->callReadSp('sys_currencies_read', $spparams);		
+		$currencies = $sql->callSP('sys_currencies_read', $out, $spparams);		
 		
 		// set array to "select all" -1 and domain_id to retrieve all records for this domain only
 		$domparams = array("-1", $_SESSION['domain_id']);
 		$clients = $sql->callSP('sp_client_details', $out, $domparams);
 		$jobtypes = $sql->callSP('sys_job_types_read', $out, $domparams);
-		$packages = $sql->callReadSp('sys_packages_read', $domparams);	
-		$jobprofiles = $sql->callReadSp('sp_job_profile_details', $domparams);
+		$packages = $sql->callSP('sys_packages_read', $out, $domparams);	
+		$jobprofiles = $sql->callSP('sp_job_profile_details', $out, $domparams);
 		
 		$cldmparams = array("-1", "-1", $_SESSION['domain_id']);
 		$endclients = $sql->callSP('sp_end_client_details', $out, $cldmparams);

@@ -25,16 +25,17 @@ class ClientForm extends HtmlForm {
 		$formheader = $this -> setFormHeader('Client', $displaydata);
 		$this->formFormat($formheader);
 		
-		// set spparam array to pass to the callReadSp procedure
+		// set spparam array to pass to the callSp procedure
 		$spparams = array("-1");
-		$countries = $sql->callReadSp('sys_countries_read', $spparams);
-		$statuses = $sql->callReadSp('sys_statuses_read', $spparams);
-		$currencies = $sql->callReadSp('sys_currencies_read', $spparams);
+		$out = array();
+		$countries = $sql->callSP('sys_countries_read', $out, $spparams);
+		$statuses = $sql->callSP('sys_statuses_read', $out, $spparams);
+		$currencies = $sql->callSP('sys_currencies_read', $out, $spparams);
 		
 		// set array to "select all" -1 and domain_id to retrieve all records for this domain only
 		$domparams = array("-1", $_SESSION['domain_id']);
-		$packages = $sql->callReadSp('sys_packages_read', $domparams);
-		$reports = $sql->callReadSp('sys_report_config_read', $domparams);
+		$packages = $sql->callSP('sys_packages_read', $out, $domparams);
+		$reports = $sql->callSP('sys_report_config_read', $out, $domparams);
 		
 		// gather timezone array for use in timezone select list
 		$timezones = $this->generate_timezone_list();
@@ -242,8 +243,9 @@ class ClientForm extends HtmlForm {
 		$sql = new Dbconnect();
 		// set parameters for sp (implode value(s) retrieved from _GET)
 		$spparams = array(implode($getvalues), $_SESSION['domain_id']);
+		$out = array();
 		// call client details sp
-		$clientdets = $sql->callReadSp('sp_client_details', $spparams);
+		$clientdets = $sql->callSp('sp_client_details', $out, $spparams);
 		// add results to array
 		$clientrow = $sql->returnFirstRow($clientdets);
 		return $clientrow;
