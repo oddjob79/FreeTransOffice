@@ -4,12 +4,21 @@
 
 class Tables {
 
-	private function tableFormat($tableheader) {
-		echo "<div class='col'>";
-		echo "<div class='row'>\n<div class='col'>";
+/*	private function tableFormat($tableheader) {
+		echo "<div class='col-10'>";
+		echo "<div class='row'>\n<div class='col-10'>";
 			echo "<h3 class='p-2 mb-2 bg-light text-dark'>".$tableheader."</h3>";
 		echo "</div></div>";
 //		echo "<div class='p-3 mb-2 bg-light text-dark'>";
+	}
+*/
+
+	private function tableFormat($tableheader) {
+		echo "<div class='col-10'>";
+		echo "<div class='row'>\n<div class='col'>";
+			echo "<h3 class='p-2 mb-2 bg-light text-dark'>".$tableheader."</h3>";
+		echo "</div></div>";
+//		echo "<div class='row'>\n<div class='col-10'>";		
 	}
 	
 	public function entityList($theaders, $fieldnames, &$listdata, $url, $entity, $filter = 'none') {
@@ -19,20 +28,35 @@ class Tables {
 		} else if ($filter == 'invoice') {
 			$this->invoiceList();
 		}
-		echo "<table class='table table-hover table-responsive'>";
-			echo "<thead class='table-primary'><tr>";
+		echo "<table class='table table-hover table-responsive' id='elementlist'>";
+		echo "<thead class='table-primary'><tr>";
 			// add <th> element for each table header sent through via the array
 			foreach ($theaders as $theader) {
 				echo "<th>".$theader."</th>";
 			}
+//			echo "</tr></thead><tbody>"; replaced with line below for test of column filtering
+// 			echo "</tr></thead>"; - further testing
+
+// test for column filtering
+
+//		echo "<tfoot><tr>";
+/*		echo "</tr><tr>";
+			// add <th> element for each table header sent through via the array
+			foreach ($theaders as $theader) {
+				echo "<th>".$theader."</th>";
+			}
+*/			
 			echo "</tr></thead><tbody>";
-		// for each row of data retrieved from the database
+
+// end test
+
+			// for each row of data retrieved from the database
 		foreach ($listdata as $datarow) {
 			// run through each field name sent through in array
 			foreach ($fieldnames as $fieldname) {
 				// if the field name matches the entity name plus "id" then treat it as the identifier and use it to send to the details page
 				if ($fieldname == strtolower(str_replace(" ", "_", $entity))."_id") {	
-					echo "<tr class='clickable-row' data-url='".$url."?".strtolower(str_replace(" ", "", $entity))."id=".$datarow[$fieldname]."'>";
+					echo "<tr data-url='".$url."?".strtolower(str_replace(" ", "", $entity))."id=".$datarow[$fieldname]."'>";
 				} else {
 					// otherwise push the data to a <td> element
 					echo "<td>".$datarow[$fieldname]."</td>";
@@ -41,6 +65,7 @@ class Tables {
 			echo "</tr>";
 		} 
 		echo "</tbody></table>";
+
 		// use the entity name to name the "new record" button
 		$filtergetvar = $filter."id";
 		if ($filter != 'none' && !empty($_GET[$filtergetvar])) {
