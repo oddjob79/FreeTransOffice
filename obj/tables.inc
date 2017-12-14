@@ -19,13 +19,13 @@ class Tables {
 		} else if ($filter == 'invoice') {
 			$this->invoiceList();
 		}
-		echo "<table class='table table-hover'>";
+		echo "<table class='table table-hover table-responsive'>";
 			echo "<thead class='table-primary'><tr>";
 			// add <th> element for each table header sent through via the array
 			foreach ($theaders as $theader) {
 				echo "<th>".$theader."</th>";
 			}
-			echo "</tr></thead>";
+			echo "</tr></thead><tbody>";
 		// for each row of data retrieved from the database
 		foreach ($listdata as $datarow) {
 			// run through each field name sent through in array
@@ -40,7 +40,7 @@ class Tables {
 			}
 			echo "</tr>";
 		} 
-		echo "</table>";
+		echo "</tbody></table>";
 		// use the entity name to name the "new record" button
 		$filtergetvar = $filter."id";
 		if ($filter != 'none' && !empty($_GET[$filtergetvar])) {
