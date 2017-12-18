@@ -72,15 +72,41 @@ $(document).ready(function() {
 // on select of new client in clientselect box, page is reloaded with client id set
 	jQuery(document).ready(function($) {
 	$('#clientselect').change(function() {
-		var qmark=window.location.href.indexOf("?");
-		if (qmark != -1) {
-			window.location.href = window.location.href.substring(0, qmark) +"?clientid="+(this.value);
+// making updates for job-endclient filtering
+//		var qmark=window.location.href.indexOf("?");
+		var clid=window.location.href.indexOf("clientid");
+		var jobid=window.location.href.indexOf("jobid");
+		if (jobid != -1) {
+			var delim = "&";
 		} else {
-			window.location.href = window.location.href+"?clientid="+(this.value);
+			var delim = "?";
+		}
+		if (clid != -1) {
+			// clientid already exists, so replace rather than add to the url
+			window.location.href = window.location.href.substring(0, clid-1) +delim+"clientid="+(this.value);
+		} else {
+			window.location.href = window.location.href+delim+"clientid="+(this.value);
 		}
 		});
 	});
 
+/*	
+// on select of new client in clientselect box, page is reloaded with client id set
+	jQuery(document).ready(function($) {
+	$('#clientselect').change(function() {
+// making updates for job-endclient filtering
+//		var qmark=window.location.href.indexOf("?");
+		var clid=window.location.href.indexOf("?clientid");
+		if (clid != -1) {
+			// ?clientid already exists, so replace rather than add to the url
+			window.location.href = window.location.href.substring(0, clid) +"?clientid="+(this.value);
+		} else {
+			window.location.href = window.location.href+"?clientid="+(this.value);
+		}
+		});
+	});	
+*/	
+	
 // alert box when new button selected without filter (when needed)
 	jQuery(document).ready(function($) {
 	$('#entitylistnewbutton').click(function(e) {

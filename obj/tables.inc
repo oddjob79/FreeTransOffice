@@ -34,23 +34,8 @@ class Tables {
 			foreach ($theaders as $theader) {
 				echo "<th>".$theader."</th>";
 			}
-//			echo "</tr></thead><tbody>"; replaced with line below for test of column filtering
-// 			echo "</tr></thead>"; - further testing
-
-// test for column filtering
-
-//		echo "<tfoot><tr>";
-/*		echo "</tr><tr>";
-			// add <th> element for each table header sent through via the array
-			foreach ($theaders as $theader) {
-				echo "<th>".$theader."</th>";
-			}
-*/			
 			echo "</tr></thead><tbody>";
-
-// end test
-
-			// for each row of data retrieved from the database
+		// for each row of data retrieved from the database
 		foreach ($listdata as $datarow) {
 			// run through each field name sent through in array
 			foreach ($fieldnames as $fieldname) {

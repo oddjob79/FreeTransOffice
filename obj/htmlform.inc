@@ -66,7 +66,7 @@ class HtmlForm {
 			}
 		}
 		// gets rid of empty key / value pairs
-//		$getvals = array_filter($getvals);
+	//	$getvals = array_filter($getvals);
 		return ($getvals);
 	}
 
