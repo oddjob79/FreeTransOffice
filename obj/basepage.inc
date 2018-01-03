@@ -192,6 +192,11 @@
 			}
 		}
 		
+		public function setClientSessionId($clientid) {
+			$client_sess = new Session();
+			$client_sess -> setClientId($clientid);
+		}
+		
 		public function display()
 		{
 			echo "<!DOCTYPE html>\n<html lang='en'>\n<head>\n";

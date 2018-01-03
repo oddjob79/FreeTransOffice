@@ -14,6 +14,8 @@ class ContactForm extends HtmlForm {
 		$sql = new Dbconnect();
 
 		if (!empty($getvalues['contactid'])) {
+			// add -1 "null" value to pass to the sp for client_id
+			array_push($getvalues, "-1");
 			$contactdata = $sql->getEntityDetails($getvalues, 'sp_contact_details');
 			$displaydata = $contactdata['first_name'] . ' ' . $contactdata['last_name'];			
 		} else {

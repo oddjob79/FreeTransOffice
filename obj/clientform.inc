@@ -10,6 +10,9 @@ class ClientForm extends HtmlForm {
 		$getnames = array('clientid');
 		$getvalues = $this -> getGetValues($getnames);
 
+		// set client_id as session variable for use with submenus -- needs reworking as this is dupe code from basepage
+		$_SESSION['client_id'] = $client_id;
+		
 		// use client id to retrieve all the client details
 		$sql = new Dbconnect();
 		

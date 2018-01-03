@@ -14,7 +14,7 @@
 	$entitydetailsurl = '../web/endclientdetails.php';
 	$entityname = 'End Client';
 	$entityfilter = 'client';
-	$clientid = (empty($_GET['clientid'])) ? "-1" : $_GET['clientid'];
+	$clientid = $endclienttable->getsetClientId();
 	
 	$params = array('-1', $clientid, $_SESSION['domain_id']);
 	$out = array();

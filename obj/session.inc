@@ -24,6 +24,26 @@ class Session {
 		}
 	}
 	
+	public function setClientId($client_id) {
+		if (!(isset($_SESSION))) {
+			session_start();
+		}
+		
+		$_SESSION['client_id'] = $client_id;
+	}
+
+/*	public function getClientId() {
+		if (!(isset($_SESSION))) {
+			session_start();
+		}
+		
+		if (isset($_SESSION['client_id'])) {
+			$clientvar['client_id'] = $_SESSION['client_id'];
+			return $clientvar;
+		}
+	}
+*/
+	
 }
 
 ?>

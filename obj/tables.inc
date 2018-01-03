@@ -112,7 +112,10 @@ class Tables {
 			echo "<p>Client: <select class='form-control' id='clientselect' name='clientid'>";
 			echo "<option value=''></option>";
 				foreach ($clients as $client) {
+					// use the client as taken from the URL or if none there, take from the Session var, else no default client shown
 					if ($client['client_id'] == $_GET['clientid']) {
+						echo "<option value=".$client['client_id']." selected='selected'>".$client['client_name']."</option>";
+					} else if ($client['client_id'] == $_SESSION['client_id']) {
 						echo "<option value=".$client['client_id']." selected='selected'>".$client['client_name']."</option>";
 					} else {
 						echo "<option value=".$client['client_id'].">".$client['client_name']."</option>";
@@ -120,6 +123,15 @@ class Tables {
 				} 
 			echo "</select></p>";
 		echo "</div></div>";
+	}
+	
+	public function getsetClientId() {
+		// get the client id from the URL, if no id in URL, use the client id session var (set from the client details page), if nothing here, set to -1 (null)
+		return (empty($_GET['clientid'])) ? ((empty($_SESSION['client_id'])) ? "-1" : $_SESSION['client_id']) : $_GET['clientid'];
+		
+		if (!empty($clientid) && $clientid != "-1") {
+			$_SESSION['client_id'] = $clientid;
+		}
 	}
 	
 }
