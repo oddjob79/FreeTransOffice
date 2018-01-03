@@ -209,6 +209,7 @@ class JobForm extends HtmlForm {
 			echo "<p>Actual Time: <input class='form-control' placeholder='Enter Actual Job Time' type='text' name='actualtime' value='".$jobdata['actual_time']."' maxlength= '10' /></p>";
 		echo "</div></div>";	
 
+		// Invoice no. & Invoice Date
 		echo "<div class='row'><div class='col'>";
 			echo "<p>Invoice No: <input class='form-control' type='text' name='invoicenumber' value='".$jobdata['invoice_number']."' readonly /></p>";
 		echo "</div><div class='col'>";

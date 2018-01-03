@@ -116,3 +116,10 @@ $(document).ready(function() {
 		}
 		});
 	});	
+	
+// alert box for changing user details
+	jQuery(document).ready(function($) {
+	$('.supportalert').click(function() {
+		alert("Please contact support@kennettechservices.com to change your login information");
+		});
+	});	

@@ -44,7 +44,8 @@
 		} else {
 
 		// update client logic
-			
+
+			// should all be moved to addressdata class		
 			// update address logic (if there is an address associated with the client)
 			if (!empty($_POST['addressid'])) {
 

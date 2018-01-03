@@ -27,12 +27,12 @@
 									'Generate Invoices'	=>	'../web/gen_invoices.php'
 								);
 
-		protected $setsubitems = array('User Settings' 	=>	'../web/user_settings.php',
-									'Report Setup'	=>	'../web/report_setup.php',
+		protected $setsubitems = array('User Settings' 	=>	'../web/usersettings.php',
+									'Report Setup'	=>	'../web/reportsetup.php',
 									'Packages'		=>	'../web/packages.php',
-									'Job Types'		=>	'../web/job_types.php',
+									'Job Types'		=>	'../web/jobtypes.php',
 									'Profiles'		=>	'../web/profiles.php',
-									'User Defined Fields'	=>	'../web/user_defined.php'
+									'User Defined Fields'	=>	'../web/userdefined.php'
 								);								
 		
 
@@ -62,7 +62,7 @@
 				<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 				<script src="../inc/bootstrap/js/bootstrap-datepicker.min.js"></script>
 				<!-- custom javascript library -->
-				<script src="../inc/transoffice.js?rndstr=59"></script>
+				<script src="../inc/transoffice.js?rndstr=63"></script>
 				
 				<!-- ensures sclaing to mobile devices -->
 				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

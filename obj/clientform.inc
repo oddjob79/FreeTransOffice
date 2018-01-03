@@ -151,7 +151,7 @@ class ClientForm extends HtmlForm {
 			echo "</select></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>TimeZone: 2 <select class='form-control' name='timezone' required = 'true'>";
+			echo "<p>TimeZone: <select class='form-control' name='timezone' required = 'true'>";
 				foreach ($timezones as $key => $value) {
 					if ($key == $clientdata['timezone']) {
 						echo "<option value=".$key." selected='selected'>".$value."</option>";
