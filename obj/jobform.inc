@@ -14,7 +14,7 @@ class JobForm extends HtmlForm {
 		$sql = new Dbconnect();
 
 		if (!empty($getvalues['jobid'])) {
-			$entityid = array($getvalues['jobid']);
+			$entityid = array($getvalues['jobid'], "-1");
 			$jobdata = $sql->getEntityDetails($entityid, 'sp_job_details');
 			$displaydata = $jobdata['client_name'] . ' - ' . $jobdata['client_job_number'];			
 		} else {

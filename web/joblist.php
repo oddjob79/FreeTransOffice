@@ -10,11 +10,14 @@
 	
 	$jobtable = new Tables();
 	
+	$entitydetailsurl = '../web/jobdetails.php';
+	$entityname = 'Job';
+	
 	// retrieve all job data for this domain (-1)
-	$sql = new Dbconnect();
-	$params = array('-1', $_SESSION['domain_id']);
+	$params = array("-1", "-1", $_SESSION['domain_id']);
 	$out = array();
-	$jobdetails = $sql->callSP('sp_job_details', $out, $params);
+	$sql = new Dbconnect();
+	$entitylist = $sql->callSP('sp_job_details', $out, $params);
 	
 	// set arrays to store all table headers and field names from database
 	$theaders = array('Date Received', 'Client Job No.', 'Client Name', 'Job Description', 'End Client', 'Job Type', 'Word Count', 'Price', 'Due Date', 'Status', 'Invoice No.');
@@ -22,14 +25,14 @@
 	
 	// set the date format for all fields included in the $datefields array
 	$datefields = array('date_received', 'date_due');
-	$jobtable->updateDateFormat($jobdetails, $datefields);
+	$jobtable->updateDateFormat($entitylist, $datefields);
 	
 	// set the price format for all fields in the $pricefields array
 	$pricefields = array('price');
-	$jobtable->formatPrice($jobdetails, $pricefields);
+	$jobtable->formatPrice($entitylist, $pricefields);
 
 	// send the headers, field names, data, url for redirects and the entity name to the entityList method for processing
-	$jobtable->entityList($theaders, $fieldnames, $jobdetails, '../web/jobdetails.php', 'Job');
+	$jobtable->entityList($theaders, $fieldnames, $entitylist, $entitydetailsurl, $entityname);
 	
 	$joblistpage->endPage();
 	
