@@ -4,15 +4,6 @@
  */	
 
 // utilize data tables on tables.inc	
-/*	$(document).ready( function () {
-		$('#elementlist').DataTable( {
-		  "stateSave": true,
-		  "stateSaveParams": function (settings, data) {
-			data.search.search = "";
-		  }
-		} );
-	} );
- */
  $(document).ready(function() {
     $('#elementlist').DataTable( {
         initComplete: function () {
@@ -61,13 +52,6 @@ $(document).ready(function() {
 	} );
 } );
 	 
-// snippet below allows table row to become clickable and create a link from the whole row (old - pre-datatables)
-/*	jQuery(document).ready(function($) {
-	$(".clickable-row").click(function() {
-		window.location = $(this).data("url");
-		});
-	});
-*/
 	
 // on select of new client in clientselect box, page is reloaded with client id set
 	jQuery(document).ready(function($) {
@@ -82,7 +66,7 @@ $(document).ready(function() {
 			var delim = "?";
 		}
 		if (clid != -1) {
-			// clientid already exists, so replace rather than add to the url
+			// clientid already exists in url, so replace rather than add to the url
 			window.location.href = window.location.href.substring(0, clid-1) +delim+"clientid="+(this.value);
 		} else {
 			window.location.href = window.location.href+delim+"clientid="+(this.value);
@@ -90,22 +74,63 @@ $(document).ready(function() {
 		});
 	});
 
-/*	
-// on select of new client in clientselect box, page is reloaded with client id set
+
+// in settings menu, selection of entity from drop down controls element selection and page reload
 	jQuery(document).ready(function($) {
-	$('#clientselect').change(function() {
-// making updates for job-endclient filtering
-//		var qmark=window.location.href.indexOf("?");
-		var clid=window.location.href.indexOf("?clientid");
-		if (clid != -1) {
-			// ?clientid already exists, so replace rather than add to the url
-			window.location.href = window.location.href.substring(0, clid) +"?clientid="+(this.value);
-		} else {
-			window.location.href = window.location.href+"?clientid="+(this.value);
+	$('.settingsselectors').change(function() {
+		if (window.location.href.indexOf("package") != -1) {
+			var settingid = "packageid";
+		} else if (window.location.href.indexOf("jobtype") != -1) {
+			var settingid = "jobtypeid";
+		} else if (window.location.href.indexOf("profile") != -1) {
+			alert("It's a Job Profile");
+		} else if (window.location.href.indexOf("userdefined") != -1) {
+			alert("It's a User Defined");
+		} else if (window.location.href.indexOf("reportsetup") != -1) {
+			alert("It's a Report");
 		}
+		
+		var idpos=window.location.href.indexOf(settingid);
+		if (idpos != -1) {
+			// setting id already exists in url, so replace rather than add to the url
+			window.location.href = window.location.href.substring(0, idpos)+settingid+"="+(this.value);
+		} else {
+			window.location.href = window.location.href+"?"+settingid+"="+(this.value);
+		}
+		
 		});
-	});	
-*/	
+	});
+
+// Settings - Change Settings page to Edit mode onclick of Edit button
+$(document).ready(function() {
+    $("div.settingsedit").hide();
+	var domainid = $("input[name$='settingsdomainid']").val();
+//	alert("domainid = "+domainid);
+    $("input[name$='editsettingsbtn']").click(function() {
+		if (domainid == 0) {
+			alert("System Default Option - unable to edit");
+		} else {
+			$("div.settingsview").hide();
+			$("div.settingsedit").show();
+			$('.settingfield').removeAttr('readonly');
+		}
+    });
+});
+
+// Settings - Change Settings page to Edit mode and empty form values onclick of New button
+$(document).ready(function() {
+	$("div.settingsedit").hide();	
+    $("input[name$='newsettingsbtn']").click(function() {
+        $('.form-control').removeAttr('value');
+		$('textarea').val('');
+		$("div.settingsview").hide();
+        $("div.settingsedit").show();
+		$('.settingfield').removeAttr('readonly');
+    });	
+});
+
+	
+// ALERTS	
 	
 // alert box when new button selected without filter (when needed)
 	jQuery(document).ready(function($) {

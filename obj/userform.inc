@@ -6,6 +6,8 @@ class UserForm extends HtmlForm {
 	
 	public function newUserForm() {
 		
+		$this->formFormat('New User');
+		
 		$sqsql = new Dbconnect();
 		$spparams = array("-1");
 		$out = array();
@@ -18,7 +20,7 @@ class UserForm extends HtmlForm {
 		echo "</div><div class='col'>";
 			echo "<p>Last Name: <input class='form-control' placeholder='Enter your last name' type='text' name='lastname' size='80' required = 'true' maxlength='80' /></p>";
 		echo "</div></div><div class='row'>\n<div class='col'>";
-			echo "<p>Email Address: <input class='form-control' placeholder='Enter your email address' type='text' name='email' size='120' required = 'true' maxlength='120' /></p>";
+			echo "<p>Email Address: <input class='form-control' placeholder='Enter your email address' type='email' name='email' size='120' required = 'true' maxlength='120' /></p>";
 		echo "</div><div class='col'>";
 			echo "<p>Username: <input class='form-control' placeholder='Enter your new username' type='text' name='username' size='30' required = 'true' maxlength='30' /></p>";
 		echo "</div></div><div class='row'>\n<div class='col'>";

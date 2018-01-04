@@ -31,8 +31,8 @@
 		
 	} else {
 		// if no posted information available
-		$formheader = 'New User';
-		$newuserform->formFormat($formheader);
+//		$formheader = 'New User';
+//		$newuserform->formFormat('New User');
 		$newuserform->newUserForm();
 	}
 	

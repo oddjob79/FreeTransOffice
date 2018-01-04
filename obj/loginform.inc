@@ -14,10 +14,12 @@ class LoginForm extends HtmlForm {
 		echo "<form method='post' action='login.php'>";
 		echo "<div class='form-group'>";
 		echo "<p>Username: <input class='form-control' placeholder='Enter Username' type='text' name='username' size='100' maxlength='30' /></p>";
-		echo "<p>Password: <input class='form-control' placeholder='Enter Password' type='text' name='password' size='100' maxlength='30' /></p></br>";
+		echo "<p>Password: <input class='form-control' placeholder='Enter Password' type='password' name='password' size='100' maxlength='30' /></p></br>";
 		echo "<input class='btn btn-outline-primary' type='submit' value='Login' />";
-		?> <button type="button" class="btn btn-outline-primary" onclick="window.location.href='newuser.php'" 
+		echo "  <a class='btn btn-outline-primary' href='../web/newuser.php' role='button' data-toggle='tooltip' data-placement='bottom' title='Click here to register for TransOffice'>New User</a>";
+/*		?> <button type="button" class="btn btn-outline-primary" onclick="window.location.href='newuser.php'" 
 			data-toggle="tooltip" data-placement="bottom" title="Click here to register for TransOffice">New User</button><?php
+*/			
 		echo "</div></form>";
 		echo "</div></div>";
 	}

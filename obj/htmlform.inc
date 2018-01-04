@@ -89,7 +89,8 @@ class HtmlForm {
 			$entity = strtolower($entity);
 			$outparam = "u_".$entity."_id";
 			$entity = str_replace('_', '', $entity);
-			$basepage->redirect("../web/".$entity."details.php?".$entity."id=".$newrecrow[$outparam]);
+//			$basepage->redirect("../web/".$entity."details.php?".$entity."id=".$newrecrow[$outparam]);
+			$basepage->redirect($_SERVER['PHP_SELF']."?".$entity."id=".$newrecrow[$outparam]);
 //				echo "Contact ".$contactposted[1]." created successfully"; // need to change this so this displays in an "infobar" at top of newly loaded page
 		} else {
 			echo "There was a problem creating the record.<br><br>";

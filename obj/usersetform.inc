@@ -155,19 +155,6 @@ class UserSetForm extends HtmlForm {
 		echo "</div></div></div></form>";
 	}	
 
-	private function getClientDetails(&$getvalues) {
-		//instantiate sql connection
-		$sql = new Dbconnect();
-		// set parameters for sp (implode value(s) retrieved from _GET)
-		$spparams = array(implode($getvalues), $_SESSION['domain_id']);
-		$out = array();
-		// call client details sp
-		$clientdets = $sql->callSp('sp_client_details', $out, $spparams);
-		// add results to array
-		$clientrow = $sql->returnFirstRow($clientdets);
-		return $clientrow;
-	}
-	
 }
 
 ?>
