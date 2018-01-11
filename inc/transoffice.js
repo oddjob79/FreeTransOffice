@@ -3,7 +3,7 @@
  *
  */	
 
-// utilize data tables on tables.inc	
+// Tables - utilize data tables on tables.inc	
  $(document).ready(function() {
     $('#elementlist').DataTable( {
         initComplete: function () {
@@ -44,16 +44,40 @@
     } );
 } );
 
-// snippet below allows table row to become clickable and create a link from the whole row
+// Tables - snippet below allows table row to become clickable and create a link from the whole row (excludes invcheck class)
 $(document).ready(function() {
 	var table = $('#elementlist').DataTable(); 
-	$('#elementlist tbody').on('click', 'tr',  function() {
+	$('#elementlist tbody').on('click', 'tr',  function(e) {
+		if ($(e.target).is('.invcheck')) return;
 		window.location = $(this).data("url");
 	} );
 } );
-	 
-	
-// on select of new client in clientselect box, page is reloaded with client id set
+
+// Generate Invoices - when Check all button pressed, all visible checkboxes checked and Check all button changed to Uncheck all
+$(document).ready(function(){
+   $('.selectallinv:button').click(function(){
+          var checked = !$(this).data('checked');
+          $('input:checkbox').prop('checked', checked);
+          $(this).val(checked ? 'Uncheck all' : 'Check all' )
+          $(this).data('checked', checked);
+    });
+})
+
+// Generate Invoices - Confirm / Cancel invoice - sets invconfirmcancel value to either 'Confirm' or 'Cancel'
+$(document).ready(function(){
+   $('#invconfirm').click(function(){
+       $('#invconfirmcancel').val('confirm');
+//	   alert("TEST "+val('Confirm')+" "+$('#inconfirmcancel').val());
+    });
+   $('#invcancel').click(function(){
+       $('#invconfirmcancel').val('cancel');
+    });
+
+})
+
+
+
+// Client Submenus - on select of new client in clientselect box, page is reloaded with client id set
 	jQuery(document).ready(function($) {
 	$('#clientselect').change(function() {
 // making updates for job-endclient filtering
@@ -74,7 +98,25 @@ $(document).ready(function() {
 		});
 	});
 
-
+// Job form
+// Change status to Completed - sets Completed Date to today
+	jQuery(document).ready(function() {
+	$('#jobstatus').change(function() {
+		if ($(this).val() == 5) {
+			// create date variable of today's date
+			var d = new Date();
+			var month = d.getMonth()+1;
+			var day = d.getDate();
+			var output = d.getFullYear() + '-' + (month<10 ? '0' : '') + month + '-' + (day<10 ? '0' : '') + day;
+			// apply date variable to completed date
+			$('#jobcompleteddate').val(output);
+		} else if ($(this).val() == 4) {
+			$('#jobcompleteddate').val('');
+		}
+		});
+	});	
+	
+// Settings menu
 // in settings menu, selection of entity from drop down controls element selection and page reload
 	jQuery(document).ready(function($) {
 	$('.settingsselectors').change(function() {
@@ -132,7 +174,7 @@ $(document).ready(function() {
 	
 // ALERTS	
 	
-// alert box when new button selected without filter (when needed)
+// Client Submenus - alert box when new button selected without filter (when needed)
 	jQuery(document).ready(function($) {
 	$('#entitylistnewbutton').click(function(e) {
 		if (window.location.href.indexOf("?clientid") == -1) {
@@ -142,7 +184,7 @@ $(document).ready(function() {
 		});
 	});	
 	
-// alert box for changing user details
+// User Details - alert box for changing user details
 	jQuery(document).ready(function($) {
 	$('.supportalert').click(function() {
 		alert("Please contact support@kennettechservices.com to change your login information");

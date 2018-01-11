@@ -40,6 +40,7 @@ class Dbconnect {
 		// remove last ", " from $qmstr (if $qmstr has a value)
 		if (strlen($qmstr) > 0) { $qmstr = substr($qmstr, 0, -2); }
 
+
 		// build prepare statement based on existence of OUT parameters in SP
 		if (!empty($outparams)) {
 			$prepstr = "CALL ".$spname."(".implode(",", $outparams).", ".$qmstr.")";

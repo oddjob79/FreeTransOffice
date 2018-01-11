@@ -23,8 +23,8 @@
 									'Jobs'		=>	'../web/cl_jobs.php',
 									'Invoices'	=>	'../web/cl_invoices.php'
 								);
-		protected $invsubitems = array('Invoiced Jobs' 	=>	'../web/invoiced_jobs.php',
-									'Generate Invoices'	=>	'../web/gen_invoices.php'
+		protected $invsubitems = array('Invoices' 	=>	'../web/invoicelist.php',
+									'Generate Invoices'	=>	'../web/geninvoices.php'
 								);
 
 // certain options removed as functionality will be implemented at a later date
@@ -63,7 +63,7 @@
 				<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 				<script src="../inc/bootstrap/js/bootstrap-datepicker.min.js"></script>
 				<!-- custom javascript library -->
-				<script src="../inc/transoffice.js?rndstr=82"></script>
+				<script src="../inc/transoffice.js?rndstr=111"></script>
 				
 				<!-- ensures sclaing to mobile devices -->
 				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

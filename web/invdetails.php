@@ -1,0 +1,37 @@
+<?php
+
+	require_once('../obj/invoiceform.inc');
+	require_once('../obj/basepage.inc');
+	
+	$invdetailpage = new BasePage();
+	$invdetailpage -> Display();
+	$invdetailpage -> checkLoggedIn();
+	
+	$invdetailform = new InvoiceForm();
+	
+	if($_SERVER['REQUEST_METHOD'] == 'POST') {
+		
+		// get posted values relating to the invoice
+		$invdetail = array("dummy_invoicenumber", "dummy_invoicedate", "dummy_clientid", "dummy_invoicetotal", "receivedamount", "invreceiveddate", "dummy_invstatus", "dummy_attachment", "invnotes");
+		
+		// get the values that were posted on the form
+		$postedvalues = $invdetailform->getPostedValues($invdetail, true);
+		
+	// update invoice logic
+		// add invoice_id to $postedvalues array
+		array_unshift($postedvalues, $_POST['recordid']);
+		$sql = new Dbconnect();
+		$out = array();
+		$updaterecord = $sql->callSP('sys_invoices_update', $out, $postedvalues);
+		$sql = ""; $out = ""; $updaterecord = ""; $postedvalues = "";
+
+		$invdetailpage->redirect("../web/invdetails.php?invoiceid=".$_POST['recordid']);
+		$invdetailpage -> endPage();
+
+	} else {
+		$invdetailform -> showInvoiceForm();
+		$invdetailpage -> endPage();
+	}
+		
+	
+?>

@@ -4,67 +4,13 @@
 
 class Tables {
 
-/*	private function tableFormat($tableheader) {
-		echo "<div class='col-10'>";
-		echo "<div class='row'>\n<div class='col-10'>";
-			echo "<h3 class='p-2 mb-2 bg-light text-dark'>".$tableheader."</h3>";
-		echo "</div></div>";
-//		echo "<div class='p-3 mb-2 bg-light text-dark'>";
-	}
-*/
-
 	private function tableFormat($tableheader) {
 		echo "<div class='col-10'>";
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<h3 class='p-2 mb-2 bg-light text-dark'>".$tableheader."</h3>";
 		echo "</div></div>";
-//		echo "<div class='row'>\n<div class='col-10'>";		
 	}
-	
-	public function entityList($theaders, $fieldnames, &$listdata, $url, $entity, $filter = 'none') {
-		$this->tableFormat($entity."s");
-		if ($filter == 'client') {
-			$this->clientList();
-		} else if ($filter == 'invoice') {
-			$this->invoiceList();
-		}
-		echo "<table class='table table-hover table-responsive' id='elementlist'>";
-		echo "<thead class='table-primary'><tr>";
-			// add <th> element for each table header sent through via the array
-			foreach ($theaders as $theader) {
-				echo "<th>".$theader."</th>";
-			}
-			echo "</tr></thead><tbody>";
-		// for each row of data retrieved from the database
-		foreach ($listdata as $datarow) {
-			// run through each field name sent through in array
-			foreach ($fieldnames as $fieldname) {
-				// if the field name matches the entity name plus "id" then treat it as the identifier and use it to send to the details page
-				if ($fieldname == strtolower(str_replace(" ", "_", $entity))."_id") {	
-					echo "<tr data-url='".$url."?".strtolower(str_replace(" ", "", $entity))."id=".$datarow[$fieldname]."'>";
-				} else {
-					// otherwise push the data to a <td> element
-					echo "<td>".$datarow[$fieldname]."</td>";
-				}
-			}
-			echo "</tr>";
-		} 
-		echo "</tbody></table>";
 
-		// use the entity name to name the "new record" button
-		$filtergetvar = $filter."id";
-		if ($filter != 'none' && !empty($_GET[$filtergetvar])) {
-			$url = $url."?".$filtergetvar."=".$_GET[$filtergetvar];
-		}
-		
-		// ensures jquery only run when there is a filter on the page
-		if ($filter == 'none') {
-			echo "<a href='".$url."' class='btn btn-primary' type='button' role='button'>New ".$entity."</a>";
-		} else {
-			echo "<a href='".$url."' class='btn btn-primary' id='entitylistnewbutton' type='button' role='button'>New ".$entity."</a>";
-		}
-	}
-	
 	public function updateDateFormat(&$entitydetails, $datefields) {
 		// loop through each row of data and split up each associative array by their key-value pair
 		foreach ($entitydetails as $key => $val) {
@@ -79,7 +25,7 @@ class Tables {
 	public function formatPrice(&$entitydetails, $pricefields) {
 		// loop through each row of data and split up each associative array by their key-value pair
 		foreach ($entitydetails as $key => $val) {
-			// loop through each date field passed to method
+			// loop through each price field passed to method
 			foreach ($pricefields as $fieldname) {
 				// set the price field to 2dp and join with the currency code
 				$entitydetails[$key][$fieldname] = number_format((float)$val[$fieldname], 2, '.', '') . " " . $entitydetails[$key]['currency_code'] ;
@@ -134,6 +80,119 @@ class Tables {
 		}
 		return $clientid;
 	}
+
+	public function entityList($theaders, $fieldnames, &$listdata, $url, $entity, $filter = 'none') {
+		// depending on filter type, choose the headers
+		if ($filter == 'client') {
+			$this->tableFormat($entity."s");			
+			$this->clientList();
+		} else if ($filter == 'invoice') {
+			$this->tableFormat("Generate Invoices");
+			echo "<form method='post' action='geninvoices.php'>";
+			$this->clientList();
+		} else {
+			$this->tableFormat($entity."s");
+		}
+
+		// build the actual table
+		$this->buildTable($theaders, $fieldnames, $listdata, $url, $entity, $filter);
+
+		// add buttons at end of table
+		$this->footerButtons($url, $entity, $filter);
+		
+		echo "</form>";
+		
+	}
+	
+	private function footerButtons ($url, $entity, $filter) {
+		// use the entity name to name the "new record" button
+		$filtergetvar = $filter."id";
+		if ($filter != 'none' && !empty($_GET[$filtergetvar])) {
+			$url = $url."?".$filtergetvar."=".$_GET[$filtergetvar];
+		}
+		
+		// ensures jquery only run when there is a filter on the page
+		if ($filter == 'none') {
+			echo "<a href='".$url."' class='btn btn-primary' type='button' role='button'>New ".$entity."</a>";
+		} elseif ($filter == 'client') {
+			echo "<a href='".$url."' class='btn btn-primary' id='entitylistnewbutton' type='button' role='button'>New ".$entity."</a>";
+		} elseif ($filter == 'invoice') {
+			echo "<input type='button' class='btn btn-primary selectallinv' value='Check all' />";
+			echo "  <input class='btn btn-primary' type='submit' value='Generate Invoices' /> ";
+		}	
+	}
+	
+	private function buildTable($theaders, $fieldnames, &$listdata, $url, $entity, $filter)
+	{
+		echo "<table class='table table-hover table-responsive' id='elementlist'>";
+		echo "<thead class='table-primary'><tr>";
+			// add <th> element for each table header sent through via the array
+			foreach ($theaders as $theader) {
+				echo "<th>".$theader."</th>";
+			}
+			if ($filter == 'invoice') {
+				echo "<th></th>";
+			}
+			echo "</tr></thead><tbody>";
+		// for each row of data retrieved from the database
+		foreach ($listdata as $datarow) {
+			// run through each field name sent through in array
+			foreach ($fieldnames as $fieldname) {
+				// if the field name matches the entity name plus "id" then treat it as the identifier and use it to send to the details page
+				if ($fieldname == strtolower(str_replace(" ", "_", $entity))."_id") {
+					$entityid = $datarow[$fieldname];
+					echo "<tr data-url='".$url."?".strtolower(str_replace(" ", "", $entity))."id=".$entityid."'>";
+				} else {
+					// otherwise push the data to a <td> element
+					echo "<td>".$datarow[$fieldname]."</td>";
+				}
+			}
+			if ($filter =='invoice') {
+				echo "<td class='invcheck'><input class='invcheck' type='checkbox' name='invjob[]' value='".$entityid."' /></td>";
+			}
+			echo "</tr>";
+		} 
+		echo "</tbody></table>";
+	}
+
+	public function confirmInvoiceTable($invheader, $theaders, &$listdata) {
+		$this->tableFormat("Confirm Invoice");
+				
+		echo "<h5 class='p-2 mb-2 bg-light text-dark'><div class='row'><div class='col'>";
+			echo "<b>Client:</b> ".$invheader['client_name'];
+		echo "</div><div class ='col'>";
+			echo "<b>Inv Num:</b> ".$invheader['invoice_number'];
+		echo "</div><div class ='col'>";
+			echo "<b>Inv Date:</b> ".$invheader['invoice_date'];
+		echo "</div><div class ='col'>";
+			echo "<b>Inv Total:</b> ".$invheader['invoice_total'];
+		echo "</div></div></h5>";
+			
+		echo "<table class='table table-responsive'";
+		echo "<thead><tr>";
+			// add <th> element for each table header sent through via the array
+			foreach ($theaders as $theader) {
+				echo "<th>".$theader."</th>";
+			}
+			echo "</tr></thead><tbody>";
+			foreach($listdata as $datarow) {
+				echo "<tr>";
+				foreach ($datarow as $element) {
+					echo "<td>".$element."</td>";
+				}
+				echo "</tr>";
+			}
+		echo "</tbody></table>";
+		
+		echo "<form method='post' action='submitinvoice.php'>";
+		echo "<input type='hidden' name='tempinvoiceid' value='".$invheader['temp_invoice_id']."' />";
+		echo "<input type='hidden' name='newinvoicenum' value='".$invheader['invoice_number']."' />";
+		echo "<input type='hidden' name='invconfirmcancel' id='invconfirmcancel' />";
+		echo "<br><input type='submit' class='btn btn-primary' id='invconfirm' value='Confirm' />";
+		echo "  <input type='submit' class='btn btn-primary' id='invcancel' value='Cancel' /></form>";
+		
+	}
+
 	
 }
 

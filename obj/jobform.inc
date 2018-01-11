@@ -43,18 +43,22 @@ class JobForm extends HtmlForm {
 		$packages = $sql->callSP('sys_packages_read', $out, $domparams);	
 		$jobprofiles = $sql->callSP('sp_job_profile_details', $out, $domparams);
 		
+		// logic to build dynamic list of end clients, based on selection of client on screen, or already present client on job - could replace with AJAX?
+		// look for client_id already set on job
 		if (!empty($jobdata['client_id'])) {
 			$jobclientid = $jobdata['client_id'];
 		} else {
 			$jobclientid = null;
 		}
+		// if clientid not sent to the URL, then use the client id currently associated to job
 		$jobclientid = $this->emptyParam($getvalues['clientid'], $jobclientid, $getvalues['clientid']);
 		
+		// use the client id decided above to search for relevant end clients
 		$cldmparams = array("-1", $jobclientid, $_SESSION['domain_id']);
 		$endclients = $sql->callSP('sp_end_client_details', $out, $cldmparams);
-
 		
 		// will need to update to account for timezones
+		// move logic to php. simply grab the last jobno and code the next one in a function
 		$jobnumsetarray = array(date('Ymd'), $_SESSION['domain_id']);
 		$result = $sql->callSP('sp_find_next_jobnum', $out, $jobnumsetarray);
 		$row = $sql->returnFirstRow($result);
@@ -148,7 +152,7 @@ class JobForm extends HtmlForm {
 			echo "</select></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Status: <select class='form-control' name='status'>";
+			echo "<p>Status: <select class='form-control' name='status' id='jobstatus'>";
 				foreach ($statuses as $status) {
 					if ($status['status_id'] == $jobdata['job_status']) {
 						echo "<option value=".$status['status_id']." selected='selected'>".$status['status_name']."</option>";						
@@ -204,7 +208,7 @@ class JobForm extends HtmlForm {
 		
 		// Completed Date and Actual Time
 		echo "<div class='row'><div class='col'>";
-			echo "<p>Completed Date: <input class='form-control' placeholder='Date Job Completed' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='completeddate' value='".substr($jobdata['completed_date'], 0, 10)."' maxlength='10' /></p>";
+			echo "<p>Completed Date: <input class='form-control' placeholder='Date Job Completed' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='completeddate' id='jobcompleteddate' value='".substr($jobdata['completed_date'], 0, 10)."' maxlength='10' /></p>";
 		echo "</div><div class='col'>";
 			echo "<p>Actual Time: <input class='form-control' placeholder='Enter Actual Job Time' type='text' name='actualtime' value='".$jobdata['actual_time']."' maxlength= '10' /></p>";
 		echo "</div></div>";	
@@ -213,7 +217,7 @@ class JobForm extends HtmlForm {
 		echo "<div class='row'><div class='col'>";
 			echo "<p>Invoice No: <input class='form-control' type='text' name='invoicenumber' value='".$jobdata['invoice_number']."' readonly /></p>";
 		echo "</div><div class='col'>";
-			echo "<p>Invoice Date: <input class='form-control' type='text' name='invoicedate' value='".$jobdata['invoice_date']."' readonly /></p>";			
+			echo "<p>Invoice Date: <input class='form-control' type='text' name='invoicedate' value='".substr($jobdata['invoice_date'], 0, 10)."' readonly /></p>";			
 		echo "</div></div>";
 
 		//UDFs - Need to be updated so lables reflect what is set in the settings per domain
