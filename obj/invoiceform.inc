@@ -120,12 +120,17 @@ class InvoiceForm extends HtmlForm {
 		
 		// hidden invoiceid - determine if an update or insert is needed
 		echo "<input type='hidden' name='recordid' value='".$invdata['invoice_id']."'>";
+		echo "<input type='hidden' name='voidinvoice' id='voidinvoice' value=''>";
 		
 		// submit
 		echo "<div class='row'>\n<div class='col-auto mr-auto'>";		
 			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
 		echo "</div><div class='col-auto'>";
-			echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
+//			echo "<br> <input class='btn btn-outline-primary' type='submit' id='voidinvbutton' value='Void Invoice' /> ";
+
+			echo "<br> <button class='btn btn-outline-primary' type='button' data-toggle='modal' data-target='#voidmodal'>Void Invoice</button> ";
+			$this->buildModal('voidmodal', 'Void Invoice?', 'Please confirm you would like to void invoice number '.$invdata['invoice_number'].'.<br> The invoice status will be set to Voided and all associated jobs will be set to Complete', 'voidinvbutton', 'Void');
+			echo " <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
 			echo " <a class='btn btn-outline-primary' href='../web/invoicelist.php' role='button'>Cancel</a> ";
 		echo "</div></div></div></form>";
 	}	

@@ -27,13 +27,6 @@
 	$datefields = array('invoice_date', 'received_date');
 	$invtable->updateDateFormat($entitylist, $datefields);
 	
-	// set the price format for all fields in the $pricefields array
-//	$pricefields = array('invoice_total', 'received_amount');
-//	$invtable->formatPrice($entitylist, $pricefields);
-	
-//	$entitylist['invoice_total'] = $entitylist['invoice_total'] . ' ' . $entitylist['client_currency'];
-//	$entitylist['received_amount'] = $entitylist['received_amount'] . ' ' . (empty($entitylist['user_currency']) ? $entitylist['client_currency'] : $entitylist['user_currency']);
-
 	// send the headers, field names, data, url for redirects and the entity name to the entityList method for processing
 	$invtable->entityList($theaders, $fieldnames, $entitylist, $entitydetailsurl, $entityname);
 	

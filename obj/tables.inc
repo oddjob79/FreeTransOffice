@@ -113,12 +113,12 @@ class Tables {
 		
 		// ensures jquery only run when there is a filter on the page
 		if ($filter == 'none') {
-			echo "<a href='".$url."' class='btn btn-primary' type='button' role='button'>New ".$entity."</a>";
+			echo "<a href='".$url."' class='btn btn-outline-primary' type='button' role='button'>New ".$entity."</a>";
 		} elseif ($filter == 'client') {
-			echo "<a href='".$url."' class='btn btn-primary' id='entitylistnewbutton' type='button' role='button'>New ".$entity."</a>";
+			echo "<a href='".$url."' class='btn btn-outline-primary' id='entitylistnewbutton' type='button' role='button'>New ".$entity."</a>";
 		} elseif ($filter == 'invoice') {
-			echo "<input type='button' class='btn btn-primary selectallinv' value='Check all' />";
-			echo "  <input class='btn btn-primary' type='submit' value='Generate Invoices' /> ";
+			echo "<input type='button' class='btn btn-outline-primary selectallinv' value='Check all' />";
+			echo "  <input class='btn btn-outline-primary' type='submit' value='Generate Invoices' /> ";
 		}	
 	}
 	
@@ -188,8 +188,8 @@ class Tables {
 		echo "<input type='hidden' name='tempinvoiceid' value='".$invheader['temp_invoice_id']."' />";
 		echo "<input type='hidden' name='newinvoicenum' value='".$invheader['invoice_number']."' />";
 		echo "<input type='hidden' name='invconfirmcancel' id='invconfirmcancel' />";
-		echo "<br><input type='submit' class='btn btn-primary' id='invconfirm' value='Confirm' />";
-		echo "  <input type='submit' class='btn btn-primary' id='invcancel' value='Cancel' /></form>";
+		echo "<br><input type='submit' class='btn btn-outline-primary' id='invconfirm' value='Confirm' />";
+		echo "  <input type='submit' class='btn btn-outline-primary' id='invcancel' value='Cancel' /></form>";
 		
 	}
 

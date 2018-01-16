@@ -72,9 +72,30 @@ $(document).ready(function(){
    $('#invcancel').click(function(){
        $('#invconfirmcancel').val('cancel');
     });
-
 })
 
+// Invoice Details - Void Invoice button - Sets voidinvoice hidden field to 'void' so SP can be run to update invoice / jobs
+/*$(document).ready(function(){
+	$('#voidinvbutton').click(function(e){
+	var invno = $("input[name$='invoicenumber']").val();
+	var confirmed = confirm("Please confirm you would like to void invoice number "+invno);
+	if (confirmed) {
+		$('#voidinvoice').val('void');
+	} else {
+		e.preventDefault(); 
+		e.stopPropagation();
+		return false;
+	}
+//	   alert("Please confirm you would like to void invoice number "+invno);
+    });
+})
+*/
+
+$(document).ready(function(){
+	$('#voidinvbutton').click(function(){
+		$('#voidinvoice').val('void');
+    });
+})
 
 
 // Client Submenus - on select of new client in clientselect box, page is reloaded with client id set

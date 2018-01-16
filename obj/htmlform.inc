@@ -169,6 +169,26 @@ class HtmlForm {
 		return $timezone_list;
 	}	
 	
+	protected function buildModal($modalid, $header, $msg, $saveid = null, $value = null) {
+		echo "<div id='".$modalid."' class='modal fade' role='dialog'>";
+		  echo "<div class='modal-dialog'>";
+			echo "<div class='modal-content'>";
+			  echo "<div class='modal-header'>";
+			   echo "<h5 class='modal-title'>".$header."</h5>";
+				echo "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>";
+				  echo "<span aria-hidden='true'>&times;</span>";
+				echo "</button>";
+			  echo "</div>";
+			  echo "<div class='modal-body'>";
+				echo "<p>".$msg."</p>";
+			  echo "</div>";
+			  echo "<div class='modal-footer'>";
+				echo "<input class='btn btn-primary' type='submit' id='".$saveid."' value='".$value."' /> ";			  
+//				echo "<button type='button' id='".$saveid."' class='btn btn-primary'>Save changes</button>";
+				echo "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>";
+			  echo "</div></div></div></div>";
+	}
+	
 }
 
 ?>
