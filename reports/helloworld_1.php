@@ -52,8 +52,26 @@ $myTextElement = $section->addText('"Believe you can and you\'re halfway there."
 $myTextElement->setFontStyle($fontStyle);
 
 // Saving the document as OOXML file...
+$reportpath = '/opt/bitnami/apache2/htdocs/transoffice/dev/reports/';
+$file = 'helloWorld_11';
+
 $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-$objWriter->save('helloWorld_1.docx');
+$filedoc = $file.'.docx';
+$objWriter->save($filedoc);
+
+// code below makes file available for download
+header('Content-Description: File Transfer');
+header('Content-Type: application/octet-stream');
+header('Content-Disposition: attachment; filename='.$filedoc);
+header('Content-Transfer-Encoding: binary');
+header('Expires: 0');
+header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+header('Pragma: public');
+header('Content-Length: ' . filesize($filedoc));
+flush();
+//readfile($filedoc);
+//unlink($filename); // deletes the temporary file (does not delete temp file, deletes permanent file on server)
+//exit;
 
 /*// Saving the document as ODF file...
 $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'ODText');
@@ -62,12 +80,13 @@ $objWriter->save('helloWorld.odt');
 
 // Saving the document as HTML file...
 $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'HTML');
-$objWriter->save('helloWorld_1.html');
+$filehtml = $file.".html";
+$objWriter->save($filehtml);
 
 // reference the Dompdf namespace
 use Dompdf\Dompdf;
 
-$htmlfilepath = file_get_contents('/opt/bitnami/apache2/htdocs/transoffice/dev/reports/helloWorld_1.html');
+$htmlfilepath = file_get_contents($reportpath.$filehtml);
 
 // instantiate and use the dompdf class
 $dompdf = new Dompdf();
@@ -78,9 +97,16 @@ $dompdf->setPaper('A4', 'landscape');
 
 // Render the HTML as PDF
 $dompdf->render();
+$filepdf = $file.".pdf";
+$file_to_save = $reportpath.$filepdf;
+
+file_put_contents($file_to_save, $dompdf->output());
 
 // Output the generated PDF to Browser
-$dompdf->stream();
+//$dompdf->stream();
+//$dompdf->stream($filepdf, array("Attachment" => true));
+readfile($filedoc);
+readfile($filepdf);
 
 /* Note: we skip RTF, because it's not XML-based and requires a different example. */
 /* Note: we skip PDF, because "HTML-to-PDF" approach is used to create PDF documents. */
