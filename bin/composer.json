@@ -1,0 +1,8 @@
+{
+    "require": {
+        "zendframework/zend-escaper": "^2.5",
+        "zendframework/zend-stdlib": "^3.1",
+        "phpoffice/phpword": "^0.14.0",
+        "dompdf/dompdf": "^0.8.2"
+    }
+}
