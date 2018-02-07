@@ -118,7 +118,7 @@ class InvoiceForm extends HtmlForm {
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Status: <input class='form-control' type='text' name='invstatus' value='".$invdata['status_name']."' readonly /></p>";
 		echo "</div><div class='col'>";
-			echo "<p>Attachment: <input class='form-control' type='file' name='attachment' readonly='readonly' value='".$invdata['document_path']."' height='10' width='10' /></p>";
+			echo "<p>Attachment: <figure><a href='".$invdata['document_path']."'><img src='../inc/doclogo.png' width='50' height = '50' ></a><figcaption>".substr(strrchr($invdata['document_path'], "/"), 1)."</p>";
 		echo "</div></div>";		
 		
 		// Notes

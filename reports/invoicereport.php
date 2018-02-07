@@ -29,17 +29,14 @@ $reporttemplate = $invheader['template_path'];
 
 require_once($reporttemplate);
 $report = new DefInvoice();
+// returns location of newly created report file
 $filepath = $report->defaultInvoice($invheader, $invdetails);
-
 $filepath = '../reports/'.$filepath;
-echo "filepath is ".$filepath."<br>";
 
+// calls sp to add this to the documents table and update the invoice record
 $docinsparams = array($_SESSION['domain_id'], $filepath, $invoiceid);
 $out = array('@u_document_id');
 $result = $sql->callSP('sp_add_invoice_attachment', $out, $docinsparams);
-$newdocumentid = $sql->returnFirstRow($result);
-
-print_r($documentid);
 
 
 ?>
