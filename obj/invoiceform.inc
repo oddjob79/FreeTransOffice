@@ -22,9 +22,17 @@ class InvoiceForm extends HtmlForm {
 		$sql = new Dbconnect();
 		$out = array("@u_invoice_id");
 		$newrecord = $sql->callSP('sp_submit_invoice', $out, $postedvalues);
+
+		// check here for new invoice id, then call report (or extend the recordCreated method)
+		// get newly created invoice number
+		$newinvnum = $sql->returnFirstRow($newrecord);
+		// retrieve invoice header information
+		
+
 		
 		// check if a new record was created.	
-		$this->recordCreated($newrecord, 'invoice');
+//		return $this->recordCreated($newrecord, 'invoice');
+		return $newinvnum['u_invoice_id'];
 	}
 
 	private function cancelInvoice($postedvalues) {
@@ -40,7 +48,7 @@ class InvoiceForm extends HtmlForm {
 		$postedvals = $this->getPostedValues($submitinvfields, true);
 
 		if ($invconfirmcancel == 'confirm') {
-			$this->confirmInvoice($postedvals);
+			return $this->confirmInvoice($postedvals);
 		} elseif ($invconfirmcancel == 'cancel') {
 			$this->cancelInvoice($postedvals);
 			return 'cancelled';
@@ -129,7 +137,7 @@ class InvoiceForm extends HtmlForm {
 //			echo "<br> <input class='btn btn-outline-primary' type='submit' id='voidinvbutton' value='Void Invoice' /> ";
 
 			echo "<br> <button class='btn btn-outline-primary' type='button' data-toggle='modal' data-target='#voidmodal'>Void Invoice</button> ";
-			$this->buildModal('voidmodal', 'Void Invoice?', 'Please confirm you would like to void invoice number '.$invdata['invoice_number'].'.<br> The invoice status will be set to Voided and all associated jobs will be set to Complete', 'voidinvbutton', 'Void');
+			$this->buildConfirmModal('voidmodal', 'Void Invoice?', 'Please confirm you would like to void invoice number '.$invdata['invoice_number'].'.<br> The invoice status will be set to Voided and all associated jobs will be set to Complete', 'voidinvbutton', 'Void');
 			echo " <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
 			echo " <a class='btn btn-outline-primary' href='../web/invoicelist.php' role='button'>Cancel</a> ";
 		echo "</div></div></div></form>";

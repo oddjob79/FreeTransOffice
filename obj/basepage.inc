@@ -63,7 +63,7 @@
 				<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 				<script src="../inc/bootstrap/js/bootstrap-datepicker.min.js"></script>
 				<!-- custom javascript library -->
-				<script src="../inc/transoffice.js?rndstr=117"></script>
+				<script src="../inc/transoffice.js?rndstr=120"></script>
 				
 				<!-- ensures sclaing to mobile devices -->
 				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -217,6 +217,11 @@
 			$this -> displayVersion();
 			echo "</table></div>"; */
 			//echo "</div></div>\n</body>\n</html>\n"; 
+		}
+		
+		public function displayNoHeaders() {
+			echo "<body>\n<div class='container-fluid'>\n\t";			
+			$this->displayBanner();
 		}
 			
 	}

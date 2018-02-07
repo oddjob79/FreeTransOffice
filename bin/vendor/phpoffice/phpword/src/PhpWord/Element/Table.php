@@ -45,6 +45,7 @@ class Table extends AbstractElement
      */
     private $width = null;
 
+
     /**
      * Create a new table
      *
@@ -149,4 +150,6 @@ class Table extends AbstractElement
 
         return $columnCount;
     }
+	
+	
 }

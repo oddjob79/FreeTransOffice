@@ -34,14 +34,22 @@ class Table extends AbstractElement
         if (!$this->element instanceof \PhpOffice\PhpWord\Element\Table) {
             return '';
         }
-
-        $content = '';
+		
+		$content = '';
         $rows = $this->element->getRows();
         $rowCount = count($rows);
         if ($rowCount > 0) {
-            $content .= '<table>' . PHP_EOL;
-            foreach ($rows as $row) {
-                /** @var $row \PhpOffice\PhpWord\Element\Row Type hint */
+			$tStyle = $this->element->getStyle(); // added 
+			if (is_string($tStyle) && strlen($tStyle) > 0) {
+				$content .= '<table class="'.$tStyle.'">' . PHP_EOL;
+			} else {
+				$content .= '<table>' . PHP_EOL;
+			} 
+			// end table style addition
+
+//				$content .= '<table>' . PHP_EOL; // this has been replaced by the above
+	            foreach ($rows as $row) {
+			/** @var $row \PhpOffice\PhpWord\Element\Row Type hint */
                 $rowStyle = $row->getStyle();
                 // $height = $row->getHeight();
                 $tblHeader = $rowStyle->isTblHeader();
@@ -49,7 +57,32 @@ class Table extends AbstractElement
                 foreach ($row->getCells() as $cell) {
                     $writer = new Container($this->parentWriter, $cell);
                     $cellTag = $tblHeader ? 'th' : 'td';
-                    $content .= "<{$cellTag}>" . PHP_EOL;
+					$cellStyle = $cell->getStyle();
+					
+					// border styling per cell - added by RT
+					$bordertopsize = $cellStyle->getBorderTopSize();
+					$borderleftsize = $cellStyle->getBorderLeftSize();
+					$borderrightsize = $cellStyle->getBorderRightSize();
+					$borderbottomsize = $cellStyle->getBorderBottomSize();	
+					$bordertopcolor = $cellStyle->getBorderTopColor();
+					$borderleftcolor = $cellStyle->getBorderLeftColor();
+					$borderrightcolor = $cellStyle->getBorderRightColor();
+					$borderbottomcolor = $cellStyle->getBorderBottomColor();					
+
+					$bordersizes = array($bordertopsize, $borderleftsize, $borderrightsize, $borderbottomsize);
+					$bordercolors = array($bordertopcolor, $borderleftcolor, $borderrightcolor, $borderbottomcolor);
+					
+					if (strlen($bordertopcolor) > 0 && count(array_unique($bordersizes)) === 1 && count(array_unique($bordercolors)) === 1) {
+						$inlineCSS = 'border: '.$bordertopsize.'px solid #'. $bordertopcolor;
+					}
+					
+                    if (!empty($inlineCSS)) {
+						$content .= "<{$cellTag} style='".$inlineCSS."'>" . PHP_EOL;
+					} else {
+						$content .= "<{$cellTag}>" . PHP_EOL;
+					}
+					// end of inline border styling for table cells - RT
+					
                     $content .= $writer->write();
                     $content .= "</{$cellTag}>" . PHP_EOL;
                 }
@@ -60,4 +93,5 @@ class Table extends AbstractElement
 
         return $content;
     }
+	
 }

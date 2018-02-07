@@ -21,9 +21,11 @@ use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\Style;
 use PhpOffice\PhpWord\Style\Font;
 use PhpOffice\PhpWord\Style\Paragraph;
+use PhpOffice\PhpWord\Style\Table;
 use PhpOffice\PhpWord\Writer\HTML\Style\Font as FontStyleWriter;
 use PhpOffice\PhpWord\Writer\HTML\Style\Generic as GenericStyleWriter;
 use PhpOffice\PhpWord\Writer\HTML\Style\Paragraph as ParagraphStyleWriter;
+use PhpOffice\PhpWord\Writer\HTML\Style\Table as TableStyleWriter;
 
 /**
  * RTF head part writer
@@ -104,7 +106,7 @@ class Head extends AbstractPart
                 'width '         => '100%',
             ),
             'td' => array(
-                'border' => '1px solid black',
+                'border' => '1px solid black'
             ),
         );
         foreach ($defaultStyles as $selector => $style) {
@@ -128,7 +130,14 @@ class Head extends AbstractPart
                     $styleWriter = new ParagraphStyleWriter($style);
                     $name = '.' . $name;
                     $css .= "{$name} {" . $styleWriter->write() . '}' . PHP_EOL;
-                }
+                } 
+				// All below is new
+					elseif ($style instanceof Table) {
+					$styleWriter = new TableStyleWriter($style);
+                    $name = '.' . $name;
+                    $css .= "{$name} {" . $styleWriter->write() . '}' . PHP_EOL;
+				}
+				// end of new code
             }
         }
         $css .= '</style>' . PHP_EOL;

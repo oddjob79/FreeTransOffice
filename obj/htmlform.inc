@@ -79,6 +79,7 @@ class HtmlForm {
 		return $recordexists;
 	}
 	
+	// re-write send in newrecrow. return redirect path. move returnFirstRow and redirect outside method. have child method for invoice with diff redirect string
 	public function recordCreated(&$newrecord, $entity) {
 		if (!empty($newrecord)) {
 			$sql = new Dbconnect();
@@ -90,7 +91,9 @@ class HtmlForm {
 			$outparam = "u_".$entity."_id";
 			$entity = str_replace('_', '', $entity);
 			if ($entity == 'invoice') {
-				$basepage->redirect("../web/invdetails.php?".$entity."id=".$newrecrow[$outparam]);
+				$redirecturl = "../web/invdetails.php?".$entity."id=".$newrecrow[$outparam];
+				return $redirecturl;
+//				$basepage->redirect("../web/invdetails.php?".$entity."id=".$newrecrow[$outparam]);
 			} else {
 				$basepage->redirect($_SERVER['PHP_SELF']."?".$entity."id=".$newrecrow[$outparam]);
 			}
@@ -169,7 +172,7 @@ class HtmlForm {
 		return $timezone_list;
 	}	
 	
-	protected function buildModal($modalid, $header, $msg, $saveid = null, $value = null) {
+	private function modalHeader($modalid, $header) {
 		echo "<div id='".$modalid."' class='modal fade' role='dialog'>";
 		  echo "<div class='modal-dialog'>";
 			echo "<div class='modal-content'>";
@@ -178,15 +181,39 @@ class HtmlForm {
 				echo "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>";
 				  echo "<span aria-hidden='true'>&times;</span>";
 				echo "</button>";
-			  echo "</div>";
-			  echo "<div class='modal-body'>";
-				echo "<p>".$msg."</p>";
-			  echo "</div>";
-			  echo "<div class='modal-footer'>";
-				echo "<input class='btn btn-primary' type='submit' id='".$saveid."' value='".$value."' /> ";			  
+			  echo "</div>";		
+	}
+	
+	private function modalBody($msg) {
+	  echo "<div class='modal-body'>";
+		echo "<p>".$msg."</p>";
+	  echo "</div>";		
+	}
+	
+	private function modalFooterConfirm($saveid, $value) {
+	  echo "<div class='modal-footer'>";
+		echo "<input class='btn btn-primary' type='submit' id='".$saveid."' value='".$value."' /> ";			  
 //				echo "<button type='button' id='".$saveid."' class='btn btn-primary'>Save changes</button>";
-				echo "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>";
-			  echo "</div></div></div></div>";
+		echo "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Cancel</button>";
+	  echo "</div></div></div></div>";		
+	}
+	
+	private function modalFooterPrint($saveid, $value) {
+	  echo "<div class='modal-footer'>";
+		echo "<button type='button' id='".$saveid."' class='btn btn-primary' value='".$value."'>Invoice Details</button>";
+	  echo "</div></div></div></div>";		
+	}
+	
+	protected function buildConfirmModal($modalid, $header, $msg, $saveid = null, $value = null) {
+		$this->modalHeader($modalid, $header);
+		$this->modalBody($msg);
+		$this->modalFooterConfirm($saveid, $value);
+	}
+	
+	public function buildPrintModal($modalid, $header, $msg, $saveid = null, $value = null) {
+		$this->modalHeader($modalid, $header);
+		$this->modalBody($msg);
+		$this->modalFooterPrint($saveid, $value);
 	}
 	
 }

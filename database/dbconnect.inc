@@ -50,7 +50,7 @@ class Dbconnect {
 		
 		// debugging
 //		 echo "prepstr ".$prepstr."<br>";
-//		 print_r($params);
+//		 print_r($params); echo "<br>";
 
 		try {
 		

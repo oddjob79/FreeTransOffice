@@ -121,6 +121,7 @@ class Table extends Border
      */
     private $unit = self::WIDTH_AUTO;
 
+
     /**
      * Create new table style
      *
@@ -138,7 +139,7 @@ class Table extends Border
         }
 
         if ($tableStyle !== null && is_array($tableStyle)) {
-            $this->setStyleByArray($tableStyle);
+			$this->setStyleByArray($tableStyle);
         }
     }
 
@@ -623,4 +624,5 @@ class Table extends Border
 
         return $this;
     }
+	
 }

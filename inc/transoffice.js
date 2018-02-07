@@ -75,25 +75,17 @@ $(document).ready(function(){
 })
 
 // Invoice Details - Void Invoice button - Sets voidinvoice hidden field to 'void' so SP can be run to update invoice / jobs
-/*$(document).ready(function(){
-	$('#voidinvbutton').click(function(e){
-	var invno = $("input[name$='invoicenumber']").val();
-	var confirmed = confirm("Please confirm you would like to void invoice number "+invno);
-	if (confirmed) {
-		$('#voidinvoice').val('void');
-	} else {
-		e.preventDefault(); 
-		e.stopPropagation();
-		return false;
-	}
-//	   alert("Please confirm you would like to void invoice number "+invno);
-    });
-})
-*/
-
 $(document).ready(function(){
 	$('#voidinvbutton').click(function(){
 		$('#voidinvoice').val('void');
+    });
+})
+
+// Inv Report - After report is run, need to redirect to invoice details page
+$(document).ready(function(){
+   $('#invdetailsbutton').click(function(){
+//	   alert("TEST "+$('#invdetailsbutton').val());
+		window.location.href="../web/invdetails.php?invoiceid="+$('#invdetailsbutton').val();
     });
 })
 
