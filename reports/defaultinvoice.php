@@ -241,8 +241,8 @@ class DefInvoice {
 	private function getFileLocation() {
 		$dirname = $_SESSION['domain_id'];
 		if (!file_exists($dirname)) {
-//			mkdir($dirname, 0750);
-			mkdir($dirname, 0775);
+			mkdir($dirname, 0750);
+//			mkdir($dirname, 0775);
 			return $dirname;
 		} else {
 			return $dirname;
