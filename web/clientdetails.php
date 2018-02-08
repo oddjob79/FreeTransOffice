@@ -22,7 +22,7 @@
 		$addrposted = $addressdata->getAddressPostedInfo();
 
 		// set array for client create sp & get the values that were posted on the form
-		$newclient = array("clientname", "othername", "address_id", "package", "status", "lastjob", "currency", "timezone", "invoiceto", 
+		$newclient = array("clientname", "othername", "address_id", "package", "vendorcode", "status", "lastjob", "currency", "timezone", "invoiceto", 
 		"invtoemail", "clientinvnotes", "invoicereport", "invoiceby", "invoicepaid", "lastinv", "clientnotes", "clientudf1", "clientudf2", "clientudf3");
 		$clientposted = $clientform->getPostedValues($newclient, true);
 		

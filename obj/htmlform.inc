@@ -170,7 +170,15 @@ class HtmlForm {
 		}
 
 		return $timezone_list;
-	}	
+	}
+
+	protected function currencySort($currencies) {
+		$currencies = array(48 => $currencies[48], // EUR
+			51 => $currencies[51], // GBP
+			148 => $currencies[148]) // USD
+			+ $currencies;
+		return $currencies;
+	}
 	
 	private function modalHeader($modalid, $header) {
 		echo "<div id='".$modalid."' class='modal fade' role='dialog'>";

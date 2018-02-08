@@ -15,39 +15,42 @@ class ClientForm extends HtmlForm {
 		
 		// use client id to retrieve all the client details
 		$sql = new Dbconnect();
+		$emptyarr = array();
 		
 		if (!empty($getvalues['clientid'])) {
 			$clientdata = $sql->getEntityDetails($getvalues, 'sp_client_details');
-			$displaydata = $clientdata['client_name'];			
+			$displaydata = $clientdata['client_name'];
+		// if client already exists, then use the client id to search for associated contacts who can be set to be the "invoice" contact
+			$contactparams = array("-1", $clientdata['client_id'], $_SESSION['domain_id']);
+			$contacts = $sql->callSP('sp_contact_details', $emptyarr, $contactparams);
 		} else {
 			$displaydata = null;
+			// if client id not set then set the $contacts array as empty
+			$contacts = array();			
 		}
 		
 		// form header and format are set
-//		$displaydata = $clientdata['client_name'];
 		$formheader = $this -> setFormHeader('Client', $displaydata);
 		$this->formFormat($formheader);
 		
 		// set spparam array to pass to the callSp procedure
 		$spparams = array("-1");
-		$out = array();
-		$countries = $sql->callSP('sys_countries_read', $out, $spparams);
-		$statuses = $sql->callSP('sys_statuses_read', $out, $spparams);
+		$countries = $sql->callSP('sys_countries_read', $emptyarr, $spparams);
+		$statuses = $sql->callSP('sys_statuses_read', $emptyarr, $spparams);
 		$sortorder = array(1,2,3);
 		$statuses = $this->statusSort($statuses, $sortorder);		
 		
-		$currencies = $sql->callSP('sys_currencies_read', $out, $spparams);
+		$currencies = $sql->callSP('sys_currencies_read', $emptyarr, $spparams);
+		// sort currencies so that Euros, Pounds & Dollars are shown first 
+		$currencies = $this->currencySort($currencies);
 		
 		// set array to "select all" -1 and domain_id to retrieve all records for this domain only
 		$domparams = array("-1", $_SESSION['domain_id']);
-		$packages = $sql->callSP('sys_packages_read', $out, $domparams);
-		$reports = $sql->callSP('sys_report_config_read', $out, $domparams);
+		$packages = $sql->callSP('sys_packages_read', $emptyarr, $domparams);
+		$reports = $sql->callSP('sys_report_config_read', $emptyarr, $domparams);
 		
 		// gather timezone array for use in timezone select list
 		$timezones = $this->generate_timezone_list();
-		
-		// contacts yet to be built
-		$contacts = array();
 		
 		$this -> clientFormBuilder(
 			$clientdata,
@@ -69,14 +72,15 @@ class ClientForm extends HtmlForm {
 		
 		// client name
 		echo "<div class='row'>\n<div class='col-6'>";
-			echo "<p>Client Name: <input class='form-control' placeholder='Enter the client name' type='text' name='clientname' value='".$clientdata['client_name']."' size='80' required = 'true' maxlength='100' /></p>";
+			echo "<p>Client Name: (required)<input class='form-control' placeholder='Enter the client name' type='text' name='clientname' value='".$clientdata['client_name']."' size='80' required = 'true' maxlength='100' /></p>";
 		echo "</div></div>";
 		echo "<hr>";
 		
 		// collapse address
 		echo "<h4><a data-toggle='collapse' href='#addresscollapse' aria-expanded='false' aria-controls='addresscollapse'>Address Info</a></h4>";
-		echo "<div class='collapse.show' id='addresscollapse'>";
-
+		echo "<div class='collapse show' id='addresscollapse'>";
+		echo "<p><small class='form-text text-muted'>Address can be left blank if not known. If address information is to be added, Address1, City & Country fields must all be completed to save the record.</small></p>";
+		
 		// Country select
 		echo "<div class='row'>\n<div class='col-4'>";
 			echo "<p>Country: <select class='form-control' name='country'>";
@@ -111,11 +115,12 @@ class ClientForm extends HtmlForm {
 
 		// collapse client info
 		echo "<h4><a data-toggle='collapse' href='#clientinfocollapse' aria-expanded='false' aria-controls='clientinfocollapse'>Client Info</a></h4>";
-		echo "<div class='collapse.show' id='clientinfocollapse'>";
+		echo "<div class='collapse show' id='clientinfocollapse'>";
 
-		//package & status		
+		//package, vendor code & status		
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Package: <select class='form-control' name='package'>";
+			echo "<option value=''></option>";
 				foreach ($packages as $package) {
 					if ($package['package_id'] == $clientdata['package_id']) {
 						echo "<option value=".$package['package_id']." selected='selected'>".$package['package_name']."</option>";
@@ -124,6 +129,9 @@ class ClientForm extends HtmlForm {
 					}
 				} 
 			echo "</select></p>";
+		echo "</div>";
+		echo "<div class='col'>";	
+			echo "<p>Vendor code: <input class='form-control' placeholder='Specify your vendor code' type='text' name='vendorcode' value='".$clientdata['vendor_code']."' maxlength='30' /></p>";			
 		echo "</div>";
 		echo "<div class='col'>";
 			echo "<p>Status: <select class='form-control' name='status'>";
@@ -155,6 +163,8 @@ class ClientForm extends HtmlForm {
 				foreach ($timezones as $key => $value) {
 					if ($key == $clientdata['timezone']) {
 						echo "<option value=".$key." selected='selected'>".$value."</option>";
+					} elseif (empty($clientdata['timezone']) && $key == 'Europe/London') {
+						echo "<option value=".$key." selected='selected'>".$value."</option>";
 					} else {
 						echo "<option value=".$key.">".$value."</option>";
 					}
@@ -184,14 +194,20 @@ class ClientForm extends HtmlForm {
 		
 		// collapse invoice info
 		echo "<h4><a data-toggle='collapse' href='#invoiceinfocollapse' aria-expanded='false' aria-controls='invoiceinfocollapse'>Invoice Info</a></h4>";
-		echo "<div class='collapse.show' id='invoiceinfocollapse'>";
+		echo "<div class='collapse show' id='invoiceinfocollapse'>";
 		
 		// Invoice info
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Invoice To: <select class='form-control' name='invoiceto'>";
-//				foreach ($countries as $country) {
-//					echo "<option value=".$country['country_id'].">".$country['country_name']."</option>";
-//				}
+			echo "<option value=''></option>";
+				foreach ($contacts as $contact) {
+					if ($contact['contact_id'] == $clientdata['invoice_to']) {
+						echo "<option value=".$contact['contact_id']." selected='selected'>".$contact['first_name']." ".$contact['last_name']."</option>";						
+					} else {
+						echo "<option value=".$contact['contact_id'].">".$contact['first_name']." ".$contact['last_name']."</option>";
+					}
+
+				}
 			echo "</select></p>";
 		echo "</div>"; 
 		echo "<div class='col'>";

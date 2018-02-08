@@ -85,7 +85,7 @@ class RptConfigForm extends HtmlForm {
 			echo "<option value=1>DD/MM/YYYY - 31/12/2018</option>";
 			echo "<option value=2>MM/DD/YYYY - 12/31/2018</option>";
 			echo "<option value=3>DD Month YYYY - 31 December 2018</option>";
-			echo "</select><small class='form-text text-muted'>Select what format your dates should appear on the invoice</small></p>";
+			echo "</select><small class='form-text text-muted'>Select what format your dates should appear on the invoice</small>";
 		echo "</div></div>";
 		
 		// Greeting text
