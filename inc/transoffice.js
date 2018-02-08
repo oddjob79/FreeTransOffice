@@ -141,8 +141,8 @@ $(document).ready(function(){
 			alert("It's a Job Profile");
 		} else if (window.location.href.indexOf("userdefined") != -1) {
 			alert("It's a User Defined");
-		} else if (window.location.href.indexOf("reportsetup") != -1) {
-			alert("It's a Report");
+		} else if (window.location.href.indexOf("reportconfig") != -1) {
+			var settingid = "reportid";
 		}
 		
 		var idpos=window.location.href.indexOf(settingid);

@@ -44,6 +44,8 @@ class Dbconnect {
 		// build prepare statement based on existence of OUT parameters in SP
 		if (!empty($outparams)) {
 			$prepstr = "CALL ".$spname."(".implode(",", $outparams).", ".$qmstr.")";
+// Debug
+//			echo "<br>".$prepstr."<br>";
 		} else {
 			$prepstr = "CALL ".$spname."(".$qmstr.")";
 		}
