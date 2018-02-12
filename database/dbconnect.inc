@@ -28,10 +28,10 @@ class Dbconnect {
 	}
 	
 	protected function execStatement($spname, &$outparams, &$params) {
-
+		
 		// make sure array is set as an ordinal array as we are using positional parameters
 		$params = array_values($params);
-		
+
 		// build question mark parameters for CALL Statement
 		$qmstr = '';
 		foreach($params as $param) {
@@ -44,16 +44,10 @@ class Dbconnect {
 		// build prepare statement based on existence of OUT parameters in SP
 		if (!empty($outparams)) {
 			$prepstr = "CALL ".$spname."(".implode(",", $outparams).", ".$qmstr.")";
-// Debug
-//			echo "<br>".$prepstr."<br>";
 		} else {
 			$prepstr = "CALL ".$spname."(".$qmstr.")";
 		}
 		
-		// debugging
-//		 echo "prepstr ".$prepstr."<br>";
-//		 print_r($params); echo "<br>";
-
 		try {
 		
 			// connect to db
