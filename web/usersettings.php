@@ -40,7 +40,7 @@
 		$out = array();
 		$updateuser = $sql->callSP('sys_users_update', $out, $postedvalues);
 		
-//		$usersetpage->redirect("../web/usersettings.php");
+		$usersetpage->redirect("../web/usersettings.php");
 		
 	} else {
 		// if no posted information available
