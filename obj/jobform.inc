@@ -25,16 +25,12 @@ class JobForm extends HtmlForm {
 		$formheader = $this->setFormHeader('Job', $displaydata);
 		$this->formFormat($formheader);
 	
-
-	
 		// set spparam array to pass to the callSP procedure
 		$spparams = array("-1");
 		$out = array();
 		$statuses = $sql->callSP('sys_statuses_read', $out, $spparams);
 		$sortorder = array(4, 5, 6, 2);
 		$statuses = $this->statusSort($statuses, $sortorder);
-		
-		$currencies = $sql->callSP('sys_currencies_read', $out, $spparams);		
 		
 		// set array to "select all" -1 and domain_id to retrieve all records for this domain only
 		$domparams = array("-1", $_SESSION['domain_id']);
@@ -64,30 +60,42 @@ class JobForm extends HtmlForm {
 		$row = $sql->returnFirstRow($result);
 		$nextjobnum = $this->emptyParam($row['new_job_number'], date('Ymd')."0001", $row['new_job_number']);
 
+		$clientparams = array($jobclientid, $_SESSION['domain_id']);
+		$result = $sql->callSP('sp_client_details', $out, $clientparams);
+		$clientdata = $sql->returnFirstRow($result);
+		
 			
 		$this -> jobFormBuilder(
 			$jobdata,
 			$statuses,
-			$currencies,
 			$clients,
 			$jobtypes,
 			$packages,
 			$jobprofiles,
 			$endclients,
 			$nextjobnum,
-			$jobclientid
+			$jobclientid,
+			$clientdata
 		);
 	}
 
-	private function jobFormBuilder(&$jobdata, &$statuses, &$currencies, &$clients, &$jobtypes, &$packages, &$jobprofiles, &$endclients, $nextjobnum, $jobclientid) {
-	
+	private function jobFormBuilder(&$jobdata, &$statuses, &$clients, &$jobtypes, &$packages, &$jobprofiles, &$endclients, $nextjobnum, $jobclientid, $clientdata) {
+		
+		// set fieldset attribute based on whether the job has been invoiced or not. If invoiced then the form should be disabled (readonly)
+		if ($jobdata['job_status'] == 6) {
+			$formstatus = "disabled = 'disabled'";
+		} else {
+			$formstatus = '';
+		}
+		
 		echo "<form method='post' action='jobdetails.php'>";
+		echo "<fieldset ".$formstatus.">";
 		echo "<div class='form-group'>";
 		
 		// Client select & Job No
 		$jobnumber = $this->emptyParam($jobdata['job_number'], $nextjobnum, $jobdata['job_number']);
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>Client: <select class='form-control' id='clientselect' name='clientid' required = 'true'>";
+			echo "<p>Client: (required)<select class='form-control' id='clientselect' name='clientid' required = 'true'>";
 			echo "<option value=''></option>";
 				foreach ($clients as $client) {
 					// if ($client['client_id'] == $jobdata['client_id']) {
@@ -100,7 +108,7 @@ class JobForm extends HtmlForm {
 			echo "</select></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Job No: <input class='form-control' type='text' name='jobnumber' value='".$jobnumber."' readonly /></p>";
+			echo "<p>Job No: (required)<input class='form-control' type='text' name='jobnumber' value='".$jobnumber."' readonly /></p>";
 		echo "</div></div>";
 
 		// End Client select
@@ -119,10 +127,10 @@ class JobForm extends HtmlForm {
 
 		// Client Job No & Job Type
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>Client Job No: <input class='form-control' placeholder='Enter Client Job Number' type='text' name='clientjobnumber' value='".$jobdata['client_job_number']."' required = 'true' maxlength='20'/></p>";
+			echo "<p>Client Job No: (required)<input class='form-control' placeholder='Enter Client Job Number' type='text' name='clientjobnumber' value='".$jobdata['client_job_number']."' required = 'true' maxlength='20'/></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Job Type: <select class='form-control' name='jobtypeid' required = 'true'>";
+			echo "<p>Job Type: (required)<select class='form-control' name='jobtypeid' required = 'true'>";
 				foreach ($jobtypes as $jobtype) {
 					if ($jobtype['job_type_id'] == $jobdata['job_type_id']) {
 						echo "<option value=".$jobtype['job_type_id']." selected='selected'>".$jobtype['job_type']."</option>";
@@ -142,6 +150,7 @@ class JobForm extends HtmlForm {
 		//package & status		
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Package: <select class='form-control' name='package'>";
+			echo "<option value=''></option>";
 				foreach ($packages as $package) {
 					if ($package['package_id'] == $jobdata['package_id']) {
 						echo "<option value=".$package['package_id']." selected='selected'>".$package['package_name']."</option>";
@@ -152,7 +161,7 @@ class JobForm extends HtmlForm {
 			echo "</select></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Status: <select class='form-control' name='status' id='jobstatus'>";
+			echo "<p>Status: (required)<select class='form-control' name='status' id='jobstatus'>";
 				foreach ($statuses as $status) {
 					if ($status['status_id'] == $jobdata['job_status']) {
 						echo "<option value=".$status['status_id']." selected='selected'>".$status['status_name']."</option>";						
@@ -166,24 +175,18 @@ class JobForm extends HtmlForm {
 		// Date Received & Date Due
 		$datereceived = $this->emptyParam($jobdata['date_received'], date('Y-m-d'), substr($jobdata['date_received'], 0, 10));
 		echo "<div class='row'><div class='col'>";
-			echo "<p>Date Received: <input class='form-control' placeholder='Date Job Received' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='datereceived' value='".$datereceived."' required = 'true' maxlength='10' /></p>";
+			echo "<p>Date Received: (required)<input class='form-control' placeholder='Date Job Received' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='datereceived' value='".$datereceived."' required = 'true' maxlength='10' /></p>";
 		echo "</div><div class='col'>";
-			echo "<p>Date Due: <input class='form-control' placeholder='Date Job Due' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='datedue' value='".substr($jobdata['date_due'], 0, 10)."' required = 'true' maxlength='10' /></p>";		
+			echo "<p>Date Due: (required)<input class='form-control' placeholder='Date Job Due' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='datedue' value='".substr($jobdata['date_due'], 0, 10)."' required = 'true' maxlength='10' /></p>";		
 		echo "</div></div>";		
 		
 		// Word Count & Currency / Price
 		echo "<div class='row'><div class='col'>";
 			echo "<p>Word Count: <input class='form-control' placeholder='Enter Word Count' type='text' name='wordcount' value='".$jobdata['word_count']."' maxlength='10' /></p>";		
 		echo "</div><div class='col-2'>";
-			echo "<p>Price: <select class='form-control' name='currencyid'>";
-				foreach ($currencies as $currency) {
-					if ($currency['currency_id'] == $jobdata['price_currency_id']) {
-						echo "<option value=".$currency['currency_id']." selected='selected'>".$currency['currency_code']."</option>";
-					} else {
-						echo "<option value=".$currency['currency_id'].">".$currency['currency_code']."</option>";
-					}
-				} 
-			echo "</select> </p>";
+		// sets clientcurrency as the currency of the client (and leaves it empty if no client selected)
+		$clientcurrency = (empty($jobclientid)) ? '' : $clientdata['currency_code'];
+		echo "<br><input class='form-control' type='text' name='currencycode' value='".$clientcurrency."' readonly /></p>";	
 		echo "</div><div class='col-4'>";
 			echo "<br><input class='form-control' type='text' name='price' value='".number_format((float)$jobdata['price'], 2, '.', '')."' maxlength='10' /></p>";		
 		echo "</div></div>";
@@ -204,7 +207,6 @@ class JobForm extends HtmlForm {
 		echo "<div class='col'>";
 			echo "<p>Estimated Time: <input class='form-control' placeholder='Enter Estimated Job Time' type='text' name='estimatedtime' value='".$jobdata['estimated_time']."' maxlength= '10' /></p>";
 		echo "</div></div>";
-
 		
 		// Completed Date and Actual Time
 		echo "<div class='row'><div class='col'>";
@@ -240,17 +242,30 @@ class JobForm extends HtmlForm {
 		
 		// hidden contactid - determine if an update or insert is needed
 		echo "<input type='hidden' name='recordid' value='".$jobdata['job_id']."'>";
+		echo "<input type='hidden' name='currencyid' value='".$clientdata['currency_id']."'>";
 		
 		// submit
-		echo "<div class='row'>\n<div class='col-auto mr-auto'>";		
-			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
-		echo "</div><div class='col-auto'>";
-			echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
+		// different button layouts depending on if the form is editable or not (status = invoiced)
+		if (!empty($formstatus)) {
+			echo "</fieldset>";
+			echo "<div class='row justify-content-end'>\n<div class='col-auto'>";
 			echo " <a class='btn btn-outline-primary' href='../web/joblist.php' role='button'>Cancel</a> ";
 			if (!empty($_GET['jobid'])) {
 				echo " <a class='btn btn-outline-primary' href='../web/jobdetails.php' role='button'>New</a> ";
 			}
-		echo "</div></div></div></form>";
+			echo "</div></div></div></form>";
+		} else {
+			echo "<div class='row'>\n<div class='col-auto mr-auto'>";		
+				echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
+			echo "</div><div class='col-auto'>";
+				echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
+				echo " <a class='btn btn-outline-primary' href='../web/joblist.php' role='button'>Cancel</a> ";
+				if (!empty($_GET['jobid'])) {
+					echo " <a class='btn btn-outline-primary' href='../web/jobdetails.php' role='button'>New</a> ";
+				}
+			echo "</div></div></div></fieldset></form>";
+		}
+		
 	}	
 
 	
