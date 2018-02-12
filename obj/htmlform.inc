@@ -46,7 +46,7 @@ class HtmlForm {
 				$postedvals[$postedname] = NULL;
 			}
 //			debugging for data type
-//			echo $postedname. " - ". $postedvals[$postedname] . ' datatype = ' . gettype($postedvals[$postedname])."<br>";
+			echo $postedname. " - ". $postedvals[$postedname] . ' datatype = ' . gettype($postedvals[$postedname])."<br>";
 
 		}
 		

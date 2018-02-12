@@ -15,7 +15,7 @@
 		
 		// get posted values relating to the address
 		$addrposted = $useraddress->getAddressPostedInfo();
-		$userset = array("firstname", "lastname", "phonenumber", "address_id", "companyname", "currency", "timezone", "logo", "jobnum_prefix", "jobnum_next", "invnum_prefix", "invnum_next", "userudf1", "userudf2", "userudf3");
+		$userset = array("firstname", "lastname", "phonenumber", "addressid", "companyname", "currency", "timezone", "logo", "jobnum_prefix", "jobnum_next", "invnum_prefix", "invnum_next", "userudf1", "userudf2", "userudf3");
 		
 		// get the values that were posted on the form
 		$postedvalues = $usersetform->getPostedValues($userset, false);
@@ -40,7 +40,7 @@
 		$out = array();
 		$updateuser = $sql->callSP('sys_users_update', $out, $postedvalues);
 		
-		$usersetpage->redirect("../web/usersettings.php");
+//		$usersetpage->redirect("../web/usersettings.php");
 		
 	} else {
 		// if no posted information available

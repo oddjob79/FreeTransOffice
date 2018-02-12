@@ -161,7 +161,6 @@ class UserSetForm extends HtmlForm {
 			echo "<p>User-Defined 3: <input class='form-control' placeholder='User-defined 3' type='text' name='userudf3'  value='".$userdata['user_defined_3']."'maxlength='50' /></p>";
 		echo "</div></div></div><hr>";		
 		
-		
 		// hidden address_id - used for address updates
 		echo "<input type='hidden' name='addressid' value='".$userdata['address_id']."'>";
 		

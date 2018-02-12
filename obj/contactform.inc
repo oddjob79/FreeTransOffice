@@ -160,7 +160,7 @@ class ContactForm extends HtmlForm {
 			array_unshift($clientcontactposted, $newrecrow[$outparam]);
 		// insert the clientcontact record
 			$clcnout = array();
-			print_r($clientcontactposted); echo "<br>";
+//			print_r($clientcontactposted); echo "<br>";
 			$sql->callSP('sys_client_contacts_create', $clcnout, $clientcontactposted);
 		// finally redirect to saved record
 			$basepage->redirect("../web/".$entity."details.php?".$entity."id=".$newrecrow[$outparam]);

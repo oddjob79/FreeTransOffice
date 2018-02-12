@@ -59,7 +59,7 @@
 				$sql->callSP('sys_client_contacts_create', $out, $clientcontactposted);
 			}
 			$contactpage->endPage();
-	//		$contactpage->redirect("../web/contactdetails.php?contactid=".$_POST['recordid']);
+			$contactpage->redirect("../web/contactdetails.php?contactid=".$_POST['recordid']);
 		}
 	} else {
 		$contactform->showContactForm();

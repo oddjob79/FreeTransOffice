@@ -16,7 +16,7 @@ class AddressData extends HtmlForm {
 		if (!empty($addrposted['address1']) and !empty($addrposted['country']) and !empty($addrposted['city'])) {
 			return true;
 		}
-		echo "Incomplete Address Information - Address not added<br><br>";
+//		echo "Incomplete Address Information - Address not added<br><br>";
 		return false;
 	}
 	
