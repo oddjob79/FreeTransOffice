@@ -77,10 +77,10 @@ class ContactForm extends HtmlForm {
 
 		// First & Last Names
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>First Name: <input class='form-control' placeholder='Enter First Name' type='text' name='first_name' value='".$contactdata['first_name']."' required = 'true' maxlength='50' /></p>";
+			echo "<p>First Name: (required)<input class='form-control' placeholder='Enter First Name' type='text' name='first_name' value='".$contactdata['first_name']."' required = 'true' maxlength='50' /></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Last Name: <input class='form-control' placeholder='Enter Last Name' type='text' name='last_name' value='".$contactdata['last_name']."' required = 'true' maxlength='80' /></p>";
+			echo "<p>Last Name: (required)<input class='form-control' placeholder='Enter Last Name' type='text' name='last_name' value='".$contactdata['last_name']."' required = 'true' maxlength='80' /></p>";
 		echo "</div></div>";
 		echo "<hr>";
 
@@ -101,6 +101,7 @@ class ContactForm extends HtmlForm {
 		// Language & status		
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Language: <select class='form-control' name='language'>";
+			echo "<option value=''></option>";
 				foreach ($languages as $language) {
 					if ($language['language_id'] == $contactdata['language_id']) {
 						echo "<option value=".$language['language_id']." selected='selected'>".$language['language_name']."</option>";
@@ -111,7 +112,7 @@ class ContactForm extends HtmlForm {
 			echo "</select></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Status: <select class='form-control' name='status'>";
+			echo "<p>Status: (required)<select class='form-control' name='status'>";
 				// limit so we only see Active, Inactive & Dormant
 				foreach ($statuses as $status) {
 					if ($status['status_id'] == $contactdata['contact_status']) {

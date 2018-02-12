@@ -44,7 +44,7 @@ class RptConfigForm extends HtmlForm {
 		// list	of available reports
 		echo "<div class='row'>\n<div class='col-6 settingsview'>";
 		// only shown in view mode
-			echo "<p>Report: <select class='form-control settingsselectors' name='reportid'>";
+			echo "<p>Report: (required)<select class='form-control settingsselectors' name='reportid'>";
 			echo "<option value=''></option>";
 				foreach ($reportlist as $report) {
 					$getreport = (empty($_GET['reportid'])) ? '' : $_GET['reportid'];
@@ -60,7 +60,7 @@ class RptConfigForm extends HtmlForm {
 		
 		// only shown in edit mode - Report Name
 		echo "<div class='col-6 settingsedit' style='display: none;'>";		
-			echo "<p>Report Name: <input class='form-control' type='text' name='reportname' value='".$reportdata['report_name']."' size='80' required = 'true' maxlength='120' />";
+			echo "<p>Report Name: (required)<input class='form-control' type='text' name='reportname' value='".$reportdata['report_name']."' size='80' required = 'true' maxlength='120' />";
 			echo "<small class='form-text text-muted'>Give your report format a name</small></p>";
 			echo "<p><input class='form-control' type='hidden' name='recordid' value='".$reportdata['report_id']."' /></p>";
 		echo "</div></div>";
@@ -71,7 +71,7 @@ class RptConfigForm extends HtmlForm {
 		
 		// Report Format & Date Format
 		echo "<div class='row'><div class='col'>";
-		echo "<p>Report Format: <select class='form-control' name='reportformatid'>";
+		echo "<p>Report Format: (required)<select class='form-control' name='reportformatid'>";
 			foreach ($rptformats as $rptformat) {
 					if ($rptformat['report_format_id'] == $reportdata['report_format_id']) {
 						echo "<option value=".$rptformat['report_format_id']." selected='selected'>".$rptformat['report_format']."</option>";						
@@ -81,7 +81,7 @@ class RptConfigForm extends HtmlForm {
 				}
 			echo "</select><small class='form-text text-muted'>Select what file format your invoice should be generated in</small></p>";
 		echo "</div><div class='col'>";
-			echo "<p>Date Format: <select class='form-control' name='dateformat'>";
+			echo "<p>Date Format: (required)<select class='form-control' name='dateformat'>";
 			echo "<option value=1>DD/MM/YYYY - 31/12/2018</option>";
 			echo "<option value=2>MM/DD/YYYY - 12/31/2018</option>";
 			echo "<option value=3>DD Month YYYY - 31 December 2018</option>";

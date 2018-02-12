@@ -54,13 +54,13 @@ class JobTypeForm extends HtmlForm {
 		echo "</div>";
 		// only shown in edit mode
 		echo "<div class='col-6 settingsedit' style='display: none;'>";		
-			echo "<p>Job Type: <input class='form-control' type='text' name='jobtypename' value='".$jobtypedata['job_type']."' size='40' required = 'true' maxlength='40' /></p>";
+			echo "<p>Job Type: (required)<input class='form-control' type='text' name='jobtypename' value='".$jobtypedata['job_type']."' size='40' required = 'true' maxlength='40' /></p>";
 			echo "<p><input class='form-control' type='hidden' name='recordid' value='".$jobtypedata['job_type_id']."' /></p>";
 		echo "</div></div>";
 		
 		// Words Per Hour
 		echo "<div class='row'>\n<div class='col-6'>";		
-			echo "<p>Words Per Hour: <input class='form-control settingfield' type='number' name='wordsperhour' value='".$jobtypedata['words_per_hour']."' size='40' readonly maxlength='11' /></p>";
+			echo "<p>Words Per Hour: (required)<input class='form-control settingfield' type='number' name='wordsperhour' value='".$jobtypedata['words_per_hour']."' size='40' readonly maxlength='11' /></p>";
 		echo "</div></div>";		
 		
 		// Notes

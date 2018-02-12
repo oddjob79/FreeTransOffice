@@ -19,6 +19,7 @@ class UserSetForm extends HtmlForm {
 		$out = array();
 		$countries = $sql->callSP('sys_countries_read', $out, $spparams);
 		$currencies = $sql->callSP('sys_currencies_read', $out, $spparams);
+		$currencies = $this->currencySort($currencies);
 		
 		// gather timezone array for use in timezone select list
 		$timezones = $this->generate_timezone_list();
@@ -54,13 +55,15 @@ class UserSetForm extends HtmlForm {
 			echo "<br><a href='' class='supportalert'>Change Email address</a>";
 		echo "</div></div>";
 
-		// Names
+		// Names, Phone & Company
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>First Name: <input class='form-control' placeholder='Enter your first name here' type='text' name='firstname' value='".$userdata['first_name']."' size='80' maxlength='50' /></p>";
+			echo "<p>First Name: (required)<input class='form-control' placeholder='Enter your first name here' type='text' name='firstname' value='".$userdata['first_name']."' size='80' maxlength='50' /></p>";
 		echo "</div><div class='col'>";
-			echo "<p>Last Name: <input class='form-control' placeholder='Enter your last name here' type='text' name='lastname' value='".$userdata['last_name']."' size='80' maxlength='80' /></p>";
+			echo "<p>Last Name: (required)<input class='form-control' placeholder='Enter your last name here' type='text' name='lastname' value='".$userdata['last_name']."' size='80' maxlength='80' /></p>";
 		echo "</div></div>";
-		echo "<div class='row'>\n<div class='col-6'>";
+		echo "<div class='row'>\n<div class='col'>";
+			echo "<p>Phone Number: <input class='form-control' placeholder='Enter your phone number' type='text' name='phonenumber' value='".$userdata['phone_number']."' size='80' maxlength='25' /></p>";
+		echo "</div><div class='col'>";
 			echo "<p>Company Name: <input class='form-control' placeholder='Enter your company name here' type='text' name='companyname' value='".$userdata['company_name']."' size='80' maxlength='120' /></p>";
 		echo "</div></div>";
 		echo "<hr>";
@@ -118,6 +121,8 @@ class UserSetForm extends HtmlForm {
 				foreach ($timezones as $key => $value) {
 					if ($key == $userdata['timezone']) {
 						echo "<option value=".$key." selected='selected'>".$value."</option>";
+					} elseif (empty($userdata['timezone']) && $key == 'Europe/London') {
+						echo "<option value=".$key." selected='selected'>".$value."</option>";
 					} else {
 						echo "<option value=".$key.">".$value."</option>";
 					}
@@ -131,6 +136,7 @@ class UserSetForm extends HtmlForm {
 		echo "</div>";
 		
 		// job & Inv prefixes and next numbers
+/* Disabled area until this functionality can be implemented
 		echo "<div col-1>";
 			echo "<br><p>Job No.</p>";
 			echo "<br><p>Inv No.</p>";
@@ -140,7 +146,20 @@ class UserSetForm extends HtmlForm {
 		echo "</div><div col-3>";
 			echo "<p>Next No: <input class='form-control' type='text' name='jobnext' value='".$userdata['jobnum_next']."' size='5' maxlength='5' /></p>";
 			echo "<p><input class='form-control' type='text' name='invnext' value='".$userdata['invnum_next']."' size='5' maxlength='5' /></p>";
-		echo "</div></div>";
+		echo "</div>";
+*/
+		echo "</div><hr>";
+
+		//UDFs
+		echo "<div class='row'>\n<div class='col'>";
+			echo "<p>User-Defined 1: <input class='form-control' placeholder='User-defined 1' type='text' name='userudf1' value='".$userdata['user_defined_1']."' maxlength='50' /></p>";
+		echo "</div>";
+		echo "<div class='col'>";
+			echo "<p>User-Defined 2: <input class='form-control' placeholder='User-defined 2' type='text' name='userudf2'  value='".$userdata['user_defined_2']."'maxlength='50' /></p>";
+		echo "</div>";
+		echo "<div class='col'>";
+			echo "<p>User-Defined 3: <input class='form-control' placeholder='User-defined 3' type='text' name='userudf3'  value='".$userdata['user_defined_3']."'maxlength='50' /></p>";
+		echo "</div></div></div><hr>";		
 		
 		
 		// hidden address_id - used for address updates

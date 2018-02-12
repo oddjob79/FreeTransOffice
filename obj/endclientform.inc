@@ -47,7 +47,7 @@ class EndClientForm extends HtmlForm {
 		$clientname = $this->emptyParam($clientdata['client_name'], $endclientdata['client_name'], $clientdata['client_name']);
 		$clientid = $this->emptyParam($clientdata['client_id'], $endclientdata['client_id'], $clientdata['client_id']);
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>Client Name: <input class='form-control' type='text' name='clientname' value='".$clientname."' readonly /></p>";
+			echo "<p>Client Name: (required)<input class='form-control' type='text' name='clientname' value='".$clientname."' readonly /></p>";
 			// hidden clientid
 			echo "<input type='hidden' name='clientid' value='".$clientid."'>";			
 		echo "</div></div>";
@@ -55,12 +55,13 @@ class EndClientForm extends HtmlForm {
 
 		// End Client Name
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>End Client Name: <input class='form-control' placeholder='Enter End Client Name' type='text' name='endclientname' value='".$endclientdata['end_client_name']."' required = 'true' maxlength='120' /></p>";
+			echo "<p>End Client Name: (required)<input class='form-control' placeholder='Enter End Client Name' type='text' name='endclientname' value='".$endclientdata['end_client_name']."' required = 'true' maxlength='120' /></p>";
 		echo "</div></div>";
 
 		// Industry		
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Industry: <select class='form-control' name='industry'>";
+			echo "<option value=''></option>";
 				foreach ($industries as $industry) {
 					if ($industry['industry_id'] == $endclientdata['industry_id']) {
 						echo "<option value=".$industry['industry_id']." selected='selected'>".$industry['industry_name']."</option>";

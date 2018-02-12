@@ -15,7 +15,7 @@
 		
 		// get posted values relating to the address
 		$addrposted = $useraddress->getAddressPostedInfo();
-		$userset = array("firstname", "lastname", "address_id", "companyname", "currency", "timezone", "logo", "jobnum_prefix", "jobnum_next", "invnum_prefix", "invnum_next", "udf1", "udf2", "udf3");
+		$userset = array("firstname", "lastname", "phonenumber", "address_id", "companyname", "currency", "timezone", "logo", "jobnum_prefix", "jobnum_next", "invnum_prefix", "invnum_next", "userudf1", "userudf2", "userudf3");
 		
 		// get the values that were posted on the form
 		$postedvalues = $usersetform->getPostedValues($userset, false);

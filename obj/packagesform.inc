@@ -51,7 +51,7 @@ class PackagesForm extends HtmlForm {
 		echo "</div>";
 		// only shown in edit mode
 		echo "<div class='col-6 settingsedit' style='display: none;'>";		
-			echo "<p>Package: <input class='form-control' type='text' name='packagename' value='".$packagedata['package_name']."' size='80' required = 'true' maxlength='100' /></p>";
+			echo "<p>Package: (required)<input class='form-control' type='text' name='packagename' value='".$packagedata['package_name']."' size='80' required = 'true' maxlength='100' /></p>";
 			echo "<p><input class='form-control' type='hidden' name='recordid' value='".$packagedata['package_id']."' /></p>";
 		echo "</div></div>";
 		

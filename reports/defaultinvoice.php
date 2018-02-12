@@ -88,7 +88,7 @@ class DefInvoice {
 		$section->addText($invheader['user_city'], $regularLetterFont, $rJustAlign);
 		$section->addText($invheader['user_postalcode'].', '.$invheader['user_country'], $regularLetterFont, $rJustAlign);
 		$section->addText($invheader['user_email'], $regularLetterFont, $rJustAlign);
-	//	ADD PHONE NUMBER & MAYBE CLIENT VENDOR CODE
+		$section->addText($invheader['user_phone_number'], $regularLetterFont, $rJustAlign);
 
 // client name & address
 		if (!empty($invheader['invoice_to_fullname'])) {
