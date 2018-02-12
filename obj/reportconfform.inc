@@ -71,7 +71,7 @@ class RptConfigForm extends HtmlForm {
 		
 		// Report Format & Date Format
 		echo "<div class='row'><div class='col'>";
-		echo "<p>Report Format: (required)<select class='form-control' name='reportformatid'>";
+		echo "<p>Report Format: (required)<select class='form-control settingfield' name='reportformatid' readonly>";
 			foreach ($rptformats as $rptformat) {
 					if ($rptformat['report_format_id'] == $reportdata['report_format_id']) {
 						echo "<option value=".$rptformat['report_format_id']." selected='selected'>".$rptformat['report_format']."</option>";						
@@ -81,7 +81,7 @@ class RptConfigForm extends HtmlForm {
 				}
 			echo "</select><small class='form-text text-muted'>Select what file format your invoice should be generated in</small></p>";
 		echo "</div><div class='col'>";
-			echo "<p>Date Format: (required)<select class='form-control' name='dateformat'>";
+			echo "<p>Date Format: (required)<select class='form-control settingfield' name='dateformat' readonly>";
 			echo "<option value=1>DD/MM/YYYY - 31/12/2018</option>";
 			echo "<option value=2>MM/DD/YYYY - 12/31/2018</option>";
 			echo "<option value=3>DD Month YYYY - 31 December 2018</option>";
@@ -90,7 +90,7 @@ class RptConfigForm extends HtmlForm {
 		
 		// Greeting text
 		echo "<div class='row'><div class='col'>";
-			echo "<p>Greeting text: <input class='form-control' placeholder='Enter a greeting message' type='text' name='greetingtext' value='".$reportdata['greeting_text']."' maxlength='120' />";
+			echo "<p>Greeting text: <input class='form-control settingfield' placeholder='Enter a greeting message' type='text' name='greetingtext' value='".$reportdata['greeting_text']."' maxlength='120' readonly />";
 			echo "<small class='form-text text-muted'>E.g. Dear Sir / Madam,</small></p>";		
 		echo "</div></div>";
 		
@@ -99,10 +99,10 @@ class RptConfigForm extends HtmlForm {
 		
 		// Invoice number label
 		echo "<div class='row'><div class='col'>";
-			echo "<p>Invoice number label: <input class='form-control' placeholder='Enter Invoice Number label' type='text' name='invnumlabel' value='".$reportdata['invoice_number_label']."' maxlength='30' />";
+			echo "<p>Invoice number label: <input class='form-control settingfield' placeholder='Enter Invoice Number label' type='text' name='invnumlabel' value='".$reportdata['invoice_number_label']."' maxlength='30' readonly />";
 			echo "<small class='form-text text-muted'>E.g. Invoice number or Rechnungsnummer</small></p>";
 		echo "</div><div class='col'>";		
-			echo "<p>Invoice total label: <input class='form-control' placeholder='Enter Invoice Total label' type='text' name='invtotallabel' value='".$reportdata['invoice_total_label']."' maxlength='30' />";
+			echo "<p>Invoice total label: <input class='form-control settingfield' placeholder='Enter Invoice Total label' type='text' name='invtotallabel' value='".$reportdata['invoice_total_label']."' maxlength='30' readonly />";
 			echo "<small class='form-text text-muted'>E.g. Invoice total or Rechnungsbetrag</small></p>";				
 		echo "</div></div>";
 		
@@ -124,7 +124,7 @@ class RptConfigForm extends HtmlForm {
 		echo "<p><small class='form-text text-muted'>Add any additional information you would like to appear on the invoice. These can be included in sections with section headers. E.g. Employee Information</small></p>";
 		
 		echo "<div class='row'><div class='col-6'>";
-			echo "<p>Section A label: <input class='form-control' placeholder='Enter Section A label' type='text' name='sectionalabel' value='".$reportdata['section_a_label']."' maxlength='30' />";
+			echo "<p>Section A label: <input class='form-control settingfield' placeholder='Enter Section A label' type='text' name='sectionalabel' value='".$reportdata['section_a_label']."' maxlength='30' readonly />";
 		echo "</div></div>";
 		
 		$this->sectionSelectFields("a", 1, $reportdata, $headerfields);
@@ -132,7 +132,7 @@ class RptConfigForm extends HtmlForm {
 		$this->sectionSelectFields("a", 3, $reportdata, $headerfields);
 		
 		echo "<br><div class='row'><div class='col-6'>";
-			echo "<p>Section B label: <input class='form-control' placeholder='Enter Section B label' type='text' name='sectionblabel' value='".$reportdata['section_b_label']."' maxlength='30' />";
+			echo "<p>Section B label: <input class='form-control settingfield' placeholder='Enter Section B label' type='text' name='sectionblabel' value='".$reportdata['section_b_label']."' maxlength='30' readonly />";
 		echo "</div></div>";
 
 		$this->sectionSelectFields("b", 1, $reportdata, $headerfields);
@@ -187,9 +187,9 @@ class RptConfigForm extends HtmlForm {
 		extract($labelarray, EXTR_OVERWRITE);
 		
 		echo "<div class='row'><div class='col'>";
-			echo "<p>".$fieldheader."<input class='form-control' placeholder='".$placeholder."' type='text' name='".$labelname."' value='".$reportdata[$labelelement]."' maxlength='30' />";
+			echo "<p>".$fieldheader."<input class='form-control settingfield' placeholder='".$placeholder."' type='text' name='".$labelname."' value='".$reportdata[$labelelement]."' maxlength='30' readonly />";
 		echo "</div><div class='col'>";
-			echo "<br><select class='form-control' name='".$fieldname."'>";
+			echo "<br><select class='form-control settingfield' name='".$fieldname."' readonly>";
 			echo "<option value=''></option>";
 			foreach ($fieldlist as $fieldname) {
 				if ($fieldname['column_name'] == $reportdata[$fieldelement]) {
@@ -208,7 +208,7 @@ class RptConfigForm extends HtmlForm {
 		$textboxdisplay = (empty($reportdata[$sqlname])) ? 'Enter '.strtolower($label) : $reportdata[$sqlname];
 		
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>".$label.": <textarea class='form-control' name='".$postname."' rows='5' cols='30'>".$textboxdisplay."</textarea>";
+			echo "<p>".$label.": <textarea class='form-control settingfield' name='".$postname."' rows='5' cols='30' readonly>".$textboxdisplay."</textarea>";
 			echo "<small class='form-text text-muted'>".$helptext."</small></p>";
 		echo "</div></div>";			
 	}
