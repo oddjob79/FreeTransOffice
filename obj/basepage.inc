@@ -9,21 +9,21 @@
 		protected $title = 'TransOffice';
 		protected $keywords = 'TransOffice - Invoicing and Project Management Tool for Freelance Translation Professionals';		
 		
-		protected $mainmenuitems = array('Contacts' 	=>	'../web/contacts.php',
-									'Clients'	=>	'../web/clients.php',
-									'Jobs'		=>	'../web/jobs.php',
-									'Invoices'	=>	'../web/invoices.php',
-									'Settings'	=>	'../web/settings.php'
+		protected $mainmenuitems = array('Contacts' 	=>	'../web/contactlist.php',
+									'Clients'	=>	'../web/clientlist.php',
+									'Jobs'		=>	'../web/joblist.php',
+									'Invoices'	=>	'../web/invoicelist.php'
 								);
 		
 		protected $clientsubitems = array(
-									'Clients' =>	'../web/clientlist.php',
+//									'Clients' =>	'../web/clientlist.php',
 									'End Clients' =>	'../web/cl_endclients.php',
 									'Contacts'	=>	'../web/cl_contacts.php',
 									'Jobs'		=>	'../web/cl_jobs.php',
 									'Invoices'	=>	'../web/cl_invoices.php'
 								);
-		protected $invsubitems = array('Invoices' 	=>	'../web/invoicelist.php',
+		protected $invsubitems = array(
+//									'Invoices' 	=>	'../web/invoicelist.php',
 									'Generate Invoices'	=>	'../web/geninvoices.php'
 								);
 
@@ -73,17 +73,46 @@
 
 		protected function displayBanner() {
 			echo '<div class="pl-3 py-2 mb-2 bg-info text-white">';
-//			echo '<div class="pb-0 mb-0 bg-info text-white">';
 			echo '<div class="row">';
 				echo '<div class="col-2">';
-					echo '<h2><a style="text-decoration:none;color:white;" href="../web/login.php">TransOffice</a></h2>';
-				echo '</div><div class="col"></div>';
-				echo '<div class="col-1">';
-					echo $this->version;
-				echo '</div><div class="col-2">';
+					echo '<h2><a style="text-decoration:none;color:white;" href="../web/joblist.php">TransOffice</a></h2>';
+				echo '</div>';
+				$this->displayNavMenu();
+				echo '<div class="col-2">';
 					$this->displayUser();
 			echo '</div></div></div>';
 		}
+
+		protected function displayNavMenu() {
+			echo '<div class="col-8 btn-group">';
+				$this->simpleNavLink('contact');
+				$this->dropdownNavLink('client', $this->clientsubitems);
+				$this->simpleNavLink('job');
+				$this->dropdownNavLink('invoice', $this->invsubitems);
+				$this->dropdownNavLink('settings', $this->setsubitems);
+			echo '</div>';
+		}
+		
+		private function simpleNavLink($menuitem) {
+			echo '<a class="btn btn-info" role="button" href="../web/'.$menuitem.'list.php" >'.ucfirst($menuitem).'s</a>';
+		}
+		
+		private function dropdownNavLink($menuitem, $submenuitems) {
+			echo '<div class="btn-grp">';
+			if ($menuitem == 'settings') {
+				echo '<a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>';
+			} else {
+				echo '<a class="btn btn-info" role="button" href="../web/'.$menuitem.'list.php" >'.ucfirst($menuitem).'s</a>';
+				echo '<button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+				echo '<span class="sr-only">Toggle Dropdown</span></button>';
+			}
+			echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
+			foreach ($submenuitems as $name=>$url) {
+				echo "<a class='dropdown-item' href ='".htmlentities($url)."'>$name</a></li>";
+			}
+		echo '</div></div>';
+		}
+
 		
 		
 		protected function displayMenu($mainmenuitems) {
@@ -161,10 +190,34 @@
 				echo "User: ".$userarray['user_name']."</button>";
 				echo "<div class='dropdown-menu' aria-labelledby='usermenubutton'>";
 				echo "<a class='dropdown-item' href='../web/usersettings.php'>User Settings</a>";
+				echo "<a class='dropdown-item' href='#aboutTSModal' data-toggle='modal' data-target='#aboutTSModal'>About TransOffice</a>";
 				echo "<a class='dropdown-item' href='../web/logout.php'>Logout</a>";
 				echo "</div></div>";
+				$this->aboutModal();
+
 			}
 			$sql = ''; $svparams=''; $userdetails='';$userarray='';
+		}
+
+		private function aboutModal() {
+			echo "<div id='aboutTSModal' class='modal fade' role='dialog'>";
+				echo "<div class='modal-dialog'>";
+					echo "<div class='modal-content'>";
+						echo "<div class='modal-header dropdown-item'>";
+							echo "<h5 class='modal-title'>About TransOffice</h5>";
+							echo "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>";
+								echo "<span aria-hidden='true'>&times;</span>";
+							echo "</button>";
+						echo "</div>";
+					echo "<div class='modal-body dropdown-item'>";
+						echo "<p>TransOffice - version 1.0 - February 2018<hr></p>";
+						echo "<p>TransOffice is an open source application for Freelance Translators,<br>built and maintained by Kennet Technology Services.</p>";
+					echo "</div>";
+			  echo "<div class='modal-footer'>";
+				echo "<button type='button' class='btn btn-primary' data-dismiss='modal'>OK</button>";
+			  echo "</div></div></div></div>";	
+
+			  
 		}
 		
 		protected function displayVersion() {
@@ -187,15 +240,21 @@
 				}    
 			}
 
+		// currently set on all pages. Should be moved to display() function
 		public function checkLoggedIn() {
+			$this->logoutIfTimedOut();
+			
 			if (empty($_SESSION['user_id'])) {
 				$this->redirect('../web/login.php');
 			}
 		}
 		
-		public function setClientSessionId($clientid) {
-			$client_sess = new Session();
-			$client_sess -> setClientId($clientid);
+		private function logoutIfTimedOut() {
+			if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1200)) {
+				// last request was more than 20 minutes ago
+				session_unset();     // unset $_SESSION variable for the run-time 
+				session_destroy();   // destroy session data in storage
+			}
 		}
 		
 		public function display()
@@ -207,7 +266,9 @@
 //			echo "</head>\n<body>\n<div class='container-fluid'>\n\t<div class='row-fluid'>\n\t";
 			echo "</head>\n<body>\n<div class='container-fluid'>\n\t";			
 			$this->displayBanner();
-			$this -> displayMenu($this->mainmenuitems);
+//			$this -> displayMenu($this->mainmenuitems);
+//			$this -> logoutIfTimedOut();
+//			$this -> checkLoggedIn();
 //			echo "</div></div>";
 //			echo "<div class='col'>";
 //			echo $this->content;
@@ -219,11 +280,6 @@
 			//echo "</div></div>\n</body>\n</html>\n"; 
 		}
 		
-		public function displayNoHeaders() {
-			echo "<body>\n<div class='container-fluid'>\n\t";			
-			$this->displayBanner();
-		}
-			
 	}
 
 	

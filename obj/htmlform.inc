@@ -4,6 +4,11 @@ class HtmlForm {
 	
 	public $postedname;
 	public $postedvals; 
+	
+	protected $rowclass = 'row justify-content-md-center';
+	protected $colfull = 'col-10';
+	protected $colhalf = 'col-5';
+	protected $colauto = 'col-auto';
 
 	protected function setFormHeader($module, $displaydata = null) {
 		if (!empty($displaydata)) {
@@ -15,7 +20,8 @@ class HtmlForm {
 	}
 	
 	protected function formFormat($formheader) {
-		echo "<div class='col-8'>";
+//		echo "<div class='col-10 '>";
+		echo "<div class='container'>";
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<h3 class='p-3 mb-2 bg-light text-dark'>".$formheader."</h3>";
 		echo "</div></div>";

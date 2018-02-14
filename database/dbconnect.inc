@@ -71,6 +71,12 @@ class Dbconnect {
 	// pass in procedure name and all parameters in array
 	public function callSP($spname, &$outparams, &$params) {
 		
+		require_once('../obj/session.inc');
+		$session = new Session();
+		if ($spname != 'sys_users_read') {
+			$session -> setLastActivity();
+		}
+		
 		try {
 			// call execution method
 			$sql = $this->execStatement($spname, $outparams, $params);

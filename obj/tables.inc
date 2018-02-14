@@ -5,7 +5,9 @@
 class Tables {
 
 	private function tableFormat($tableheader) {
-		echo "<div class='col-10'>";
+		if ($tableheader != 'Jobs' && $tableheader != 'Generate Invoices') {
+			echo "<div class='container'>";
+		}
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<h3 class='p-2 mb-2 bg-light text-dark'>".$tableheader."</h3>";
 		echo "</div></div>";

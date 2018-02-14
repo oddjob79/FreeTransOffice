@@ -31,6 +31,14 @@ class Session {
 		
 		$_SESSION['client_id'] = $client_id;
 	}
+	
+	// call on every server request
+	public function setLastActivity() {
+		$_SESSION['LAST_ACTIVITY'] = time(); 			// update last activity time stamp
+	}
+	
+	
+	
 
 /*	public function getClientId() {
 		if (!(isset($_SESSION))) {

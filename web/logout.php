@@ -11,6 +11,6 @@
 	
 	if (empty($_SESSION['user_id'])) {
 		echo "You have been successfully logged out. <br>";
-	} else { echo "Whoops"; }
+	} else { echo "Something went wrong during logout. Please try again."; }
 
 ?>
