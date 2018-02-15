@@ -28,11 +28,8 @@
 		
 		// if new client - run address add logic and insert client info
 		if ($recordexists === false) {
-			// insert address info (if exists)
-			$newaddress_id = $addressdata->insertAddress($addrposted);
-
-			// add the newly added address_id to the clientposted array
-			$clientposted['address_id'] = $newaddress_id;
+			// checks to see if address already exists. Inserts if new address, or returns addressid if exists. If partial match, address is updated and addressid is returned
+			$clientposted['addressid'] = $addressdata->addressInsertUpdate($addrposted);
 			
 			// instantiate the dbconnect class, set the output variable array, and call the insert sp		
 			$sql = new Dbconnect();
@@ -41,23 +38,13 @@
 			
 			// check if a new record was created.	
 			$clientform->recordCreated($newrecord, 'client');
+			
 		} else {
 
 		// update client logic
 
-			// should all be moved to addressdata class		
-			// update address logic (if there is an address associated with the client)
-			if (!empty($_POST['addressid'])) {
-
-				array_unshift($addrposted, $_POST['addressid']);
-				$addressdata->updateAddress($addrposted);
-			} else {
-				// insert address if a new one has been added
-				$newaddress_id = $addressdata->insertAddress($addrposted);
-				
-				// add the newly added address_id to the clientposted array
-				$clientposted['address_id'] = $newaddress_id;				
-			}
+			// checks to see if address already exists. Inserts if new address, or returns addressid if exists. If partial match, address is updated and addressid is returned
+			$clientposted['addressid'] = $addressdata->addressInsertUpdate($addrposted);
 		
 			// add client_id to $clientposted array
 			array_unshift($clientposted, $_POST['recordid']);

@@ -216,8 +216,6 @@
 			  echo "<div class='modal-footer'>";
 				echo "<button type='button' class='btn btn-primary' data-dismiss='modal'>OK</button>";
 			  echo "</div></div></div></div>";	
-
-			  
 		}
 		
 		protected function displayVersion() {
@@ -250,7 +248,7 @@
 		}
 		
 		private function logoutIfTimedOut() {
-			if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1200)) {
+			if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 18000)) { // change to 1800
 				// last request was more than 20 minutes ago
 				session_unset();     // unset $_SESSION variable for the run-time 
 				session_destroy();   // destroy session data in storage

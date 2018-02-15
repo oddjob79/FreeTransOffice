@@ -20,19 +20,8 @@
 		// get the values that were posted on the form
 		$postedvalues = $usersetform->getPostedValues($userset, false);
 
-		// should all be moved to addressdata class
-		// update address logic (if there is an address associated with the user)
-		if (!empty($_POST['addressid'])) {
-			array_unshift($addrposted, $_POST['addressid']);
-			$useraddress->updateAddress($addrposted);
-		} else {
-			// insert address if a new one has been added
-			$newaddress_id = $useraddress->insertAddress($addrposted);
-			
-			// add the newly added address_id to the postedvalues array
-			$postedvalues['address_id'] = $newaddress_id;
-	
-		}
+		// checks to see if address already exists. Inserts if new address, or returns addressid if exists. If partial match, address is updated and addressid is returned
+		$postedvalues['addressid'] = $useraddress->addressInsertUpdate($addrposted);
 		
 		// add user_id to the $postedvalues array
 		array_unshift($postedvalues, $_SESSION['user_id'], $_SESSION['domain_id']);

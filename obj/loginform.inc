@@ -5,7 +5,8 @@ require_once('htmlform.inc');
 class LoginForm extends HtmlForm {
 
 	public function loginFormat() {
-		echo "<div class='col-1'></div>";
+//		echo "<div class='col-1'></div>";
+		echo "<div class='container'>";
 		echo "<div class='col-6'>";
 		echo "<div class='p-3 mb-2 bg-light text-dark'>";
 	}
