@@ -6,8 +6,8 @@
 	class BasePage {
 		public $content;
 		protected $version = "v1.0";
-		protected $title = 'TransOffice';
-		protected $keywords = 'TransOffice - Invoicing and Project Management Tool for Freelance Translation Professionals';		
+		protected $title = 'FreeTransOffice';
+		protected $keywords = 'FreeTransOffice - Invoicing and Project Management Tool for Freelance Translation Professionals';		
 		
 		protected $mainmenuitems = array('Contacts' 	=>	'../web/contactlist.php',
 									'Clients'	=>	'../web/clientlist.php',
@@ -63,7 +63,7 @@
 				<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 				<script src="../inc/bootstrap/js/bootstrap-datepicker.min.js"></script>
 				<!-- custom javascript library -->
-				<script src="../inc/transoffice.js?rndstr=121"></script>
+				<script src="../inc/transoffice.js?rndstr=134"></script>
 				
 				<!-- ensures sclaing to mobile devices -->
 				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -74,8 +74,8 @@
 		protected function displayBanner() {
 			echo '<div class="pl-3 py-2 mb-2 bg-info text-white">';
 			echo '<div class="row">';
-				echo '<div class="col-2">';
-					echo '<h2><a style="text-decoration:none;color:white;" href="../web/joblist.php">TransOffice</a></h2>';
+				echo '<div class="col-3">';
+					echo '<h2><a style="text-decoration:none;color:white;" href="../web/joblist.php">FreeTransOffice</a></h2>';
 				echo '</div>';
 				$this->displayNavMenu();
 				echo '<div class="col-2">';
@@ -84,7 +84,7 @@
 		}
 
 		protected function displayNavMenu() {
-			echo '<div class="col-8 btn-group">';
+			echo '<div class="col-7 btn-group">';
 				$this->simpleNavLink('contact');
 				$this->dropdownNavLink('client', $this->clientsubitems);
 				$this->simpleNavLink('job');
@@ -114,8 +114,8 @@
 		}
 
 		
-		
-		protected function displayMenu($mainmenuitems) {
+		// no longer in use - replaced by displayNavMenu
+/*		protected function displayMenu($mainmenuitems) {
 			// additional functionality needed - 1. active status for links based on URL. 2. maintaining show / hide collapse on page load
 			?>
 			<div class="row">
@@ -159,7 +159,7 @@
 			</div></div>
 		<?php		
 		}
-
+*/
 		
 		protected function IsURLCurrentPage($url)
 		{
@@ -190,7 +190,7 @@
 				echo "User: ".$userarray['user_name']."</button>";
 				echo "<div class='dropdown-menu' aria-labelledby='usermenubutton'>";
 				echo "<a class='dropdown-item' href='../web/usersettings.php'>User Settings</a>";
-				echo "<a class='dropdown-item' href='#aboutTSModal' data-toggle='modal' data-target='#aboutTSModal'>About TransOffice</a>";
+				echo "<a class='dropdown-item' href='#aboutFTOModal' data-toggle='modal' data-target='#aboutFTOModal'>About FreeTransOffice</a>";
 				echo "<a class='dropdown-item' href='../web/logout.php'>Logout</a>";
 				echo "</div></div>";
 				$this->aboutModal();
@@ -200,18 +200,18 @@
 		}
 
 		private function aboutModal() {
-			echo "<div id='aboutTSModal' class='modal fade' role='dialog'>";
+			echo "<div id='aboutFTOModal' class='modal fade' role='dialog'>";
 				echo "<div class='modal-dialog'>";
 					echo "<div class='modal-content'>";
 						echo "<div class='modal-header dropdown-item'>";
-							echo "<h5 class='modal-title'>About TransOffice</h5>";
+							echo "<h5 class='modal-title'>About FreeTransOffice</h5>";
 							echo "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>";
 								echo "<span aria-hidden='true'>&times;</span>";
 							echo "</button>";
 						echo "</div>";
 					echo "<div class='modal-body dropdown-item'>";
-						echo "<p>TransOffice - version 1.0 - February 2018<hr></p>";
-						echo "<p>TransOffice is an open source application for Freelance Translators,<br>built and maintained by Kennet Technology Services.</p>";
+						echo "<p>FreeTransOffice - version 1.0 - February 2018</p>";
+						//echo "<p>FreeTransOffice is an open source application for Freelance Translators,<br>built and maintained by Kennet Technology Services.</p>";
 					echo "</div>";
 			  echo "<div class='modal-footer'>";
 				echo "<button type='button' class='btn btn-primary' data-dismiss='modal'>OK</button>";
@@ -219,7 +219,7 @@
 		}
 		
 		protected function displayVersion() {
-			echo "<tr><td>TransOffice version".$this->version."</td></tr>";
+			echo "<tr><td>FreeTransOffice version".$this->version."</td></tr>";
 		}
 		
 		// function used to close out div tags at the end of each page

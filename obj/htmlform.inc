@@ -5,11 +5,6 @@ class HtmlForm {
 	public $postedname;
 	public $postedvals; 
 	
-	protected $rowclass = 'row justify-content-md-center';
-	protected $colfull = 'col-10';
-	protected $colhalf = 'col-5';
-	protected $colauto = 'col-auto';
-
 	protected function setFormHeader($module, $displaydata = null) {
 		if (!empty($displaydata)) {
 			$formheader = $module . ' - '.$displaydata; 
@@ -27,6 +22,39 @@ class HtmlForm {
 		echo "</div></div>";
 		echo "<div class='p-3 mb-2 bg-light text-dark'>";
 	}
+
+	protected function getTandC() {
+		$termsandconditions = "<p><b>CONDITIONS OF USE</b></p>";
+		$termsandconditions .= "<p>Welcome to FreeTransOffice! Kennet Technology Services offer this service to you subject to the following conditions. If you visit this website, you accept these conditions. Please read them carefully.</p>";
+		$termsandconditions .= "<p><b>PRIVACY</b></p>";
+		$termsandconditions .= "<p>Please review our Privacy Notice, which also governs your visit to our website, to understand our practices.</p>";
+		$termsandconditions .= "<p><b>ELECTRONIC COMMUNICATIONS</b></p>";
+		$termsandconditions .= "<p>When you visit freetransoffice.com or send e-mails to Kennet Technology Services, you are communicating with us electronically. You consent to receive communications from us electronically. ";
+		$termsandconditions .= "We will communicate with you by e-mail or by posting notices on this site. You agree that all agreements, notices, disclosures and other communications that we provide to you electronically satisfy any legal requirement that such communications be in writing.</p>";
+		$termsandconditions .= "<p><b>YOUR MEMBERSHIP ACCOUNT</b></p>";
+		$termsandconditions .= "<p>If you use this site, you are responsible for maintaining the confidentiality of your account and password and for restricting access to your computer, and you agree to accept responsibility for all activities that occur under your account or password. ";
+		$termsandconditions .= "If you are under 18, you may use our website only with involvement of a parent or guardian. Kennet Technology Services and its associates reserve the right to refuse service, terminate accounts, remove or edit content, or cancel orders in their sole discretion.</p>";
+		$termsandconditions .= "DISCLAIMER OF WARRANTIES AND LIMITATION OF LIABILITY THIS SITE IS PROVIDED BY KENNET TECHNOLOGY SERVICES ON AN 'AS IS' AND 'AS AVAILABLE' BASIS. KENNET TECHNOLOGY SERVICES MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF ";
+		$termsandconditions .= "THIS SITE OR THE INFORMATION, CONTENT, MATERIALS, OR PRODUCTS INCLUDED ON THIS SITE. YOU EXPRESSLY AGREE THAT YOUR USE OF THIS SITE IS AT YOUR SOLE RISK. TO THE FULL EXTENT PERMISSIBLE BY APPLICABLE LAW, KENNET TECHNOLOGY SERVICES DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, ";
+		$termsandconditions .= "INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. KENNET TECHNOLOGY SERVICES DOES NOT WARRANT THAT THIS SITE, ITS SERVERS, OR E-MAIL SENT FROM KENNET TECHNOLOGY SERVICES ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS. ";
+		$termsandconditions .= "KENNET TECHNOLOGY SERVICES WILL NOT BE LIABLE FOR ANY DAMAGES OF ANY KIND ARISING FROM THE USE OF THIS SITE, INCLUDING, BUT NOT LIMITED TO DIRECT, INDIRECT, INCIDENTAL, PUNITIVE, AND CONSEQUENTIAL DAMAGES. CERTAIN STATE LAWS DO NOT ALLOW LIMITATIONS ON IMPLIED WARRANTIES OR THE ";
+		$termsandconditions .= "EXCLUSION OR LIMITATION OF CERTAIN DAMAGES. IF THESE LAWS APPLY TO YOU, SOME OR ALL OF THE ABOVE DISCLAIMERS, EXCLUSIONS, OR LIMITATIONS MAY NOT APPLY TO YOU, AND YOU MIGHT HAVE ADDITIONAL RIGHTS.</p>";
+		$termsandconditions .= "<p><b>APPLICABLE LAW</b></p>";
+		$termsandconditions .= "<p>By visiting FreeTransOffice.com, you agree that the laws of the state of Wisconsin, USA, without regard to principles of conflict of laws, will govern these Conditions of Use and any dispute of any sort that might arise between you and Kennet Technology Services or its associates.</p>";
+		$termsandconditions .= "<p><b>DISPUTES</b></p>";
+		$termsandconditions .= "<p>Any dispute relating in any way to your visit to FreeTransOffice.com shall be submitted to confidential arbitration in Wisconsin, USA, except that, to the extent you have in any manner violated or threatened to violate Kennet Technology Services’ intellectual property rights, ";
+		$termsandconditions .= "Kennet Technology Services may seek injunctive or other appropriate relief in any state or federal court in the state of Wisconsin, USA, and you consent to exclusive jurisdiction and venue in such courts. Arbitration under this agreement shall be conducted under the rules then prevailing of ";
+		$termsandconditions .= "the American Arbitration Association. The arbitrators award shall be binding and may be entered as a judgment in any court of competent jurisdiction. To the fullest extent permitted by applicable law, no arbitration under this Agreement shall be joined to an arbitration involving any other ";
+		$termsandconditions .= "party subject to this Agreement, whether through class arbitration proceedings or otherwise.</p>";
+		$termsandconditions .= "<p><b>SITE POLICIES, MODIFICATION, AND SEVERABILITY</b></p>";
+		$termsandconditions .= "<p>We reserve the right to make changes to our site, policies, and these Conditions of Use at any time. If any of these conditions shall be deemed invalid, void, or for any reason unenforceable, that condition shall be deemed severable and shall not affect the validity and enforceability of any remaining condition.</p>";
+		$termsandconditions .= "<p><b>QUESTIONS</b></p>";
+		$termsandconditions .= "<p>Questions regarding our Conditions of Usage, Privacy Policy, or other policy related material can be emailed to us at: support@kennettechservices.com.</p>";
+		
+		return $termsandconditions;
+	}
+
+
 	
 	// update so only accessed by subclasses and make protected
 	// pass in array containing all field names from form and passes back variables of the same name set to either integers or strings, depending on data type
@@ -218,6 +246,12 @@ class HtmlForm {
 	  echo "</div></div></div></div>";		
 	}
 	
+	private function modalFooterAlert($saveid=null, $value=null) {
+	  echo "<div class='modal-footer'>";
+		echo "<button type='button' id='".$saveid."' class='btn btn-primary' data-dismiss='modal' value='".$value."'>OK</button>";
+	  echo "</div></div></div></div>";		
+	}
+	
 	protected function buildConfirmModal($modalid, $header, $msg, $saveid = null, $value = null) {
 		$this->modalHeader($modalid, $header);
 		$this->modalBody($msg);
@@ -228,6 +262,12 @@ class HtmlForm {
 		$this->modalHeader($modalid, $header);
 		$this->modalBody($msg);
 		$this->modalFooterPrint($saveid, $value);
+	}
+	
+	protected function buildAlertModal($modalid, $header, $msg, $saveid = null, $value = null) {
+		$this->modalHeader($modalid, $header);
+		$this->modalBody($msg);
+		$this->modalFooterAlert();
 	}
 	
 }

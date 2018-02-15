@@ -137,7 +137,9 @@ class InvoiceForm extends HtmlForm {
 //			echo "<br> <input class='btn btn-outline-primary' type='submit' id='voidinvbutton' value='Void Invoice' /> ";
 
 			echo "<br> <button class='btn btn-outline-primary' type='button' data-toggle='modal' data-target='#voidmodal'>Void Invoice</button> ";
-			$this->buildConfirmModal('voidmodal', 'Void Invoice?', 'Please confirm you would like to void invoice number '.$invdata['invoice_number'].'.<br> The invoice status will be set to Voided and all associated jobs will be set to Complete', 'voidinvbutton', 'Void');
+			$modalhead = 'Void Invoice?';
+			$modalbody = 'Please confirm you would like to void invoice number '.$invdata['invoice_number'].'.<br> The invoice status will be set to Voided and all associated jobs will be set to Complete';
+			$this->buildConfirmModal('voidmodal', $modalhead, $modalbody, 'voidinvbutton', 'Void');
 			echo " <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
 			echo " <a class='btn btn-outline-primary' href='../web/invoicelist.php' role='button'>Cancel</a> ";
 		echo "</div></div></div></form>";

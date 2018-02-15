@@ -184,6 +184,27 @@ $(document).ready(function() {
     });	
 });
 
+// ensure new users agree to terms and conditions
+$(document).ready(function() {
+	$('#newusermodal').on('shown.bs.modal', function(){
+		if ($('#checkagreetandc').prop('checked') == false) {
+			$('#agreeTandC').prop('disabled', true);
+			$('#agreeTandC').val('Check the Box');
+		}
+	
+		$('#checkagreetandc').click(function() {
+			if ($('#checkagreetandc').is(':checked')) {
+				$('#agreeTandC').prop('disabled', false);
+				$('#agreeTandC').val('I Agree');
+			} else {
+				$('#agreeTandC').prop('disabled', true);
+				$('#agreeTandC').val('Check the Box');
+			}			
+		});
+	});	
+});
+
+
 	
 // ALERTS	
 	

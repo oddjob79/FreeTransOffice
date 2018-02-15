@@ -36,7 +36,11 @@ class UserForm extends HtmlForm {
 		echo "</div></div><div class='row'>\n<div class='col'>";			
 			echo "<p>Security Answer: <input class='form-control' placeholder='Enter your answer' type='text' name='secanswer' size='120' required = 'true' maxlength='120' /></p>";
 		echo "</div></div><div class='row'>\n<div class='col'>";		
-			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' />";
+//			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' />";
+			echo "<br> <button class='btn btn-outline-primary' type='button' data-toggle='modal' data-target='#newusermodal'>Add User</button> ";
+			$tandcText = $this->getTandC();
+			$tandcText .= "<p><input type='checkbox' id='checkagreetandc'> I agree to the terms and conditions, as stated above</p>";			
+			$this->buildConfirmModal('newusermodal', '<b>Terms and Conditions</b>', $tandcText, 'agreeTandC', 'I Agree');
 		echo "</div></div></div></form>";
 	}	
 	

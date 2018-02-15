@@ -23,16 +23,13 @@
 		$addnewuser = $nusql->callSP('sp_create_user', $outuser, $postedvalues);
 		
 		if (!empty($addnewuser)) {
-			$uservar = $nusql->returnFirstRow($addnewuser);
-			echo "User " . $uservar['user_name'] . " created successfully!";
+			echo "<br>User " . $postedvalues[2] . " created successfully. Please click the <a href='../web/login.php'>link</a> to login to the system.";
 		} else {
-			echo "There was a problem somewhere";
+			echo "There was a problem creating the user. Please contact support@kennettechservices.com for assistance.";
 		}
 		
 	} else {
 		// if no posted information available
-//		$formheader = 'New User';
-//		$newuserform->formFormat('New User');
 		$newuserform->newUserForm();
 	}
 	
