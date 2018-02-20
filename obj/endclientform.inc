@@ -92,9 +92,9 @@ class EndClientForm extends HtmlForm {
 			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
 		echo "</div><div class='col-auto'>";
 			echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
-			echo " <a class='btn btn-outline-primary' href='../web/cl_endclients.php' role='button'>Cancel</a> ";
+			echo " <a class='btn btn-outline-primary' href='cl_endclients.php' role='button'>Cancel</a> ";
 			if (!empty($_GET['end_client_id'])) {
-				echo " <a class='btn btn-outline-primary' href='../web/endclientdetails.php' role='button'>New</a> ";
+				echo " <a class='btn btn-outline-primary' href='endclientdetails.php' role='button'>New</a> ";
 			}
 		echo "</div></div></div></form>";
 	}	

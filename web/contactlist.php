@@ -10,7 +10,7 @@
 	
 	$contacttable = new Tables();
 	
-	$entitydetailsurl = '../web/contactdetails.php';
+	$entitydetailsurl = 'contactdetails.php';
 	$entityname = 'Contact';
 	
 	$params = array("-1", "-1", $_SESSION['domain_id']);

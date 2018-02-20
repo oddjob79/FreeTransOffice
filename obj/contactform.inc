@@ -140,9 +140,9 @@ class ContactForm extends HtmlForm {
 			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
 		echo "</div><div class='col-auto'>";
 			echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
-			echo " <a class='btn btn-outline-primary' href='../web/contactlist.php' role='button'>Cancel</a> ";
+			echo " <a class='btn btn-outline-primary' href='contactlist.php' role='button'>Cancel</a> ";
 			if (!empty($_GET['contactid'])) {
-				echo " <a class='btn btn-outline-primary' href='../web/contactdetails.php' role='button'>New</a> ";
+				echo " <a class='btn btn-outline-primary' href='contactdetails.php' role='button'>New</a> ";
 			}
 		echo "</div></div></div></form>";
 	}	
@@ -163,7 +163,7 @@ class ContactForm extends HtmlForm {
 //			print_r($clientcontactposted); echo "<br>";
 			$sql->callSP('sys_client_contacts_create', $clcnout, $clientcontactposted);
 		// finally redirect to saved record
-			$basepage->redirect("../web/".$entity."details.php?".$entity."id=".$newrecrow[$outparam]);
+			$basepage->redirect("".$entity."details.php?".$entity."id=".$newrecrow[$outparam]);
 //				echo "Contact ".$contactposted[1]." created successfully"; // need to change this so this displays in an "infobar" at top of newly loaded page
 		} else {
 			echo "There was a problem creating the record.<br><br>";

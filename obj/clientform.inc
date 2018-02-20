@@ -253,9 +253,9 @@ class ClientForm extends HtmlForm {
 			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
 		echo "</div><div class='col-auto'>";
 			echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
-			echo " <a class='btn btn-outline-primary' href='../web/clientlist.php' role='button'>Cancel</a> ";
+			echo " <a class='btn btn-outline-primary' href='clientlist.php' role='button'>Cancel</a> ";
 			if (!empty($_GET['clientid'])) {
-				echo " <a class='btn btn-outline-primary' href='../web/clientdetails.php' role='button'>New</a> ";
+				echo " <a class='btn btn-outline-primary' href='clientdetails.php' role='button'>New</a> ";
 			}
 		echo "</div></div></div></form>";
 	}	

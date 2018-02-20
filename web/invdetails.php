@@ -18,7 +18,7 @@
 			$out = array();
 			$sql->callSP('sp_void_invoice', $out, $params);
 			
-			$invdetailpage->redirect("../web/invdetails.php?invoiceid=".$_POST['recordid']);
+			$invdetailpage->redirect("invdetails.php?invoiceid=".$_POST['recordid']);
 			
 		} else {
 		
@@ -36,7 +36,7 @@
 			$updaterecord = $sql->callSP('sys_invoices_update', $out, $postedvalues);
 			$sql = ""; $out = ""; $updaterecord = ""; $postedvalues = "";
 
-			$invdetailpage->redirect("../web/invdetails.php?invoiceid=".$_POST['recordid']);
+			$invdetailpage->redirect("invdetails.php?invoiceid=".$_POST['recordid']);
 			$invdetailpage -> endPage();
 		}
 	} else {

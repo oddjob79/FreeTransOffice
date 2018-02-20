@@ -249,9 +249,9 @@ class JobForm extends HtmlForm {
 		if (!empty($formstatus)) {
 			echo "</fieldset>";
 			echo "<div class='row justify-content-end'>\n<div class='col-auto'>";
-			echo " <a class='btn btn-outline-primary' href='../web/joblist.php' role='button'>Cancel</a> ";
+			echo " <a class='btn btn-outline-primary' href='joblist.php' role='button'>Cancel</a> ";
 			if (!empty($_GET['jobid'])) {
-				echo " <a class='btn btn-outline-primary' href='../web/jobdetails.php' role='button'>New</a> ";
+				echo " <a class='btn btn-outline-primary' href='jobdetails.php' role='button'>New</a> ";
 			}
 			echo "</div></div></div></form>";
 		} else {
@@ -259,9 +259,9 @@ class JobForm extends HtmlForm {
 				echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
 			echo "</div><div class='col-auto'>";
 				echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
-				echo " <a class='btn btn-outline-primary' href='../web/joblist.php' role='button'>Cancel</a> ";
+				echo " <a class='btn btn-outline-primary' href='joblist.php' role='button'>Cancel</a> ";
 				if (!empty($_GET['jobid'])) {
-					echo " <a class='btn btn-outline-primary' href='../web/jobdetails.php' role='button'>New</a> ";
+					echo " <a class='btn btn-outline-primary' href='jobdetails.php' role='button'>New</a> ";
 				}
 			echo "</div></div></div></fieldset></form>";
 		}

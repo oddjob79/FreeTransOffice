@@ -10,7 +10,7 @@
 	
 	$clientcontacttable = new Tables();
 	
-	$entitydetailsurl = '../web/contactdetails.php';
+	$entitydetailsurl = 'contactdetails.php';
 	$entityname = 'Contact';
 	$entityfilter = 'client';
 	$clientid = $clientcontacttable->getsetClientId();

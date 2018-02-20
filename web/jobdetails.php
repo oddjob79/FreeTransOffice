@@ -41,7 +41,7 @@
 			$sql->callSP('sys_jobs_update', $out, $jobposted);
 		
 			$jobpage -> endPage();
-			$jobpage->redirect("../web/jobdetails.php?jobid=".$_POST['recordid']);		
+			$jobpage->redirect("jobdetails.php?jobid=".$_POST['recordid']);		
 		}
 	} else {	
 		$jobform -> showJobForm();

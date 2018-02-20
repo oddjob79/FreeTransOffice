@@ -21,7 +21,7 @@ class LoginForm extends HtmlForm {
 		$this->buildAlertModal('tandcmodal', $modalhead, $this->getTandC());
 		
 		echo "<input class='btn btn-outline-primary' type='submit' value='Login' />";
-		echo "  <a class='btn btn-outline-primary' href='../web/newuser.php' role='button' data-toggle='tooltip' data-placement='bottom' title='Click here to register for TransOffice'>New User</a>";
+		echo "  <a class='btn btn-outline-primary' href='newuser.php' role='button' data-toggle='tooltip' data-placement='bottom' title='Click here to register for TransOffice'>New User</a>";
 		
 		echo "</div></form>";
 		echo "</div></div>";

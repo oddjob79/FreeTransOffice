@@ -11,7 +11,7 @@
 	$endclienttable = new Tables();
 //	$endclienttable->clientList();
 	
-	$entitydetailsurl = '../web/endclientdetails.php';
+	$entitydetailsurl = 'endclientdetails.php';
 	$entityname = 'End Client';
 	$entityfilter = 'client';
 	$clientid = $endclienttable->getsetClientId();

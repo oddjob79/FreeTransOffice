@@ -80,7 +80,7 @@ class JobTypeForm extends HtmlForm {
 			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
 		echo "</div><div class='col-auto'>";
 			echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
-			echo " <a class='btn btn-outline-primary' href='../web/jobtypes.php?jobtypeid=".$jobtypedata['job_type_id']."' role='button'>Cancel</a> ";
+			echo " <a class='btn btn-outline-primary' href='jobtypes.php?jobtypeid=".$jobtypedata['job_type_id']."' role='button'>Cancel</a> ";
 		echo "</div></div></div></form>";
 	}	
 

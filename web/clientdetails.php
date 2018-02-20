@@ -53,7 +53,7 @@
 			$updateclient = $sql->callSP('sys_clients_update', $out, $clientposted);
 			$sql = ""; $out = ""; $updateclient = ""; $clientposted = "";
 
-			$clientpage->redirect("../web/clientdetails.php?clientid=".$_POST['recordid']);
+			$clientpage->redirect("clientdetails.php?clientid=".$_POST['recordid']);
 			
 		}
 		$clientpage -> endPage();

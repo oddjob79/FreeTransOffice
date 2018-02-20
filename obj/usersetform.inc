@@ -169,7 +169,7 @@ class UserSetForm extends HtmlForm {
 			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
 		echo "</div><div class='col-auto'>";
 			echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
-			echo " <a class='btn btn-outline-primary' href='../web/usersettings.php' role='button'>Cancel</a> ";
+			echo " <a class='btn btn-outline-primary' href='usersettings.php' role='button'>Cancel</a> ";
 		echo "</div></div></div></form>";
 	}	
 

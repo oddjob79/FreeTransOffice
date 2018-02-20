@@ -125,9 +125,9 @@ class HtmlForm {
 			$outparam = "u_".$entity."_id";
 			$entity = str_replace('_', '', $entity);
 			if ($entity == 'invoice') {
-				$redirecturl = "../web/invdetails.php?".$entity."id=".$newrecrow[$outparam];
+				$redirecturl = "invdetails.php?".$entity."id=".$newrecrow[$outparam];
 				return $redirecturl;
-//				$basepage->redirect("../web/invdetails.php?".$entity."id=".$newrecrow[$outparam]);
+//				$basepage->redirect("invdetails.php?".$entity."id=".$newrecrow[$outparam]);
 			} else {
 				$basepage->redirect($_SERVER['PHP_SELF']."?".$entity."id=".$newrecrow[$outparam]);
 			}

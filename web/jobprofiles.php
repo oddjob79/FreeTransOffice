@@ -42,7 +42,7 @@
 			$updaterecord = $sql->callSP('sys_job_profiles_update', $out, $postedvalues);
 			$sql = ""; $out = ""; $updaterecord = ""; $postedvalues = "";
 
-			$jobprofilepage->redirect("../web/jobprofiles.php?jobprofileid=".$_POST['recordid']);
+			$jobprofilepage->redirect("jobprofiles.php?jobprofileid=".$_POST['recordid']);
 			
 		}
 		$jobprofilepage -> endPage();

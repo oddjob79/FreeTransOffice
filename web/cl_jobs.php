@@ -10,7 +10,7 @@
 	
 	$clientjobtable = new Tables();
 	
-	$entitydetailsurl = '../web/jobdetails.php';
+	$entitydetailsurl = 'jobdetails.php';
 	$entityname = 'Job';
 	$entityfilter = 'client';
 	$clientid = $clientjobtable->getsetClientId();

@@ -10,7 +10,7 @@
 	
 	$jobtable = new Tables();
 	
-	$entitydetailsurl = '../web/jobdetails.php';
+	$entitydetailsurl = 'jobdetails.php';
 	$entityname = 'Job';
 	
 	// retrieve all job data for this domain (-1)

@@ -40,7 +40,7 @@
 			$updateendclient = $sql->callSP('sys_end_clients_update', $out, $endclientposted);
 			$sql = ""; $out = ""; $updateendclient = ""; $endclientposted = "";
 
-			$endclientpage->redirect("../web/endclientdetails.php?endclientid=".$_POST['recordid']);
+			$endclientpage->redirect("endclientdetails.php?endclientid=".$_POST['recordid']);
 			
 		}
 		$endclientpage -> endPage();

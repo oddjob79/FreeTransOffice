@@ -13,7 +13,7 @@
 	$submitted = $submitinvoice->submitInvoice();
 	
 	if ($submitted == 'cancelled') {
-		$geninvoicepage->redirect('../web/geninvoices.php');
+		$geninvoicepage->redirect('geninvoices.php');
 	} else {
 		// Invoice confirmed
 		$submitinvoice -> buildPrintModal('printinvmodal', 'Printing Invoice', 'Please validate invoice output and proceed to Invoice Details', 'invdetailsbutton', $submitted);

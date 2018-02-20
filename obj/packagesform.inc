@@ -71,7 +71,7 @@ class PackagesForm extends HtmlForm {
 			echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
 		echo "</div><div class='col-auto settingsedit'>";
 			echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
-			echo " <a class='btn btn-outline-primary' href='../web/packages.php?packageid=".$packagedata['package_id']."' role='button'>Cancel</a> ";
+			echo " <a class='btn btn-outline-primary' href='packages.php?packageid=".$packagedata['package_id']."' role='button'>Cancel</a> ";
 		echo "</div></div></div></form>";
 	}	
 

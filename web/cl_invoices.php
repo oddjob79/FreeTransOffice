@@ -10,7 +10,7 @@
 	
 	$clientinvtable = new Tables();
 	
-	$entitydetailsurl = '../web/invdetails.php';
+	$entitydetailsurl = 'invdetails.php';
 	$entityname = 'Invoice';
 	$entityfilter = 'client';
 	$clientid = $clientinvtable->getsetClientId();

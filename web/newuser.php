@@ -23,7 +23,7 @@
 		$addnewuser = $nusql->callSP('sp_create_user', $outuser, $postedvalues);
 		
 		if (!empty($addnewuser)) {
-			echo "<br>User " . $postedvalues[2] . " created successfully. Please click the <a href='../web/login.php'>link</a> to login to the system.";
+			echo "<br>User " . $postedvalues[2] . " created successfully. Please click the <a href='login.php'>link</a> to login to the system.";
 		} else {
 			echo "There was a problem creating the user. Please contact support@kennettechservices.com for assistance.";
 		}

@@ -42,7 +42,7 @@
 			$updatepackage = $sql->callSP('sys_packages_update', $out, $postedvalues);
 			$sql = ""; $out = ""; $updatepackage = ""; $postedvalues = "";
 
-			$packagespage->redirect("../web/packages.php?packageid=".$_POST['recordid']);
+			$packagespage->redirect("packages.php?packageid=".$_POST['recordid']);
 			
 		}
 		$packagespage -> endPage();

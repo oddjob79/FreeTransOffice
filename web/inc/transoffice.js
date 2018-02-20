@@ -85,7 +85,7 @@ $(document).ready(function(){
 $(document).ready(function(){
    $('#invdetailsbutton').click(function(){
 //	   alert("TEST "+$('#invdetailsbutton').val());
-		window.location.href="../web/invdetails.php?invoiceid="+$('#invdetailsbutton').val();
+		window.location.href="invdetails.php?invoiceid="+$('#invdetailsbutton').val();
     });
 })
 

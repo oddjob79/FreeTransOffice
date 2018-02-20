@@ -46,7 +46,7 @@
 			$updatereport = $sql->callSP('sys_report_config_update', $out, $postedvalues);
 			$sql = ""; $out = ""; $updatereport = ""; $postedvalues = "";
 
-			$rptconfpage->redirect("../web/reportconfig.php?reportid=".$_POST['recordid']);
+			$rptconfpage->redirect("reportconfig.php?reportid=".$_POST['recordid']);
 			
 		}
 		$rptconfpage -> endPage();

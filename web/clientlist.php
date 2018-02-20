@@ -25,7 +25,7 @@
 	$clienttable->updateDateFormat($clientlist, $datefields);
 	
 	// send the headers, field names, data, url for redirects and the entity name to the entityList method for processing
-	$clienttable->entityList($theaders, $fieldnames, $clientlist, '../web/clientdetails.php', 'Client');
+	$clienttable->entityList($theaders, $fieldnames, $clientlist, 'clientdetails.php', 'Client');
 	
 	$clientlistpage -> endPage();
 ?>

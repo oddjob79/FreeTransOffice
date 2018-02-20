@@ -9,31 +9,31 @@
 		protected $title = 'FreeTransOffice';
 		protected $keywords = 'FreeTransOffice - Invoicing and Project Management Tool for Freelance Translation Professionals';		
 		
-		protected $mainmenuitems = array('Contacts' 	=>	'../web/contactlist.php',
-									'Clients'	=>	'../web/clientlist.php',
-									'Jobs'		=>	'../web/joblist.php',
-									'Invoices'	=>	'../web/invoicelist.php'
+		protected $mainmenuitems = array('Contacts' 	=>	'contactlist.php',
+									'Clients'	=>	'clientlist.php',
+									'Jobs'		=>	'joblist.php',
+									'Invoices'	=>	'invoicelist.php'
 								);
 		
 		protected $clientsubitems = array(
-//									'Clients' =>	'../web/clientlist.php',
-									'End Clients' =>	'../web/cl_endclients.php',
-									'Contacts'	=>	'../web/cl_contacts.php',
-									'Jobs'		=>	'../web/cl_jobs.php',
-									'Invoices'	=>	'../web/cl_invoices.php'
+//									'Clients' =>	'clientlist.php',
+									'End Clients' =>	'cl_endclients.php',
+									'Contacts'	=>	'cl_contacts.php',
+									'Jobs'		=>	'cl_jobs.php',
+									'Invoices'	=>	'cl_invoices.php'
 								);
 		protected $invsubitems = array(
-//									'Invoices' 	=>	'../web/invoicelist.php',
-									'Generate Invoices'	=>	'../web/geninvoices.php'
+//									'Invoices' 	=>	'invoicelist.php',
+									'Generate Invoices'	=>	'geninvoices.php'
 								);
 
 // certain options removed as functionality will be implemented at a later date
-		protected $setsubitems = array('User Settings' 	=>	'../web/usersettings.php',
-									'Report Configuration'	=>	'../web/reportconfig.php',
-									'Packages'		=>	'../web/packages.php',
-									'Job Types'		=>	'../web/jobtypes.php'//,
-	//								'Profiles'		=>	'../web/profiles.php',
-	//							'User Defined Fields'	=>	'../web/userdefined.php'
+		protected $setsubitems = array('User Settings' 	=>	'usersettings.php',
+									'Report Configuration'	=>	'reportconfig.php',
+									'Packages'		=>	'packages.php',
+									'Job Types'		=>	'jobtypes.php'//,
+	//								'Profiles'		=>	'profiles.php',
+	//							'User Defined Fields'	=>	'userdefined.php'
 								);								
 		
 
@@ -52,7 +52,7 @@
 			?>
 				<!-- Bootstrap CSS -->
 				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-				<link rel="stylesheet" href="../inc/bootstrap/css/bootstrap-datepicker.standalone.min.css" type="text/css">
+				<link rel="stylesheet" href="/inc/bootstrap/css/bootstrap-datepicker.standalone.min.css" type="text/css">
 				<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css">				
 			
 				<!-- Optional JavaScript -->
@@ -61,9 +61,9 @@
 				<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script> 
 				<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
-				<script src="../inc/bootstrap/js/bootstrap-datepicker.min.js"></script>
-				<!-- custom javascript library -->
-				<script src="../inc/transoffice.js?rndstr=134"></script>
+				<script src="/inc/bootstrap/js/bootstrap-datepicker.min.js"></script>
+				<!-- custom javascript library add ?rndstr=135 when making changes to js-->
+				<script src="/inc/transoffice.js"></script>
 				
 				<!-- ensures sclaing to mobile devices -->
 				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -75,7 +75,7 @@
 			echo '<div class="pl-3 py-2 mb-2 bg-info text-white">';
 			echo '<div class="row">';
 				echo '<div class="col-3">';
-					echo '<h2><a style="text-decoration:none;color:white;" href="../web/joblist.php">FreeTransOffice</a></h2>';
+					echo '<h2><a style="text-decoration:none;color:white;" href="joblist.php">FreeTransOffice</a></h2>';
 				echo '</div>';
 				$this->displayNavMenu();
 				echo '<div class="col-2">';
@@ -94,7 +94,7 @@
 		}
 		
 		private function simpleNavLink($menuitem) {
-			echo '<a class="btn btn-info" role="button" href="../web/'.$menuitem.'list.php" >'.ucfirst($menuitem).'s</a>';
+			echo '<a class="btn btn-info" role="button" href="'.$menuitem.'list.php" >'.ucfirst($menuitem).'s</a>';
 		}
 		
 		private function dropdownNavLink($menuitem, $submenuitems) {
@@ -102,7 +102,7 @@
 			if ($menuitem == 'settings') {
 				echo '<a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>';
 			} else {
-				echo '<a class="btn btn-info" role="button" href="../web/'.$menuitem.'list.php" >'.ucfirst($menuitem).'s</a>';
+				echo '<a class="btn btn-info" role="button" href="'.$menuitem.'list.php" >'.ucfirst($menuitem).'s</a>';
 				echo '<button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 				echo '<span class="sr-only">Toggle Dropdown</span></button>';
 			}
@@ -122,7 +122,7 @@
 			<div class='col-2'>
 				<div class="p-3 mb-2 bg-light text-dark">
 				<nav style="font-size:18px;" class="nav flex-column">
-					<a class="py-3 pl-1 nav-link" href="../web/contactlist.php">Contacts</a>
+					<a class="py-3 pl-1 nav-link" href="contactlist.php">Contacts</a>
 <!--					<a class="py-3 pl-1 nav-link" data-toggle="collapse" href="#collapseClient" aria-expanded="false" aria-controls="collapseClient" onclick="window.location.href='clientlist.php'">Clients</a> -->
 					<a class="py-3 pl-1 nav-link" data-toggle="collapse" href="#collapseClient" aria-expanded="false" aria-controls="collapseClient">Clients</a>					
 					<div class="collapse" id="collapseClient">
@@ -134,7 +134,7 @@
 							?>
 							</nav>
 						</div>					
-					<a class="py-3 pl-1 nav-link" href="../web/joblist.php">Jobs</a>
+					<a class="py-3 pl-1 nav-link" href="joblist.php">Jobs</a>
 					<a class="py-3 pl-1 nav-link" data-toggle="collapse" href="#collapseInvoice" aria-expanded="false" aria-controls="collapseInvoice">Invoices</a>
 						<div class="collapse" id="collapseInvoice">
 							<nav class="nav flex-column">
@@ -189,9 +189,9 @@
 				echo "<button class='btn btn-info dropdown toggle' type='button' id='usermenubutton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>";
 				echo "User: ".$userarray['user_name']."</button>";
 				echo "<div class='dropdown-menu' aria-labelledby='usermenubutton'>";
-				echo "<a class='dropdown-item' href='../web/usersettings.php'>User Settings</a>";
+				echo "<a class='dropdown-item' href='usersettings.php'>User Settings</a>";
 				echo "<a class='dropdown-item' href='#aboutFTOModal' data-toggle='modal' data-target='#aboutFTOModal'>About FreeTransOffice</a>";
-				echo "<a class='dropdown-item' href='../web/logout.php'>Logout</a>";
+				echo "<a class='dropdown-item' href='logout.php'>Logout</a>";
 				echo "</div></div>";
 				$this->aboutModal();
 
@@ -243,7 +243,7 @@
 			$this->logoutIfTimedOut();
 			
 			if (empty($_SESSION['user_id'])) {
-				$this->redirect('../web/login.php');
+				$this->redirect('login.php');
 			}
 		}
 		

@@ -40,7 +40,7 @@
 			$session->setSessionVars($user_id, $domain_id);
 			
 			//redirect to joblist page - additional js added if headers have already been loaded
-			$loginpage->redirect('../web/joblist.php');
+			$loginpage->redirect('joblist.php');
 //			header( "Location: joblist.php" ); die;
 			
 			

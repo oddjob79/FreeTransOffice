@@ -10,7 +10,7 @@
 	
 	$invtable = new Tables();
 	
-	$entitydetailsurl = '../web/invdetails.php';
+	$entitydetailsurl = 'invdetails.php';
 	$entityname = 'Invoice';
 	
 	// retrieve all job data for this domain (-1)

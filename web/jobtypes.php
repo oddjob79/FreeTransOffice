@@ -42,7 +42,7 @@
 			$updaterecord = $sql->callSP('sys_job_types_update', $out, $postedvalues);
 			$sql = ""; $out = ""; $updaterecord = ""; $postedvalues = "";
 
-			$jobtypepage->redirect("../web/jobtypes.php?jobtypeid=".$_POST['recordid']);
+			$jobtypepage->redirect("jobtypes.php?jobtypeid=".$_POST['recordid']);
 			
 		}
 		$jobtypepage -> endPage();

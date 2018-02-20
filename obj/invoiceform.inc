@@ -118,7 +118,7 @@ class InvoiceForm extends HtmlForm {
 		echo "<div class='row'>\n<div class='col'>";
 			echo "<p>Status: <input class='form-control' type='text' name='invstatus' value='".$invdata['status_name']."' readonly /></p>";
 		echo "</div><div class='col'>";
-			echo "<p>Attachment: <figure><a href='".$invdata['document_path']."'><img src='../inc/doclogo.png' width='50' height = '50' ></a><figcaption>".substr(strrchr($invdata['document_path'], "/"), 1)."</p>";
+			echo "<p>Attachment: <figure><a href='".$invdata['document_path']."'><img src='/inc/doclogo.png' width='50' height = '50' ></a><figcaption>".substr(strrchr($invdata['document_path'], "/"), 1)."</p>";
 		echo "</div></div>";		
 		
 		// Notes
@@ -141,7 +141,7 @@ class InvoiceForm extends HtmlForm {
 			$modalbody = 'Please confirm you would like to void invoice number '.$invdata['invoice_number'].'.<br> The invoice status will be set to Voided and all associated jobs will be set to Complete';
 			$this->buildConfirmModal('voidmodal', $modalhead, $modalbody, 'voidinvbutton', 'Void');
 			echo " <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
-			echo " <a class='btn btn-outline-primary' href='../web/invoicelist.php' role='button'>Cancel</a> ";
+			echo " <a class='btn btn-outline-primary' href='invoicelist.php' role='button'>Cancel</a> ";
 		echo "</div></div></div></form>";
 	}	
 
