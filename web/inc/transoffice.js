@@ -224,3 +224,21 @@ $(document).ready(function() {
 		alert("Please contact support@kennettechservices.com to change your login information");
 		});
 	});	
+	
+// Generate Invoices - alert box when generate invoices button clicked without client filter
+	jQuery(document).ready(function($) {
+	$('#geninvoicebutton').click(function(e) {
+// test if a client has been selected
+		var client = $('#clientselect option:selected').val();
+		if (client == null) {
+			e.preventDefault();
+			alert("Please select a Client before generating an invoice");
+		}
+// test if jobs have been selected	
+		var invjob = ($('.invcheck input:checkbox:checked').length);	
+		if (invjob == 0) {
+			e.preventDefault();
+			alert("No Jobs are Selected");
+		}
+		});
+	});	

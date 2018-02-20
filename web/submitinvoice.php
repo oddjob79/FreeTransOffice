@@ -20,7 +20,7 @@
 		// echo modal box to show report is being generated. Javascript will redirect to invoicedetails screen when button in modal is clicked
 		echo "<script type='text/javascript'>$('#printinvmodal').modal('show');</script>";
 		// load the report page
- 		$geninvoicepage->redirect('../reports/invoicereport.php?invoiceid='.$submitted);		
+ 		$geninvoicepage->redirect('/reports/invoicereport.php?invoiceid='.$submitted);		
 		
 
 	}

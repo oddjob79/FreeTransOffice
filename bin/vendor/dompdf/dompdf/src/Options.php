@@ -20,7 +20,7 @@ class Options
      *
      * @var string
      */
-    private $tempDir = '/opt/bitnami/apache2/htdocs/transoffice/dev/reports/temp/';
+    private $tempDir = '/opt/bitnami/apache2/htdocs/transoffice/dev/bin/reports/temp/';
 
     /**
      * The location of the DOMPDF font directory
@@ -30,7 +30,7 @@ class Options
      *
      * @var string
      */
-    private $fontDir = '/opt/bitnami/apache2/htdocs/transoffice/dev/reports/fonts/';
+    private $fontDir = '/opt/bitnami/apache2/htdocs/transoffice/dev/bin/reports/fonts/';
 
     /**
      * The location of the DOMPDF font cache directory
@@ -42,7 +42,7 @@ class Options
      *
      * @var string
      */
-    private $fontCache = '/opt/bitnami/apache2/htdocs/transoffice/dev/reports/fonts/';
+    private $fontCache = '/opt/bitnami/apache2/htdocs/transoffice/dev/bin/reports/fonts/';
 
     /**
      * dompdf's "chroot"
@@ -66,7 +66,7 @@ class Options
     /**
      * @var string
      */
-    private $logOutputFile = '/opt/bitnami/apache2/htdocs/transoffice/dev/reports/logs/';
+    private $logOutputFile = '/opt/bitnami/apache2/htdocs/transoffice/dev/bin/reports/logs/';
 
     /**
      * html target media view which should be rendered into pdf.

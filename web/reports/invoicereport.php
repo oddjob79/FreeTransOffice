@@ -1,7 +1,7 @@
 <?php
 
-require_once('../database/dbconnect.inc');
-require_once('../obj/session.inc');
+require_once('../../database/dbconnect.inc');
+require_once('../../obj/session.inc');
 
 $sql = new Dbconnect();
 
@@ -31,7 +31,7 @@ require_once($reporttemplate);
 $report = new DefInvoice();
 // returns location of newly created report file
 $filepath = $report->defaultInvoice($invheader, $invdetails);
-$filepath = '../reports/'.$filepath;
+$filepath = '/reports/'.$filepath;
 
 // calls sp to add this to the documents table and update the invoice record
 $docinsparams = array($_SESSION['domain_id'], $filepath, $invoiceid);

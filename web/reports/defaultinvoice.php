@@ -1,6 +1,6 @@
 <?php
 
-require_once '../bin/bootstrap.php';
+require_once '../../bin/bootstrap.php';
 
 class DefInvoice {
 	

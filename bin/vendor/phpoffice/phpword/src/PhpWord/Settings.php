@@ -124,7 +124,7 @@ class Settings
      *
      * @var string
      */
-    private static $tempDir = '/opt/bitnami/apache2/htdocs/transoffice/dev/reports/temp/';
+    private static $tempDir = '/opt/bitnami/apache2/htdocs/transoffice/dev/bin/reports/temp/';
 
     /**
      * Enables built-in output escaping mechanism.

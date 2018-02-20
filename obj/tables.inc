@@ -120,7 +120,7 @@ class Tables {
 			echo "<a href='".$url."' class='btn btn-outline-primary' id='entitylistnewbutton' type='button' role='button'>New ".$entity."</a>";
 		} elseif ($filter == 'invoice') {
 			echo "<input type='button' class='btn btn-outline-primary selectallinv' value='Check all' />";
-			echo "  <input class='btn btn-outline-primary' type='submit' value='Generate Invoices' /> ";
+			echo "  <input class='btn btn-outline-primary' type='submit' id='geninvoicebutton' value='Generate Invoices' /> ";
 		}	
 	}
 	

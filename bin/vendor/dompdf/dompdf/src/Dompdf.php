@@ -146,7 +146,7 @@ class Dompdf
      * Used for relative paths/urls
      * @var string
      */
-    private $basePath = "/opt/bitnami/apache2/htdocs/transoffice/dev/reports/";
+    private $basePath = "/opt/bitnami/apache2/htdocs/transoffice/dev/web/reports/";
 
     /**
      * Protcol used to request file (file://, http://, etc)
