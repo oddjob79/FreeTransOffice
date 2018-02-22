@@ -46,7 +46,9 @@
 			
 		} else {
 			$loginform->loginformat();
-			echo "<h3><b>Invalid Login</b>. Please <a href='resetpassword.php'>click</a> to reset password</h3>";
+			echo "<h5><b>Invalid Login</b></h5>";
+			echo "<small>Please add a <a href='newuser.php'>new user</a>, or email <a href=mailto:support@kennettechservices.com>support@kennettechservices.com</a> if you are unable to locate your username or password.</small>";
+			echo "<br><br>";
 			$loginform->showLoginForm();
 		}
 		
