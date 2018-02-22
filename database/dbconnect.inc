@@ -8,7 +8,7 @@ class Dbconnect {
 	
 	protected function connect() {
 		// send config file to $config array
-		$config = parse_ini_file('/home/rmturner/config/toconfig.ini');
+		$config = parse_ini_file('/opt/bitnami/apps/freetransoffice/conf/ftoconfig_dev.ini');
 		if (is_null($config)) {
 			print 'Unable to connect to the database - error reading config file</br>';
 		} else {
