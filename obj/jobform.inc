@@ -9,6 +9,8 @@ class JobForm extends HtmlForm {
 		// retrieve the contact id from the URL and pass to $getvalues
 		$getnames = array('jobid', 'clientid');
 		$getvalues = $this -> getGetValues($getnames);
+		// get rid of empty key / value pairs (e.g. clientid or jobid)
+		$getvalues = array_filter($getvalues);		
 		
 		// use contact id to retrieve all the contact details
 		$sql = new Dbconnect();
@@ -16,7 +18,7 @@ class JobForm extends HtmlForm {
 		if (!empty($getvalues['jobid'])) {
 			$entityid = array($getvalues['jobid'], "-1");
 			$jobdata = $sql->getEntityDetails($entityid, 'sp_job_details');
-			$displaydata = $jobdata['client_name'] . ' - ' . $jobdata['client_job_number'];			
+			$displaydata = $jobdata['client_name'] . ' - ' . $jobdata['client_job_number'];	
 		} else {
 			$displaydata = null;
 		}
@@ -47,7 +49,8 @@ class JobForm extends HtmlForm {
 			$jobclientid = null;
 		}
 		// if clientid not sent to the URL, then use the client id currently associated to job
-		$jobclientid = $this->emptyParam($getvalues['clientid'], $jobclientid, $getvalues['clientid']);
+		$jobclientid = (empty($getvalues['clientid'])) ? $jobclientid : $getvalues['clientid'];
+		//$jobclientid = $this->emptyParam($getvalues['clientid'], $jobclientid, $getvalues['clientid']);
 		
 		// use the client id decided above to search for relevant end clients
 		$cldmparams = array("-1", $jobclientid, $_SESSION['domain_id']);

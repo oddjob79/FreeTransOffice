@@ -5,27 +5,31 @@ require_once('htmlform.inc');
 class ContactForm extends HtmlForm {
 	
 	public function showContactForm() {
-		
+
 		// retrieve the contact id from the URL and pass to $getvalues
-		$getnames = array('contactid');
+		$getnames = array('contactid', 'clientid');
 		$getvalues = $this -> getGetValues($getnames);
-
-		// use contact id to retrieve all the contact details
+		// get rid of empty key / value pairs (e.g. clientid or contactid)
+		$getvalues = array_filter($getvalues);
+		
+		// if we have a contact id then we load the data from the contact record, if we have a client id, use the client id to load the client data only
 		$sql = new Dbconnect();
-
 		if (!empty($getvalues['contactid'])) {
-			// add -1 "null" value to pass to the sp for client_id
+			// add -1 "null" value to pass to the sp for client_id (contact does not have to have a client)
 			array_push($getvalues, "-1");
 			$contactdata = $sql->getEntityDetails($getvalues, 'sp_contact_details');
-			$displaydata = $contactdata['first_name'] . ' ' . $contactdata['last_name'];			
+			$displaydata = $contactdata['first_name'] . ' ' . $contactdata['last_name'];
+		} else if (!empty($getvalues['clientid'])) {
+			$clientdata = $sql->getEntityDetails($getvalues, 'sp_client_details');
+			$displaydata = $clientdata['client_name'] . ' - ';
 		} else {
 			$displaydata = null;
 		}
 
 		// form header and format are set
-//		$displaydata = (empty($contactdata['contact_id'])) ? '' : $contactdata['first_name'] . ' ' . $contactdata['last_name'];		
 		$formheader = $this -> setFormHeader('Contact', $displaydata);
 		$this->formFormat($formheader);
+
 		
 		// set spparam array to pass to the callSP procedure
 		$spparams = array("-1");
@@ -44,21 +48,24 @@ class ContactForm extends HtmlForm {
 			$contactdata,
 			$statuses,
 			$languages,
-			$clients
+			$clients,
+			$clientdata
 		);
 	}
 
-	private function contactFormBuilder(&$contactdata, &$statuses, &$languages, &$clients) {
+	private function contactFormBuilder(&$contactdata, &$statuses, &$languages, &$clients, &$clientdata) {
 	
 		echo "<form method='post' action='contactdetails.php'>";
 		echo "<div class='form-group'>";
 		
+		$clientid = $this->emptyParam($clientdata['client_id'], $contactdata['client_id'], $clientdata['client_id']);
 		// Client select
 		echo "<div class='row'>\n<div class='col'>";
-			echo "<p>Client: <select class='form-control' name='clientid'>";
+			echo "<p>Client Name: <select class='form-control' name='clientid'>";
 			echo "<option value=''></option>";
 				foreach ($clients as $client) {
-					if ($client['client_id'] == $contactdata['client_id']) {
+//					if ($client['client_id'] == $contactdata['client_id']) {
+					if ($client['client_id'] == $clientid) {
 						echo "<option value=".$client['client_id']." selected='selected'>".$client['client_name']."</option>";
 					} else {
 						echo "<option value=".$client['client_id'].">".$client['client_name']."</option>";

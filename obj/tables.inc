@@ -107,21 +107,28 @@ class Tables {
 	}
 	
 	private function footerButtons ($url, $entity, $filter) {
-		// use the entity name to name the "new record" button
+/*		
 		$filtergetvar = $filter."id";
 		if ($filter != 'none' && !empty($_GET[$filtergetvar])) {
 			$url = $url."?".$filtergetvar."=".$_GET[$filtergetvar];
 		}
+*/		
+		$clientid = $this->getsetClientId();
 		
+		// use the entity name to name the "new record" button
 		// ensures jquery only run when there is a filter on the page
-		if ($filter == 'none') {
-			echo "<a href='".$url."' class='btn btn-outline-primary' type='button' role='button'>New ".$entity."</a>";
-		} elseif ($filter == 'client') {
-			echo "<a href='".$url."' class='btn btn-outline-primary' id='entitylistnewbutton' type='button' role='button'>New ".$entity."</a>";
-		} elseif ($filter == 'invoice') {
-			echo "<input type='button' class='btn btn-outline-primary selectallinv' value='Check all' />";
-			echo "  <input class='btn btn-outline-primary' type='submit' id='geninvoicebutton' value='Generate Invoices' /> ";
-		}	
+		if ($entity == 'Invoice') {
+			echo "<a href='geninvoices.php' class='btn btn-outline-primary' type='button' role='button'>Generate Invoices</a>";
+		} else {
+			if ($filter == 'none') {
+				echo "<a href='".$url."' class='btn btn-outline-primary' type='button' role='button'>New ".$entity."</a>";
+			} elseif ($filter == 'client') {
+				echo "<a href='".$url."?clientid=".$clientid."' class='btn btn-outline-primary' id='entitylistnewbutton' type='button' role='button'>New ".$entity."</a>";
+			} elseif ($filter == 'invoice') {
+				echo "<input type='button' class='btn btn-outline-primary selectallinv' value='Check all' />";
+				echo "  <input class='btn btn-outline-primary' type='submit' id='geninvoicebutton' value='Generate Invoices' /> ";
+			}
+		}			
 	}
 	
 	private function buildTable($theaders, $fieldnames, &$listdata, $url, $entity, $filter)

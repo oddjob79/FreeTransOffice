@@ -211,10 +211,17 @@ $(document).ready(function() {
 // Client Submenus - alert box when new button selected without filter (when needed)
 	jQuery(document).ready(function($) {
 	$('#entitylistnewbutton').click(function(e) {
-		if (window.location.href.indexOf("?clientid") == -1) {
+		var clientid = $('#clientselect').val();
+		if (clientid == false) {
 			e.preventDefault();
 			alert("Please select a Client before creating a new record");
 		}
+
+/*		if (window.location.href.indexOf("?clientid") == -1) {
+			e.preventDefault();
+			alert("Please select a Client before creating a new record");
+		}
+*/		
 		});
 	});	
 	
