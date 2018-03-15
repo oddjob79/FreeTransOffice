@@ -130,10 +130,11 @@ class UserSetForm extends HtmlForm {
 			echo "</select></p>";
 		echo "</div></div>";
 
-		// logo - not implemented yet
+/*		// logo - not implemented yet
 		echo "<div class='row'>\n<div class='col-6'>";
 			echo "<p>Logo: <input class='form-control' placeholder='Enter company logo' type='file' name='logo' value='".$userdata['document_path']."' height='10' width='10' /></p>";
 		echo "</div>";
+*/		
 		
 		// job & Inv prefixes and next numbers
 /* Disabled area until this functionality can be implemented
