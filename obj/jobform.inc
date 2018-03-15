@@ -185,13 +185,14 @@ class JobForm extends HtmlForm {
 		
 		// Word Count & Currency / Price
 		echo "<div class='row'><div class='col'>";
-			echo "<p>Word Count: <input class='form-control' placeholder='Enter Word Count' type='text' name='wordcount' value='".$jobdata['word_count']."' maxlength='10' /></p>";		
+			echo "<p>Word Count: <input class='form-control' placeholder='Enter Word Count' type='number' name='wordcount' value='".$jobdata['word_count']."' maxlength='10' /></p>";		
 		echo "</div><div class='col-2'>";
 		// sets clientcurrency as the currency of the client (and leaves it empty if no client selected)
 		$clientcurrency = (empty($jobclientid)) ? '' : $clientdata['currency_code'];
-		echo "<br><input class='form-control' type='text' name='currencycode' value='".$clientcurrency."' readonly /></p>";	
+		echo "<p>Price:";
+		echo "<input class='form-control' type='text' name='currencycode' value='".$clientcurrency."' readonly /></p>";	
 		echo "</div><div class='col-4'>";
-			echo "<br><input class='form-control' type='text' name='price' value='".number_format((float)$jobdata['price'], 2, '.', '')."' maxlength='10' /></p>";		
+			echo "<br><input class='form-control' type='text' id='jobprice' name='price' value='".number_format((float)$jobdata['price'], 2, '.', '')."' maxlength='10' /></p>";		
 		echo "</div></div>";
 		
 		// Job Profile & Estimated Time
@@ -208,14 +209,14 @@ class JobForm extends HtmlForm {
 			echo "</select></p>";
 		echo "</div>";
 		echo "<div class='col'>";
-			echo "<p>Estimated Time: <input class='form-control' placeholder='Enter Estimated Job Time' type='text' name='estimatedtime' value='".$jobdata['estimated_time']."' maxlength= '10' /></p>";
+			echo "<p>Estimated Time (in minutes): <input class='form-control' placeholder='Enter Estimated Job Time' type='number' name='estimatedtime' value='".$jobdata['estimated_time']."' maxlength= '10' /></p>";
 		echo "</div></div>";
 		
 		// Completed Date and Actual Time
 		echo "<div class='row'><div class='col'>";
 			echo "<p>Completed Date: <input class='form-control' placeholder='Date Job Completed' data-provide='datepicker' data-date-format='yyyy-mm-dd' type='text' name='completeddate' id='jobcompleteddate' value='".substr($jobdata['completed_date'], 0, 10)."' maxlength='10' /></p>";
 		echo "</div><div class='col'>";
-			echo "<p>Actual Time: <input class='form-control' placeholder='Enter Actual Job Time' type='text' name='actualtime' value='".$jobdata['actual_time']."' maxlength= '10' /></p>";
+			echo "<p>Actual Time (in minutes): <input class='form-control' placeholder='Enter Actual Job Time' type='number' name='actualtime' value='".$jobdata['actual_time']."' maxlength= '10' /></p>";
 		echo "</div></div>";	
 
 		// Invoice no. & Invoice Date
@@ -259,7 +260,7 @@ class JobForm extends HtmlForm {
 			echo "</div></div></div></form>";
 		} else {
 			echo "<div class='row'>\n<div class='col-auto mr-auto'>";		
-				echo "</br><input class='btn btn-outline-primary' type='submit' value='Save' /> ";
+				echo "</br><input class='btn btn-outline-primary' type='submit' id='jobsave' value='Save' /> ";
 			echo "</div><div class='col-auto'>";
 				echo "<br> <input class='btn btn-outline-primary' type='reset' value='Reset' /> ";
 				echo " <a class='btn btn-outline-primary' href='joblist.php' role='button'>Cancel</a> ";

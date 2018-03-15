@@ -63,7 +63,7 @@
 				<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 				<script src="/inc/bootstrap/js/bootstrap-datepicker.min.js"></script>
 				<!-- custom javascript library add ?rndstr=135 when making changes to js-->
-				<script src="/inc/transoffice.js?rndstr=146"></script>
+				<script src="/inc/transoffice.js?rndstr=158"></script>
 				
 				<!-- ensures sclaing to mobile devices -->
 				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

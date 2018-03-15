@@ -112,7 +112,7 @@ $(document).ready(function(){
 	});
 
 // Job form
-// Change status to Completed - sets Completed Date to today
+	// Change status to Completed - sets Completed Date to today
 	jQuery(document).ready(function() {
 	$('#jobstatus').change(function() {
 		if ($(this).val() == 5) {
@@ -128,6 +128,20 @@ $(document).ready(function(){
 		}
 		});
 	});	
+
+	// validates price is numeric on save
+	jQuery(document).ready(function() {
+	$('#jobsave').click(function(e) {
+		var price = $('#jobprice').val();
+		if ($.isNumeric(price) == false) {
+			e.preventDefault();
+			alert('Price is not numeric, please update');
+			$('#jobprice').focus().select();
+		}
+		});
+	});	
+	
+	
 	
 // Settings menu
 // in settings menu, selection of entity from drop down controls element selection and page reload
