@@ -1489,6 +1489,8 @@ password_hash,
 email,
 security_question,
 security_answer,
+currency_id, -- added 4/9/18
+timezone, -- added 4/9/18	
 jobnum_prefix,
 jobnum_next,
 invnum_prefix,
@@ -1502,6 +1504,8 @@ u_password_hash,
 u_email,
 u_security_question,
 u_security_answer,
+49, -- added 4/9/18 (EUR)
+'Europe/London', -- added 4/9/18
 'JOB',
 00001,
 'INV',
