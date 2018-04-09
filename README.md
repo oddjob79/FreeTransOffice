@@ -1,16 +1,10 @@
 # FreeTransOffice
 Job Tracking and Invoicing App for Freelance Translators
 
-This project was written as a first attempt at grasping OOP techniques in PHP.
-It was written for 3 purposes:
-  1. As a learning process for myself
-  2. As a demonstration of my skills with a view of gaining employment in this area
-  3. As a fully functioning tool for freelance translators to utilize
-  
 The app is hosted on a pre-built Bitnami LAMP stack on the Google Cloud Platform
 The application is online and available for anyone who wishes to use it at https://app.freetransoffice.com. There is also a development version at https://dev.freetransoffice.com.
 
-Comments and suggestions are welcome, but please be kind. I have flown solo on this and there are many areas I would like to clean up that I know about, as well as I'm sure many areas that I do not.
+Comments and suggestions are welcome.
 
 Thank you kindly,
 
