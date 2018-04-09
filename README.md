@@ -38,14 +38,14 @@ You are now ready to enter your Jobs. To do this, either go directly to the Jobs
 
 Invoicing
 
-Click on the down arrow by the Invoicing menu to select the option to Generate Invoices.
-Pick your client using the drop-down to bring up a list of jobs per client.
-Use the Status filter box to ensure only "Complete" jobs are selected.
-Either use the Check All box to mark all visible jobs as selected, or check the jobs individually using the check box on the right hand side.
-Once you have your selection as you want it, click "Generate Invoices".
-You will see a screen asking you to confirm you would like to generate an invoice for the jobs displayed.
-Once you have clicked confirm, you will be prompted to download the invoice. A splash screen will ask you to proceed to the Invoice Details screen.
-You will then see the Invoice Details. If there was an issue with the invoice, you can Void the Invoice from this screen, which will reset the associated jobs' status to Complete (from Invoiced). You can then repeat the Invoicing steps until everything is to your liking.
+> Click on the down arrow by the Invoicing menu to select the option to Generate Invoices.
+> Pick your client using the drop-down to bring up a list of jobs per client.
+> Use the Status filter box to ensure only "Complete" jobs are selected.
+> Either use the Check All box to mark all visible jobs as selected, or check the jobs individually using the check box on the right hand side.
+> Once you have your selection as you want it, click "Generate Invoices".
+> You will see a screen asking you to confirm you would like to generate an invoice for the jobs displayed.
+> Once you have clicked confirm, you will be prompted to download the invoice. A splash screen will ask you to proceed to the Invoice Details screen.
+> You will then see the Invoice Details. If there was an issue with the invoice, you can Void the Invoice from this screen, which will reset the associated jobs' status to Complete (from Invoiced). You can then repeat the Invoicing steps until everything is to your liking.
 
 
 
