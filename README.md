@@ -45,7 +45,7 @@ Invoicing
 5. Once you have your selection as you want it, click "Generate Invoices".
 6. You will see a screen asking you to confirm you would like to generate an invoice for the jobs displayed.
 7. Once you have clicked confirm, you will be prompted to download the invoice. A splash screen will ask you to proceed to the Invoice Details screen.
-8. You will then see the Invoice Details. If there was an issue with the invoice, you can Void the Invoice from this screen, which will reset the associated jobs' status to Complete (from Invoiced). You can then repeat the Invoicing steps until everything is to your liking.
+8. You will then see the Invoice Details, which can be edited to show the received date and received amount. If there was an issue with the invoice, you can Void the Invoice from this screen, which will reset the associated jobs' status to Complete (from Invoiced). You can then repeat the Invoicing steps until everything is to your liking.
 
 
 
